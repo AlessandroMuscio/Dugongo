@@ -1,4 +1,4 @@
-# TamaGolem
+# Dugongo
 
 Progetto di Programmazione Avanzata di Java e C, sviluppatori:
 
