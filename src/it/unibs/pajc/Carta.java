@@ -1,6 +1,9 @@
 package it.unibs.pajc;
 
+import javax.imageio.ImageIO;
 import java.awt.*;
+import java.io.File;
+import java.io.IOException;
 
 public class Carta {
   
@@ -9,6 +12,21 @@ public class Carta {
   private int punteggio;
   private Image fronte;
   private static Image retro;
+  
+  static {
+    try {
+      retro = ImageIO.read(new File("assets/retro/Retro.svg"));
+    } catch (IOException e) {
+      throw new RuntimeException(e);
+    }
+  }
+  
+  public Carta(ValoreCarta valore, Seme seme, int punteggio, Image fronte) {
+    this.valore = valore;
+    this.seme = seme;
+    this.punteggio = punteggio;
+    this.fronte = fronte;
+  }
   
   public ValoreCarta getValore() {
     return valore;
@@ -44,4 +62,6 @@ public class Carta {
   public static void setRetro(Image retro) {
     Carta.retro = retro;
   }
+  
+  
 }
