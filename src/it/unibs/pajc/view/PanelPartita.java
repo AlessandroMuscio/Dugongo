@@ -37,7 +37,7 @@ public class PanelPartita extends JPanel implements ActionListener {
     try {
       JButton btnNewButton = new JButton(lbl);
       
-      Image img = ImageIO.read(getClass().getResource("/Dugongo/assets/icone/"+ lbl.split(" ")[0].toLowerCase() + ".png"));
+      Image img = ImageIO.read(getClass().getResource("icone/"+ lbl.split(" ")[0].toLowerCase() + ".png"));
       btnNewButton.setIcon(new ImageIcon(img));
       btnNewButton.setBorderPainted(false);
       btnNewButton.setVerticalTextPosition(SwingConstants.BOTTOM);

@@ -38,7 +38,7 @@ public class PanelInfo extends JPanel implements ActionListener {
     try {
       JButton buttonInfo = new JButton(lbl);
   
-      Image img = ImageIO.read(getClass().getResource("/Dugongo/assets/icone/"+ lbl.split(" ")[0].toLowerCase() + ".png"));
+      Image img = ImageIO.read(getClass().getResource("icone/"+ lbl.split(" ")[0].toLowerCase() + ".png"));
       img = img.getScaledInstance(50, 50, Image.SCALE_DEFAULT);
       
       buttonInfo.setIcon(new ImageIcon(img));
