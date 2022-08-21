@@ -9,13 +9,14 @@ import java.util.Stack;
 
 public class Mazzo extends Carte{
   
-  private final File folder = new File("assets");
+  private final File folder = new File("assets/fronte");
   private Stack<Carta> mazzo;
   
   public Mazzo(){
     
     this.mazzo = new Stack<>();
     inizializza();
+    mescola();
   }
   
   public Carta scarta(){
@@ -41,7 +42,6 @@ public class Mazzo extends Carte{
   }
   
   private void inizializza(){
-    ArrayList<BufferedImage> svg = new ArrayList<>();
   
     try {
       int i = 1;
@@ -49,7 +49,7 @@ public class Mazzo extends Carte{
       for (final File fileEntry : folder.listFiles()) {
       
         if (!fileEntry.isDirectory()) {
-          String[] temp = fileEntry.toString().substring(7).split("_");
+          String[] temp = fileEntry.toString().substring(14).split("_");
           String seme = temp[0];
           String valore = temp[1].replace(".svg", "");
           
@@ -68,8 +68,6 @@ public class Mazzo extends Carte{
     } catch (IOException e) {
       throw new RuntimeException(e);
     }
-    
-    mescola();
   }
   
   private void stampa(){

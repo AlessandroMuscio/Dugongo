@@ -1,11 +1,12 @@
 package it.unibs.pajc.server;
 
-import java.io.IOException;
+import it.unibs.pajc.DugongoModel;
 import java.net.*;
 
 public class Server implements Runnable {
   
   public static boolean game = true;
+  private DugongoModel model;
   
   public void close(){
     
@@ -17,6 +18,7 @@ public class Server implements Runnable {
     
     // SCELTA DELLA PORTA PER IL SERVER
     int port = 1234;
+    model = new DugongoModel();
     
     System.out.println("STARTING...");
   
