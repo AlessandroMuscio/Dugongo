@@ -2,8 +2,10 @@ package it.unibs.pajc.view;
 
 import it.unibs.pajc.DugongoModel;
 
+import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
+import java.io.IOException;
 
 public class View {
   
@@ -47,32 +49,60 @@ public class View {
     frame.getContentPane().add(lblTitolo, BorderLayout.NORTH);
     lblTitolo.setFont(new Font("Lucida Grande", Font.PLAIN, 50));
     frame.getContentPane().add(lblTitolo, BorderLayout.NORTH);
-  
-    PanelPartita panelPartita = new PanelPartita();
-    panelPartita.addButton("PLAY GAME");
-    panelPartita.addButton("JOIN GAME");
-    panelPartita.setOpaque(false);
-    frame.add(panelPartita);
+    
+    PanelOpzioni panelOpzioni = new PanelOpzioni();
+    JButton hostButton = panelOpzioni.addButton("HOST GAME");
+    JButton joinButton = panelOpzioni.addButton("JOIN GAME");
+    panelOpzioni.setOpaque(false);
+    frame.add(panelOpzioni);
   
     PanelInfo panelInfo = new PanelInfo();
-    panelInfo.addButtonInfo("INFO");
+    JButton infoButton = panelInfo.addButton();
     panelInfo.setOpaque(false);
     frame.getContentPane().add(panelInfo, BorderLayout.SOUTH);
-  
-    panelPartita.addActionListener(e -> esegui(e.getActionCommand()) );
-    panelInfo.addActionListener(e -> informazioni());
+    
+    hostButton.addActionListener(e -> hostGame() );
+    joinButton.addActionListener(e -> joinGame() );
+    infoButton.addActionListener(e -> new FrameInfo());
   }
   
-  private void informazioni() {
+  private void hostGame() {
+  
+    System.out.println("HOST");
+    
+    /*ServerController serverController = new ServerController(frame);
+    serverController.run();
+    
+    //lblDescription.setText("Waiting for a client to connect...");
+    frame.revalidate();
+    frame.repaint();
+    
+    if(serverController.startServer() == false) {
+      
+      lblDescription.setText("Timeout scaduto: nessun client si è connesso");
+    } else {
+      
+      lblDescription.setText("Client connesso");
+    }*/
   }
   
-  private void esegui(String azione) {
+  private void joinGame() {
   
-    if( azione.equals("PLAY GAME") ) {
-      model.play();
-    }
-    else if( azione.equals("JOIN GAME")) {
-      model.join();
-    }
+    System.out.println("JOIN");
+    
+    /*ServerController serverController = new ServerController(frame);
+    serverController.run();
+    
+    //lblDescription.setText("Waiting for a client to connect...");
+    frame.revalidate();
+    frame.repaint();
+    
+    if(serverController.startServer() == false) {
+      
+      lblDescription.setText("Timeout scaduto: nessun client si è connesso");
+    } else {
+      
+      lblDescription.setText("Client connesso");
+    }*/
   }
 }

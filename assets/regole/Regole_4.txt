@@ -1,0 +1,24 @@
+Attribuzione dei punti:
+
+Le carte hanno valore pari al proprio numero,
+le figure valgono tutte 10. Il re di spade e
+il re di bastoni sono carte DUGONGO e hanno
+valore 0.
+In caso di parità tra due giocatori, il
+vincitore è quello con meno carte nel proprio
+mazzo. Due giocatori con medesimo punteggio e
+numero di carte sono entrambi vincitori.
+
+
+
+
+
+
+
+            ----- BUON GIOCO -----
+
+
+
+
+
+

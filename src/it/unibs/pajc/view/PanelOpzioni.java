@@ -7,9 +7,9 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
 
-public class PanelPartita extends JPanel implements ActionListener {
-  private static final long serialVersionUID = 1L;
+public class PanelOpzioni extends JPanel implements ActionListener {
   
+  private static final long serialVersionUID = 1L;
   private ArrayList<ActionListener> listenerList = new ArrayList<>();
   
   @Override
@@ -33,7 +33,7 @@ public class PanelPartita extends JPanel implements ActionListener {
     }
   }
   
-  public void addButton(String lbl) {
+  public JButton addButton(String lbl) {
     try {
       JButton btnNewButton = new JButton(lbl);
       
@@ -45,6 +45,8 @@ public class PanelPartita extends JPanel implements ActionListener {
       
       this.add(btnNewButton);
       btnNewButton.addActionListener(this);
+  
+      return btnNewButton;
     } catch (Exception e) {
       throw new RuntimeException(e);
     }

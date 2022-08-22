@@ -1,6 +1,6 @@
 package it.unibs.pajc;
 
-import it.unibs.pajc.server.Server;
+import it.unibs.pajc.server.ServerController;
 
 public class DugongoModel extends BaseModel {
   
@@ -11,8 +11,8 @@ public class DugongoModel extends BaseModel {
     Mazzo mazzo = new Mazzo();
     System.out.println("GIORGIO");
     
-    Server server = new Server();
-    server.run();
+    //ServerController serverController = new ServerController();
+    //serverController.run();
   }
   
   public void join() {

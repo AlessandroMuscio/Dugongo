@@ -5,6 +5,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.IOException;
 import java.util.ArrayList;
 
 public class PanelInfo extends JPanel implements ActionListener {
@@ -26,32 +27,36 @@ public class PanelInfo extends JPanel implements ActionListener {
   
   private void fireActionListener(ActionEvent e) {
     
-    ActionEvent newEvent = new ActionEvent( this, 0, ( (JButton) e.getSource() ).getText() );
+    ActionEvent newEvent = new ActionEvent(this, 0, ((JButton) e.getSource()).getText());
     
-    for( ActionListener l : listenerList ) {
+    for (ActionListener l : listenerList) {
       
       l.actionPerformed(newEvent);
     }
   }
   
-  public void addButtonInfo(String lbl) {
+  public JButton addButton(){
+    
+    JButton infoButton = new JButton("INFO");
+    
     try {
-      JButton buttonInfo = new JButton(lbl);
-  
-      Image img = ImageIO.read(getClass().getResource("icone/"+ lbl.split(" ")[0].toLowerCase() + ".png"));
+      Image img = ImageIO.read(getClass().getResource("icone/info.png"));
       img = img.getScaledInstance(50, 50, Image.SCALE_DEFAULT);
+      infoButton.setIcon(new ImageIcon(img));
       
-      buttonInfo.setIcon(new ImageIcon(img));
-      buttonInfo.setBorderPainted(false);
-      buttonInfo.setVerticalTextPosition(SwingConstants.BOTTOM);
-      buttonInfo.setHorizontalTextPosition(SwingConstants.CENTER);
-      buttonInfo.setMaximumSize(new Dimension(5, 5));
+      infoButton.setBorderPainted(false);
+      infoButton.setVerticalTextPosition(SwingConstants.BOTTOM);
+      infoButton.setHorizontalTextPosition(SwingConstants.CENTER);
       
       this.setLayout(new BorderLayout(0, 0));
-      buttonInfo.addActionListener(this);
-      this.add(buttonInfo, BorderLayout.EAST);
-    } catch (Exception e) {
+      
+      infoButton.addActionListener(this);
+      this.add(infoButton, BorderLayout.EAST);
+      
+    } catch (IOException e) {
       throw new RuntimeException(e);
     }
+    
+    return infoButton;
   }
 }

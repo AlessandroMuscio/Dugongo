@@ -1,13 +1,11 @@
 package it.unibs.pajc.server;
 
-import it.unibs.pajc.Carte;
 import it.unibs.pajc.Mazzo;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.Socket;
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.function.Consumer;
@@ -85,7 +83,7 @@ public class Protocol implements Runnable{
       
       writer.println("WELCOME " + name);
       
-      while (isRunning && Server.game) {
+      while (isRunning && ServerController.game) {
   
         request = reader.readLine();
         System.out.println("PROCESSING REQUEST: " + request);
@@ -104,7 +102,7 @@ public class Protocol implements Runnable{
     } finally {
       clients.remove(this);
       if (clients.isEmpty()){
-        Server.game = false;
+        ServerController.game = false;
       }
     }
     

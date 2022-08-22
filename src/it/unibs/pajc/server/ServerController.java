@@ -1,12 +1,19 @@
 package it.unibs.pajc.server;
 
 import it.unibs.pajc.DugongoModel;
+
+import javax.swing.*;
 import java.net.*;
 
-public class Server implements Runnable {
+public class ServerController implements Runnable {
   
   public static boolean game = true;
   private DugongoModel model;
+  
+  public ServerController(JFrame frame) {
+    
+    this.run();
+  }
   
   public void close(){
     
