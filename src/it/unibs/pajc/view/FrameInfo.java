@@ -10,7 +10,7 @@ import java.nio.file.Path;
 public class FrameInfo{
   
   private JPanel[] panelIstruzioni;
-  private Frame frame;
+  private JFrame frame;
   private PanelDirezioni[] direzioni;
   private File folder = new File("assets/regole");
   
@@ -18,7 +18,7 @@ public class FrameInfo{
     
     panelIstruzioni = new JPanel[4];
     direzioni = new PanelDirezioni[4];
-    frame = new Frame();
+    frame = new JFrame();
     popolaArray();
     
     frame.setVisible(true);

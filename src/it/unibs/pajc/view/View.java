@@ -1,17 +1,17 @@
 package it.unibs.pajc.view;
 
 import it.unibs.pajc.DugongoModel;
+import it.unibs.pajc.server.ServerController;
 
-import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
-import java.io.IOException;
 
 public class View {
   
   private JFrame frame;
   private JLabel lblTitolo;
-  private DugongoModel model;
+  private ServerController SController;
+  //private ClientController CController;
   
   /**
    * Launch the application.
@@ -29,12 +29,8 @@ public class View {
    * Create the application.
    */
   public View() {
-    model = new DugongoModel();
     
     initialize();
-    /*model.addChangeListener( e -> {
-      lblTitolo.setText( model.dump() );
-    });*/
   }
   
   private void initialize() {
@@ -69,21 +65,8 @@ public class View {
   private void hostGame() {
   
     System.out.println("HOST");
-    
-    /*ServerController serverController = new ServerController(frame);
-    serverController.run();
-    
-    //lblDescription.setText("Waiting for a client to connect...");
-    frame.revalidate();
-    frame.repaint();
-    
-    if(serverController.startServer() == false) {
-      
-      lblDescription.setText("Timeout scaduto: nessun client si è connesso");
-    } else {
-      
-      lblDescription.setText("Client connesso");
-    }*/
+  
+    SController = new ServerController(frame);
   }
   
   private void joinGame() {
