@@ -1,10 +1,8 @@
-package it.unibs.pajc.server;
+package it.unibs.pajc.controller;
 
 import it.unibs.pajc.Mazzo;
 
-import java.io.BufferedReader;
-import java.io.InputStreamReader;
-import java.io.PrintWriter;
+import java.io.*;
 import java.net.Socket;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -25,8 +23,8 @@ public class Protocol implements Runnable{
     //commandMap.put("@default@", e -> e.sender.sendMessage(e.sender, e.getLastParameter()));
   }
   
-  private BufferedReader reader;
-  private PrintWriter writer;
+  private ObjectInputStream reader;
+  private ObjectOutputStream writer;
   private Socket client;
   private String name;
   private boolean isRunning = true;
@@ -66,24 +64,24 @@ public class Protocol implements Runnable{
   public void run() {
     
     try {
-      reader = new BufferedReader( new InputStreamReader( client.getInputStream() ) );
-      writer = new PrintWriter(client.getOutputStream(), true );
+      writer = new ObjectOutputStream(client.getOutputStream());
+      reader = new ObjectInputStream(client.getInputStream());
       
       System.out.println("CLIENT ONLINE " + client.getPort());
       
       String request;
       
       do {
-        
-        writer.printf("PLEASE, INSERT YOUR NICKNAME: ");
+       
+       // writer.write("PLEASE, INSERT YOUR NICKNAME: ");
         name = reader.readLine();
         
       }
       while ( name.length() < 3 );
       
-      writer.println("WELCOME " + name);
+      //writer.write("WELCOME " + name);
       
-      while (isRunning && ServerController.game) {
+      while (isRunning) {
   
         request = reader.readLine();
         System.out.println("PROCESSING REQUEST: " + request);
@@ -94,16 +92,13 @@ public class Protocol implements Runnable{
         commandExecutor.accept(e);
       }
       
-      writer.printf("GOODBYE %s\n", name);
+      //writer.write("GOODBYE %s\n", name);
       
       
     } catch (Exception e) {
       e.printStackTrace();
     } finally {
       clients.remove(this);
-      if (clients.isEmpty()){
-        ServerController.game = false;
-      }
     }
     
   }

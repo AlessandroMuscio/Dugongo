@@ -1,4 +1,4 @@
-package it.unibs.pajc.server;
+package it.unibs.pajc.controller;
 
 import java.util.ArrayList;
 

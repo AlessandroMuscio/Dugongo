@@ -35,7 +35,7 @@ public class PanelInfo extends JPanel implements ActionListener {
     }
   }
   
-  public JButton addButton(){
+  public void addButton(){
     
     JButton infoButton = new JButton("INFO");
     
@@ -57,6 +57,5 @@ public class PanelInfo extends JPanel implements ActionListener {
       throw new RuntimeException(e);
     }
     
-    return infoButton;
   }
 }

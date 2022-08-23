@@ -67,7 +67,7 @@ public class PanelDirezioni extends JPanel implements ActionListener {
       buttonIndietro.setBorderPainted(false);
       
       img = ImageIO.read(getClass().getResource("icone/close.png"));
-      img = img.getScaledInstance(50, 50, Image.SCALE_DEFAULT);
+      img = img.getScaledInstance(42, 42, Image.SCALE_DEFAULT);
       buttonChiudi.setIcon(new ImageIcon(img));
       buttonChiudi.setBorderPainted(false);
       
@@ -77,21 +77,26 @@ public class PanelDirezioni extends JPanel implements ActionListener {
     
     switch (i){
       case 0:
-        buttonChiudi.addActionListener(this);
-        buttonAvanti.addActionListener(this);
+        buttonChiudi.addActionListener(e -> FrameInfo.close());
+        buttonAvanti.addActionListener(e -> FrameInfo.mostraSuccessiva(0));
         this.add(buttonChiudi);
         this.add(buttonAvanti);
         break;
       case 1:
+        buttonIndietro.addActionListener( e -> FrameInfo.mostraPrecedente(1));
+        buttonAvanti.addActionListener(e -> FrameInfo.mostraSuccessiva(1));
+        this.add(buttonIndietro);
+        this.add(buttonAvanti);
+        break;
       case 2:
-        buttonIndietro.addActionListener(this);
-        buttonAvanti.addActionListener(this);
+        buttonIndietro.addActionListener( e -> FrameInfo.mostraPrecedente(2));
+        buttonAvanti.addActionListener(e -> FrameInfo.mostraSuccessiva(2));
         this.add(buttonIndietro);
         this.add(buttonAvanti);
         break;
       case 3:
-        buttonIndietro.addActionListener(this);
-        buttonChiudi.addActionListener(this);
+        buttonIndietro.addActionListener(e -> FrameInfo.mostraPrecedente(3));
+        buttonChiudi.addActionListener(e -> FrameInfo.close());
         this.add(buttonIndietro);
         this.add(buttonChiudi);
         break;

@@ -9,8 +9,8 @@ import java.nio.file.Path;
 
 public class FrameInfo{
   
-  private JPanel[] panelIstruzioni;
-  private JFrame frame;
+  private static JPanel[] panelIstruzioni;
+  private static JFrame frame;
   private PanelDirezioni[] direzioni;
   private File folder = new File("assets/regole");
   
@@ -28,24 +28,25 @@ public class FrameInfo{
     frame.add(panelIstruzioni[0]);
   }
   
-  private void mostraSuccessiva(int i) {
-  
-    frame.setVisible(false);
-    frame.remove(panelIstruzioni[i]);
+  public static void mostraSuccessiva(int i) {
+    
+    frame.remove(panelIstruzioni[i++]);
+    frame.add(panelIstruzioni[i]);
     frame.repaint();
-    frame.add(panelIstruzioni[i+1]);
-    frame.repaint();
-    frame.setVisible(true);
+    frame.revalidate();
   }
   
-  private void mostraPrecedente(int i) {
+  public static void mostraPrecedente(int i) {
+    
+    frame.remove(panelIstruzioni[i--]);
+    frame.add(panelIstruzioni[i]);
+    frame.repaint();
+    frame.revalidate();
+  }
+  
+  public static void close() {
   
     frame.setVisible(false);
-    frame.remove(panelIstruzioni[i]);
-    frame.repaint();
-    frame.add(panelIstruzioni[i-1]);
-    frame.repaint();
-    frame.setVisible(true);
   }
   
   private void popolaArray(){
@@ -54,9 +55,7 @@ public class FrameInfo{
       
       try {
         int temp = Integer.parseInt( fileEntry.toString().split("_")[1].split("\\.")[0] ) - 1;
-        
         Path filePath = Path.of(fileEntry.toString());
-        
         JPanel panel = new JPanel();
         JTextPane textPane = new JTextPane();
         
@@ -66,24 +65,19 @@ public class FrameInfo{
         String content = Files.readString(filePath);
         textPane.setText(content);
         textPane.setEditable(false);
-        
         panel.add(textPane, BorderLayout.CENTER);
+        
         PanelDirezioni panelDirezioni = new PanelDirezioni(temp);
+        panelDirezioni.setOpaque(false);
         panel.add(panelDirezioni, BorderLayout.SOUTH);
+        
+        panel.setBackground(Color.pink);
         
         panelIstruzioni[temp] = panel;
         direzioni[temp] = panelDirezioni;
       } catch (IOException e) {
         throw new RuntimeException(e);
       }
-    }
-    
-    for (int i = 0; i < direzioni.length; i++){
-  
-      int finalI = i;
-      direzioni[i].getButtonAvanti().addActionListener(e -> mostraSuccessiva(finalI) );
-      direzioni[i].getButtonIndietro().addActionListener( e -> mostraPrecedente(finalI) );
-      direzioni[i].getButtonChiudi().addActionListener( e -> frame.setVisible(false) );
     }
   }
 }

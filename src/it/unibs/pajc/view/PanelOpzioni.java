@@ -33,11 +33,13 @@ public class PanelOpzioni extends JPanel implements ActionListener {
     }
   }
   
-  public JButton addButton(String lbl) {
+  public JButton addButton(String lbl, Dimension dimension) {
     try {
       JButton btnNewButton = new JButton(lbl);
       
       Image img = ImageIO.read(getClass().getResource("icone/"+ lbl.split(" ")[0].toLowerCase() + ".png"));
+      img = img.getScaledInstance(dimension.width, dimension.height, Image.SCALE_DEFAULT);
+      
       btnNewButton.setIcon(new ImageIcon(img));
       btnNewButton.setBorderPainted(false);
       btnNewButton.setVerticalTextPosition(SwingConstants.BOTTOM);

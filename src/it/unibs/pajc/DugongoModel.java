@@ -1,7 +1,5 @@
 package it.unibs.pajc;
 
-import it.unibs.pajc.server.ServerController;
-
 public class DugongoModel extends BaseModel {
   
   //IMPLEMENTA I CONFRONTI, LA DISTRIBUZIONE DELLE CARTE, LA CREAZIONE DEL MAZZO, DEGLI SCARTINI, E DELLE MANI
