@@ -13,9 +13,7 @@ import java.net.Socket;
 public class ClientController {
   
   private Socket CSocket;
-  
   private View view;
-  
   private  ObjectInputStream InputStream;
   private  ObjectOutputStream OutputStream;
   

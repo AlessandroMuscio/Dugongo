@@ -71,17 +71,9 @@ public class Protocol implements Runnable{
       
       String request;
       
-      do {
-       
-       // writer.write("PLEASE, INSERT YOUR NICKNAME: ");
-        name = reader.readLine();
-        
-      }
-      while ( name.length() < 3 );
-      
       //writer.write("WELCOME " + name);
       
-      while (isRunning) {
+      /*while (isRunning) {
   
         request = reader.readLine();
         System.out.println("PROCESSING REQUEST: " + request);
@@ -90,7 +82,7 @@ public class Protocol implements Runnable{
         Consumer<ClientEvent> commandExecutor = ( e.command != null ? commandMap.get(e.command.toUpperCase()) : commandMap.get("@default@") );
         
         commandExecutor.accept(e);
-      }
+      }*/
       
       //writer.write("GOODBYE %s\n", name);
       

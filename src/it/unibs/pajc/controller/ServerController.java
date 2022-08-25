@@ -6,13 +6,20 @@ import it.unibs.pajc.view.View;
 
 import javax.swing.*;
 import java.awt.*;
-import java.net.*;
+import java.io.IOException;
+import java.net.Inet4Address;
+import java.net.ServerSocket;
+import java.net.Socket;
+import java.net.UnknownHostException;
+import java.util.ArrayList;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 public class ServerController {
   
-  private boolean game = true;
+  private final int MAX_HOST = 6;
+  private ExecutorService executorService;
+  private ArrayList<Socket> openSocket;
   private int port = 1234;
   private View view;
   private DugongoModel model;
@@ -20,18 +27,17 @@ public class ServerController {
   
   public ServerController(View view) {
     
-    JFrame frame = view.getFrame();
     this.view = view;
-  
+    openSocket = new ArrayList<>();
+    model = new DugongoModel();
+    executorService = Executors.newCachedThreadPool();
+    
     initialize();
-  
-    ExecutorService executorService = Executors.newCachedThreadPool();
     executorService.execute(this::startServer);
   }
   
   public void close(){
-    
-    game = false;
+    executorService.shutdownNow();
   }
   
   public void initialize() {
@@ -68,27 +74,26 @@ public class ServerController {
     frame.revalidate();
   }
   
-  public void startServer() {
-    
-    // SCELTA DELLA PORTA PER IL SERVER
-    model = new DugongoModel();
-    
+  private void startServer() {
+  
     System.out.println("STARTING...");
-  
-    try ( ServerSocket server = new ServerSocket(port); ){
-      
-      // COLLEGAMENTO DEI CLIENT
-      Socket client = server.accept();
-  
-      Protocol protocol = new Protocol(client);
-      Thread clientThread = new Thread(protocol);
-      clientThread.start();
     
-    }catch (Exception e) {
+    try (ServerSocket server = new ServerSocket(port)){
+      
+      while( openSocket.size() <= MAX_HOST ) {
+      
+        Socket client = server.accept();
+        Protocol protocol = new Protocol(client);
+        Thread clientThread = new Thread(protocol);
+        clientThread.start();
+      }
+    
+    } catch (IOException e) {
     
       System.err.println("ERRORE DI COMUNICAZIONE " + e);
     }
-  
+    
     System.out.println("EXIT...");
   }
+  
 }
