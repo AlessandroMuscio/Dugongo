@@ -35,27 +35,27 @@ public class PanelInfo extends JPanel implements ActionListener {
     }
   }
   
-  public void addButton(){
-    
-    JButton infoButton = new JButton("INFO");
+  public JButton addButton(String nome){
     
     try {
-      Image img = ImageIO.read(getClass().getResource("icone/info.png"));
-      img = img.getScaledInstance(50, 50, Image.SCALE_DEFAULT);
-      infoButton.setIcon(new ImageIcon(img));
+      JButton button = new JButton(nome);
       
-      infoButton.setBorderPainted(false);
-      infoButton.setVerticalTextPosition(SwingConstants.BOTTOM);
-      infoButton.setHorizontalTextPosition(SwingConstants.CENTER);
+      Image img = ImageIO.read(getClass().getResource("icone/" + nome.toLowerCase() + ".png"));
+      img = img.getScaledInstance(50, 50, Image.SCALE_DEFAULT);
+      button.setIcon(new ImageIcon(img));
+      
+      button.setBorderPainted(false);
+      button.setVerticalTextPosition(SwingConstants.BOTTOM);
+      button.setHorizontalTextPosition(SwingConstants.CENTER);
       
       this.setLayout(new BorderLayout(0, 0));
-      
-      infoButton.addActionListener(this);
-      this.add(infoButton, BorderLayout.EAST);
-      
+  
+      this.add(button);
+      button.addActionListener(this);
+  
+      return button;
     } catch (IOException e) {
       throw new RuntimeException(e);
     }
-    
   }
 }

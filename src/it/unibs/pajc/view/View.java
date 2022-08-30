@@ -48,7 +48,7 @@ public class View {
     //frame.repaint();
     frame.revalidate();
     
-    frame.setBounds(100, 100, 450, 300);
+    frame.setBounds(100, 100, 450, 320);
     frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     frame.getContentPane().setLayout(new BorderLayout(0, 0));
     frame.getContentPane().setBackground(Color.pink);
@@ -57,24 +57,27 @@ public class View {
     lblTitolo.setFont(new Font("Lucida Grande", Font.PLAIN, 50));
     frame.getContentPane().add(lblTitolo, BorderLayout.NORTH);
     
-    PanelOpzioni panelOpzioni = new PanelOpzioni();
+    PanelOpzioni panelGame = new PanelOpzioni();
     Dimension dimension = new Dimension(100, 100);
-    JButton hostButton = panelOpzioni.addButton("HOST GAME", dimension);
-    JButton joinButton = panelOpzioni.addButton("JOIN GAME", dimension);
-    panelOpzioni.setOpaque(false);
-    frame.add(panelOpzioni);
+    JButton hostButton = panelGame.addButton("HOST GAME", dimension);
+    JButton joinButton = panelGame.addButton("JOIN GAME", dimension);
+    panelGame.setOpaque(false);
+    frame.getContentPane().add(panelGame);
   
-    PanelInfo panelInfo = new PanelInfo();
-    panelInfo.addButton();
-    panelInfo.setOpaque(false);
-    frame.getContentPane().add(panelInfo, BorderLayout.SOUTH);
-  
-    //frame.repaint();
+    PanelOpzioni panelUtility = new PanelOpzioni();
+    dimension = new Dimension(50, 50);
+    JButton closeButton = panelUtility.addButton("CLOSE ", dimension);
+    JButton infoButton = panelUtility.addButton("INFO ", dimension);
+    panelUtility.setOpaque(false);
+    frame.getContentPane().add(panelUtility, BorderLayout.SOUTH);
+    
     frame.revalidate();
+    frame.repaint();
     
     hostButton.addActionListener(e -> hostGame() );
     joinButton.addActionListener(e -> joinGame() );
-    panelInfo.addActionListener(e -> new FrameInfo());
+    infoButton.addActionListener(e -> new FrameInfo());
+    closeButton.addActionListener(e -> System.exit(0) );
   }
   
   private void hostGame() {
