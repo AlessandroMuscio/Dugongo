@@ -23,8 +23,8 @@ public class Protocol implements Runnable{
     //commandMap.put("@default@", e -> e.sender.sendMessage(e.sender, e.getLastParameter()));
   }
   
-  private ObjectInputStream reader;
-  private ObjectOutputStream writer;
+  private BufferedReader reader;
+  private PrintWriter writer;
   private Socket client;
   private String name;
   private boolean isRunning = true;
@@ -64,14 +64,25 @@ public class Protocol implements Runnable{
   public void run() {
     
     try {
-      writer = new ObjectOutputStream(client.getOutputStream());
-      reader = new ObjectInputStream(client.getInputStream());
+      /*writer = new ObjectOutputStream(client.getOutputStream());
+      reader = new ObjectInputStream(client.getInputStream());*/
+  
+      reader = new BufferedReader( new InputStreamReader( client.getInputStream() ) );
+      writer = new PrintWriter(client.getOutputStream(), true );
       
       System.out.println("CLIENT ONLINE " + client.getPort());
       
       String request;
+  
+      do {
+    
+        writer.printf("PLEASE, INSERT YOUR NICKNAME: ");
+        name = reader.readLine();
+    
+      }
+      while ( name.length() < 3 );
       
-      //writer.write("WELCOME " + name);
+      writer.write("WELCOME " + name);
       
       while (isRunning) {
   
@@ -84,8 +95,7 @@ public class Protocol implements Runnable{
         commandExecutor.accept(e);
       }
       
-      //writer.write("GOODBYE %s\n", name);
-      
+      writer.printf("GOODBYE %s\n", name);
       
     } catch (Exception e) {
       e.printStackTrace();
