@@ -5,17 +5,15 @@ import it.unibs.pajc.view.View;
 
 import javax.swing.*;
 import java.awt.*;
-import java.io.IOException;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
+import java.io.*;
 import java.net.Socket;
 
 public class ClientController {
   
   private Socket CSocket;
   private View view;
-  private  ObjectInputStream InputStream;
-  private  ObjectOutputStream OutputStream;
+  private  BufferedReader reader;
+  private PrintWriter writer;
   
   public ClientController(View view) {
     
@@ -61,8 +59,8 @@ public class ClientController {
     
       CSocket = new Socket(indirizzoIP, Integer.parseInt(porta));
   
-      InputStream = new ObjectInputStream(CSocket.getInputStream());
-      OutputStream = new ObjectOutputStream(CSocket.getOutputStream());
+      reader = new BufferedReader(new InputStreamReader(System.in));
+      writer = new PrintWriter(CSocket.getOutputStream());
       
       System.out.println("CULO");
 
