@@ -88,9 +88,9 @@ public class ServerController {
       
         Socket client = server.accept();
         Protocol protocol = new Protocol(client);
-        Thread clientThread = new Thread(protocol);
+        //Thread clientThread = new Thread(protocol);
         openSocket.add(client);
-        clientThread.start();
+        protocol.run();
       }
     
     } catch (IOException e) {

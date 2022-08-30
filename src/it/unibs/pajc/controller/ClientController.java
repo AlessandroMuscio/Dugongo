@@ -67,6 +67,7 @@ public class ClientController {
       
       ex.submit(() -> clientToServer(client));
       ex.submit(() -> serverToClient(client));
+      
     } catch (IOException e) {
       throw new RuntimeException(e);
     }

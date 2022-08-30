@@ -20,7 +20,7 @@ public class Protocol implements Runnable{
     commandMap.put("@PESCA", e -> e.sender.pesca(e.sender));
     commandMap.put("@DUGONGO", e -> e.sender.dugongo(e.sender));
     commandMap.put("@QUIT", e -> e.sender.close());
-    //commandMap.put("@default@", e -> e.sender.sendMessage(e.sender, e.getLastParameter()));
+    commandMap.put("@default@", e -> System.out.println("RICHIESTA VUOTA"));
   }
   
   private BufferedReader reader;
@@ -76,25 +76,27 @@ public class Protocol implements Runnable{
   
       do {
     
-        writer.printf("PLEASE, INSERT YOUR NICKNAME: ");
+        writer.flush();
+        writer.println("PLEASE, INSERT YOUR NICKNAME: ");
         name = reader.readLine();
     
       }
       while ( name.length() < 3 );
-      
-      writer.write("WELCOME " + name);
-      
-      while (isRunning) {
   
-        request = reader.readLine();
-        System.out.println("PROCESSING REQUEST: " + request);
+      writer.flush();
+      writer.println("WELCOME " + name);
+  
+      while (isRunning && (request = reader.readLine()) != null) {
         
+        System.out.println("PROCESSING REQUEST: " + request);
+    
         ClientEvent e = ClientEvent.parse(this, request);
         Consumer<ClientEvent> commandExecutor = ( e.command != null ? commandMap.get(e.command.toUpperCase()) : commandMap.get("@default@") );
-        
+    
         commandExecutor.accept(e);
       }
-      
+  
+      writer.flush();
       writer.printf("GOODBYE %s\n", name);
       
     } catch (Exception e) {
