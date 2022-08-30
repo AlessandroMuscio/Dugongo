@@ -84,8 +84,7 @@ public class Protocol implements Runnable{
         System.out.println(name);
       }
       while ( name != null && name.length() < 3 );
-  
-      writer.flush();
+      
       writer.println("WELCOME " + name);
   
       while (isRunning && (request = reader.readLine()) != null) {
@@ -97,14 +96,18 @@ public class Protocol implements Runnable{
     
         commandExecutor.accept(e);
       }
-  
-      writer.flush();
+      
       writer.printf("GOODBYE %s\n", name);
       
     } catch (Exception e) {
       e.printStackTrace();
     } finally {
-      clients.remove(this);
+      try {
+        client.close();
+        clients.remove(this);
+      } catch (IOException e) {
+        throw new RuntimeException(e);
+      }
     }
     
   }
