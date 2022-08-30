@@ -69,6 +69,7 @@ public class Protocol implements Runnable{
   
       reader = new BufferedReader( new InputStreamReader( client.getInputStream() ) );
       writer = new PrintWriter(client.getOutputStream(), true );
+      name = null;
       
       System.out.println("CLIENT ONLINE " + client.getPort());
       
@@ -79,9 +80,10 @@ public class Protocol implements Runnable{
         writer.flush();
         writer.println("PLEASE, INSERT YOUR NICKNAME: ");
         name = reader.readLine();
-    
+        
+        System.out.println(name);
       }
-      while ( name.length() < 3 );
+      while ( name != null && name.length() < 3 );
   
       writer.flush();
       writer.println("WELCOME " + name);
