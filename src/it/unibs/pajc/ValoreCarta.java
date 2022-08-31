@@ -14,25 +14,26 @@ public enum ValoreCarta {
   FANTE("FANTE", 10),
   CAVALLO("CAVALLO", 10),
   RE("RE", 10);
-  
+
   private String nome;
   private int valore;
-  
+
   ValoreCarta(String nome, int valore) {
     this.nome = nome;
     this.valore = valore;
   }
-  
+
   public String getNome() {
     return nome;
   }
+
   public int getValore() {
     return valore;
   }
-  
-  public static ValoreCarta getValoreCarta(String nome){
-    
-    switch (nome.toUpperCase()){
+
+  public static ValoreCarta getValoreCarta(String nome) {
+
+    switch (nome.toUpperCase()) {
       case "ASSO":
         return ASSO;
       case "DUE":
@@ -60,7 +61,7 @@ public enum ValoreCarta {
       case "RE":
         return RE;
     }
-    
+
     return null;
   }
 }

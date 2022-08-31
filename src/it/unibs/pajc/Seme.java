@@ -5,9 +5,9 @@ public enum Seme {
   COPPE,
   BASTONI,
   DENARI;
-  
-  public static Seme getSeme(String input){
-    
+
+  public static Seme getSeme(String input) {
+
     switch (input.toUpperCase()) {
       case "SPADE":
         return SPADE;
@@ -18,9 +18,7 @@ public enum Seme {
       case "BASTONI":
         return BASTONI;
     }
-    
+
     return null;
   }
 }
-
-

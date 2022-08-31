@@ -1,38 +1,41 @@
 package it.unibs.pajc;
+
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
+import java.awt.Image;
 import java.io.File;
+import java.io.FileFilter;
+import java.io.FilenameFilter;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Random;
 import java.util.Stack;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
-public class Mazzo extends Carte{
-  
-  private final File folder = new File("assets/fronte");
+public class Mazzo extends Carte {
+  private final File folder = new File("assets/carte");
   private Stack<Carta> mazzo;
-  
-  public Mazzo(){
-    
+
+  public Mazzo() {
     this.mazzo = new Stack<>();
     inizializza();
     mescola();
   }
-  
-  public Carta scarta(){
-    
+
+  public Carta scarta() {
     return null;
   }
-  
+
   // Metodo generico per randomizzare un elenco in Java usando Fisher–Yates shuffle
-  public void mescola(){
+  public void mescola() {
     Random random = new Random();
-    
+
     // inizia dalla fine dell'elenco
-    for (int i = mazzo.size() - 1; i >= 1; i--){
+    for (int i = mazzo.size() - 1; i >= 1; i--) {
       // ottiene un indice casuale `j` tale che `0 <= j <= i`
       int j = random.nextInt(i + 1);
-      
+
       // scambia l'elemento nella i-esima posizione nell'elenco con l'elemento in
       // indice `j` generato casualmente
       Carta temp = mazzo.get(i);
@@ -40,38 +43,49 @@ public class Mazzo extends Carte{
       this.mazzo.set(j, temp);
     }
   }
-  
-  private void inizializza(){
-  
-    try {
-      int i = 1;
 
-      for (final File fileEntry : folder.listFiles()) {
-      
-        if (!fileEntry.isDirectory()) {
-          String[] temp = fileEntry.toString().substring(14).split("_");
-          String seme = temp[0];
-          String valore = temp[1].replace(".svg", "");
-          
-          Carta carta = new Carta(ValoreCarta.getValoreCarta(valore),Seme.getSeme(seme),ValoreCarta.getValoreCarta(valore).getValore(),ImageIO.read(fileEntry));
-        
-          if(carta.getSeme().equals(Seme.BASTONI) && carta.getValore().equals(ValoreCarta.RE)
-                  || carta.getSeme().equals(Seme.SPADE) && carta.getValore().equals(ValoreCarta.RE) ){
-            carta.setPunteggio(0);
-          }
-        
-          mazzo.add(carta);
+  private void inizializza() {
+    FileFilter filter = (filePath) -> {
+      if (filePath.isFile()) {
+        String fileName = filePath.toString().split("/")[2];
 
-        }
+        return fileName.contains("_") && fileName.contains("svg");
       }
 
+      return false;
+    };
+    Pattern pattern = Pattern.compile("([A-Z])\\w+");
+    Matcher matcher;
+    String fileName;
+    ValoreCarta valore;
+    Seme seme;
+    Image fronte;
+    String[] tmp;
+    Carta carta;
+
+    try {
+      for (File file : folder.listFiles(filter)) {
+        matcher = pattern.matcher(file.toString());
+
+        if (matcher.find()) {
+          fileName = matcher.group();
+          tmp = fileName.split("_");
+
+          valore = ValoreCarta.valueOf(tmp[0].toUpperCase());
+          seme = Seme.valueOf(tmp[1].toUpperCase());
+          fronte = ImageIO.read(file);
+
+          carta = new Carta(valore, seme, fronte);
+          mazzo.add(carta);
+        }
+      }
     } catch (IOException e) {
       throw new RuntimeException(e);
     }
   }
-  
-  private void stampa(){
-    for (Carta c: mazzo) {
+
+  private void stampa() {
+    for (Carta c : mazzo) {
       System.out.println(c.getSeme());
     }
   }
