@@ -7,7 +7,6 @@ import javax.swing.*;
 import java.awt.*;
 
 public class View {
-
   private JFrame frame;
   private JLabel lblTitolo;
   private ServerController SController;
@@ -29,13 +28,11 @@ public class View {
    * Create the application.
    */
   public View() {
-
     frame = new JFrame();
     initialize();
   }
 
   public void nuovaPartita() {
-
     initialize();
   }
 
@@ -48,8 +45,9 @@ public class View {
     //frame.repaint();
     frame.revalidate();
 
-    frame.setBounds(100, 100, 450, 320);
+    frame.setBounds(0, 0, 1000, 711);
     frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+    frame.setLocationRelativeTo(null);
     frame.getContentPane().setLayout(new BorderLayout(0, 0));
     frame.getContentPane().setBackground(Color.pink);
 
