@@ -32,7 +32,6 @@ public class MainMenu extends JPanel {
     this.setBackground(Color.PINK);
 
     lblTitolo.setName("lblTitolo");
-    lblTitolo.setFont(new Font("Roboto", Font.PLAIN, 40));
     lblTitolo.setBackground(new Color(0, 0, 0, 0));
     lblTitolo.setForeground(Color.BLACK);
 
@@ -44,7 +43,6 @@ public class MainMenu extends JPanel {
     for (JButton bottone : bottoni) {
       bottone.setBackground(Color.PINK);
       bottone.setForeground(Color.BLACK);
-      bottone.setFont(new Font("Roboto", Font.PLAIN, 20));
       bottone.setBorder(null);
       bottone.setCursor(new Cursor(Cursor.HAND_CURSOR));
       bottone.setFocusPainted(false);
@@ -54,7 +52,9 @@ public class MainMenu extends JPanel {
     pnlBottoni.setBackground(Color.PINK);
 
     this.add(lblTitolo, BorderLayout.NORTH);
+    this.add(new JPanel(), BorderLayout.LINE_START);
     this.add(pnlBottoni, BorderLayout.CENTER);
+    this.add(new JPanel(), BorderLayout.LINE_END);
   }
 
   @Override
