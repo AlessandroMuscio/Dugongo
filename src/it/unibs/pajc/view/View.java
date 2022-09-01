@@ -1,7 +1,7 @@
-package it.unibs.pajc.view;
+/*package it.unibs.pajc.view;
 
-import it.unibs.pajc.controller.ClientController;
-import it.unibs.pajc.controller.ServerController;
+import it.unibs.pajc.controller.JoinController;
+import it.unibs.pajc.controller.HostController;
 
 import javax.swing.*;
 import java.awt.*;
@@ -9,12 +9,10 @@ import java.awt.*;
 public class View {
   private JFrame frame;
   private JLabel lblTitolo;
-  private ServerController SController;
-  private ClientController CController;
+  private HostController SController;
+  private JoinController CController;
 
-  /**
-   * Launch the application.
-   */
+ 
   public static void main(String[] args) {
     try {
       View window = new View();
@@ -24,9 +22,7 @@ public class View {
     }
   }
 
-  /**
-   * Create the application.
-   */
+
   public View() {
     frame = new JFrame();
     initialize();
@@ -81,15 +77,12 @@ public class View {
   private void hostGame() {
 
     System.out.println("HOST");
-
-    SController = new ServerController(this);
+    //SController = new ServerController(this);
   }
 
   private void joinGame() {
 
     System.out.println("JOIN");
-
-    CController = new ClientController(this);
-
+    //CController = new JoinController(this);
   }
-}
+}*/

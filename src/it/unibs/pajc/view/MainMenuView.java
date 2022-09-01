@@ -1,28 +1,26 @@
 package it.unibs.pajc.view;
 
+import it.unibs.pajc.*;
+import it.unibs.pajc.controller.MainMenuController;
+
+import javax.swing.*;
 import java.awt.*;
-import java.io.File;
-
-import javax.swing.ImageIcon;
-import javax.swing.JButton;
-import javax.swing.JLabel;
-import javax.swing.JPanel;
-import javax.swing.SwingConstants;
-
 import java.util.ArrayList;
 
-public class MainMenu extends JPanel {
+public class MainMenuView extends JPanel {
   private static final Font mainFont = new Font("Roboto", Font.PLAIN, 14);
 
   private JLabel lblTitolo;
-  private ArrayList<JButton> bottoni;
-  private JPanel pnlBottoni;
+  private ArrayList<MyButton> bottoni;
+  private PanelOpzioni pnlPartita;
+  private PanelOpzioni pnlOpzioni;
   private int dimPrecedente = -1;
+  private MainMenuController controller;
 
-  public MainMenu() {
+  public MainMenuView() {
     lblTitolo = new JLabel("DUGONGO", SwingConstants.CENTER);
-    bottoni = new ArrayList<JButton>();
-    pnlBottoni = new JPanel(new GridLayout(2, 2, 100, 140));
+    bottoni = new ArrayList<MyButton>();
+    controller = new MainMenuController();
 
     inizializza();
   }
@@ -34,27 +32,39 @@ public class MainMenu extends JPanel {
     lblTitolo.setName("lblTitolo");
     lblTitolo.setBackground(new Color(0, 0, 0, 0));
     lblTitolo.setForeground(Color.BLACK);
-
-    bottoni.add(new JButton("Gioca", new ImageIcon("assets/icone/Avvia.png")));
-    bottoni.add(new JButton("Unisciti", new ImageIcon("assets/icone/Unisciti.png")));
-    bottoni.add(new JButton("Info", new ImageIcon("assets/icone/Info.png")));
-    bottoni.add(new JButton("Chiudi", new ImageIcon("assets/icone/Chiudi.png")));
-
-    for (JButton bottone : bottoni) {
-      bottone.setBackground(Color.PINK);
-      bottone.setForeground(Color.BLACK);
-      bottone.setBorder(null);
-      bottone.setCursor(new Cursor(Cursor.HAND_CURSOR));
-      bottone.setFocusPainted(false);
-
-      pnlBottoni.add(bottone);
-    }
-    pnlBottoni.setBackground(Color.PINK);
+  
+    Dimension dim = new Dimension(App.screenHeight/8, App.screenHeight/8);
+    pnlPartita = new PanelOpzioni(66);
+    pnlPartita.setOpaque(false);
+    MyButton avvia = pnlPartita.addButton("AVVIA", dim);
+    MyButton unisciti = pnlPartita.addButton("UNISCITI", dim);
+  
+    dim = new Dimension(App.screenHeight/10, App.screenHeight/10);
+    pnlOpzioni = new PanelOpzioni(33);
+    pnlOpzioni.setOpaque(false);
+    pnlOpzioni.setLayout(new BoxLayout(pnlOpzioni, BoxLayout.X_AXIS));
+    MyButton esci = pnlOpzioni.addButton("CHIUDI", dim);
+    MyButton info = pnlOpzioni.addButton("INFO", dim);
+    
+    JPanel temp = new JPanel(new GridLayout(2,1,0,0));
+    
+    temp.add(pnlPartita);
+    temp.add(pnlOpzioni);
+    
+    bottoni.add(avvia);
+    bottoni.add(unisciti);
+    bottoni.add(esci);
+    bottoni.add(info);
 
     this.add(lblTitolo, BorderLayout.NORTH);
-    this.add(new JPanel(), BorderLayout.LINE_START);
-    this.add(pnlBottoni, BorderLayout.CENTER);
-    this.add(new JPanel(), BorderLayout.LINE_END);
+    //this.add(new JPanel(), BorderLayout.LINE_START);
+    this.add(temp, BorderLayout.CENTER);
+    //this.add(new JPanel(), BorderLayout.LINE_END);
+  
+    avvia.addActionListener(e-> controller.iniziaPartita());
+    unisciti.addActionListener(e-> controller.uniscitiAllaPartita());
+    esci.addActionListener(e-> controller.esci());
+    info.addActionListener(e-> controller.visualizzaInfo());
   }
 
   @Override

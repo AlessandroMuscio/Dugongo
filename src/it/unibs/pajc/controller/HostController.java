@@ -1,11 +1,7 @@
 package it.unibs.pajc.controller;
 
 import it.unibs.pajc.DugongoModel;
-import it.unibs.pajc.view.PanelOpzioni;
-import it.unibs.pajc.view.View;
 
-import javax.swing.*;
-import java.awt.*;
 import java.io.IOException;
 import java.net.*;
 import java.util.ArrayList;
@@ -14,19 +10,18 @@ import java.util.Random;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
-public class ServerController {
+public class HostController {
   
-  private final int MAX_HOST = 6;
+  private final int MAX_HOST = 1;
   private final int MAX_PORT = 65536;
   private final int MIN_PORT =  49152;
-  private ExecutorService executorService;
+  private static ExecutorService executorService;
   private ArrayList<Socket> openSocket;
-  private int port;
-  private View view;
+  public static int port;
   private DugongoModel model;
-  private static String IP_address;
+  public static String IP_address;
   
-  public ServerController(View view) {
+  /*public ServerController(View view) {
     
     this.view = view;
     openSocket = new ArrayList<>();
@@ -35,15 +30,23 @@ public class ServerController {
   
     initialize();
     executorService.execute(this::startServer);
+  }*/
+  
+  public HostController() {
+    
+    openSocket = new ArrayList<>();
+    model = new DugongoModel();
+    executorService = Executors.newCachedThreadPool();
+  
+    initialize();
+    executorService.execute(this::startServer);
   }
   
-  public void close(){
+  public static void close(){
     executorService.shutdownNow();
   }
   
   public void initialize() {
-    
-    JFrame frame = view.getFrame();
     Random random = new Random();
     
     try {
@@ -52,30 +55,6 @@ public class ServerController {
     } catch (SocketException e) {
       throw new RuntimeException(e);
     }
-  
-    frame.getContentPane().removeAll();
-    JLabel labelTitolo = new JLabel("CONDIVIDI IL TUO CODICE: " + IP_address + " --- " + port);
-    frame.add(labelTitolo, BorderLayout.NORTH);
-    
-    String partecipanti = "";
-    JLabel labelPartecipanti = new JLabel("PARTECIPANTI: " + partecipanti);
-    frame.add(labelPartecipanti, BorderLayout.CENTER);
-  
-    PanelOpzioni panelOpzioni = new PanelOpzioni();
-    Dimension dimension = new Dimension(50, 50);
-    JButton buttonChiudi = panelOpzioni.addButton("CLOSE", dimension);
-    JButton buttonPlay =panelOpzioni.addButton("PLAY", dimension);
-    panelOpzioni.setOpaque(false);
-    frame.add(panelOpzioni, BorderLayout.SOUTH);
-    
-    buttonChiudi.addActionListener(e -> {
-      close();
-      view.nuovaPartita();
-    });
-    buttonPlay.addActionListener(e -> close());
-    
-    frame.repaint();
-    frame.revalidate();
   }
   
   private void startServer() {

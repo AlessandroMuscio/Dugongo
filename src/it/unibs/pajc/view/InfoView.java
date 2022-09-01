@@ -1,8 +1,7 @@
-import java.util.ArrayList;
+package it.unibs.pajc.view;
 
-import javax.swing.JLabel;
-import javax.swing.JPanel;
-import javax.swing.SwingConstants;
+import javax.swing.*;
+import java.util.ArrayList;
 
 public class InfoView extends JPanel {
   private JLabel titolo;
@@ -12,6 +11,6 @@ public class InfoView extends JPanel {
   public InfoView() {
     titolo = new JLabel("Regole Di Gioco", SwingConstants.CENTER);
     contenutoCorrente=new JLabel();
-    contenutoPagine=caricaRegole();
+    //contenutoPagine=caricaRegole();
   }
 }
