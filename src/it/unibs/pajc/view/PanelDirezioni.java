@@ -1,11 +1,9 @@
 package it.unibs.pajc.view;
 
-import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.io.IOException;
 import java.util.ArrayList;
 
 public class PanelDirezioni extends JPanel implements ActionListener {
@@ -54,27 +52,22 @@ public class PanelDirezioni extends JPanel implements ActionListener {
     buttonAvanti = new JButton();
     buttonIndietro = new JButton();
     buttonChiudi = new JButton();
-    
-    try{
-      Image img = ImageIO.read(getClass().getResource("icone/next.png"));
-      img = img.getScaledInstance(50, 50, Image.SCALE_DEFAULT);
-      buttonAvanti.setIcon(new ImageIcon(img));
-      buttonAvanti.setBorderPainted(false);
-      
-      img = ImageIO.read(getClass().getResource("icone/previous.png"));
-      img = img.getScaledInstance(50, 50, Image.SCALE_DEFAULT);
-      buttonIndietro.setIcon(new ImageIcon(img));
-      buttonIndietro.setBorderPainted(false);
-      
-      img = ImageIO.read(getClass().getResource("icone/close.png"));
-      img = img.getScaledInstance(42, 42, Image.SCALE_DEFAULT);
-      buttonChiudi.setIcon(new ImageIcon(img));
-      buttonChiudi.setBorderPainted(false);
-      
-    } catch (IOException e) {
-      throw new RuntimeException(e);
-    }
-    
+  
+    Image img = new ImageIcon("assets/icone/next.png").getImage();
+    img = img.getScaledInstance(50, 50, Image.SCALE_DEFAULT);
+    buttonAvanti.setIcon(new ImageIcon(img));
+    buttonAvanti.setBorderPainted(false);
+  
+    img = new ImageIcon("assets/icone/previous.png").getImage();
+    img = img.getScaledInstance(50, 50, Image.SCALE_DEFAULT);
+    buttonIndietro.setIcon(new ImageIcon(img));
+    buttonIndietro.setBorderPainted(false);
+  
+    img = new ImageIcon("assets/icone/chiudi.png").getImage();
+    img = img.getScaledInstance(42, 42, Image.SCALE_DEFAULT);
+    buttonChiudi.setIcon(new ImageIcon(img));
+    buttonChiudi.setBorderPainted(false);
+  
     switch (i){
       case 0:
         buttonChiudi.addActionListener(e -> FrameInfo.close());
