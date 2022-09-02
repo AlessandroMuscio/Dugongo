@@ -1,19 +1,27 @@
 package it.unibs.pajc.view;
 
-import it.unibs.pajc.*;
-import it.unibs.pajc.controller.MainMenuController;
-
-import javax.swing.*;
-import java.awt.*;
+import java.awt.BorderLayout;
+import java.awt.Color;
+import java.awt.Font;
+import java.awt.Graphics;
+import java.awt.GridLayout;
 import java.util.ArrayList;
 
-public class MainMenuView extends JPanel {
-  private static final Font mainFont = new Font("Roboto", Font.PLAIN, 14);
+import javax.swing.BoxLayout;
+import javax.swing.JButton;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.SwingConstants;
 
+import it.unibs.pajc.MyButton;
+import it.unibs.pajc.controller.MainMenuController;
+
+public class MainMenuView extends JPanel {
   private JLabel lblTitolo;
   private ArrayList<MyButton> bottoni;
-  private PanelOpzioni pnlPartita;
-  private PanelOpzioni pnlOpzioni;
+  private JPanel pnlPrincipale;
+  private PnlBottoni pnlBottoniPartita;
+  private PnlBottoni pnlBottoniOpzioni;
   private int dimPrecedente = -1;
   private MainMenuController controller;
 
@@ -32,39 +40,24 @@ public class MainMenuView extends JPanel {
     lblTitolo.setName("lblTitolo");
     lblTitolo.setBackground(new Color(0, 0, 0, 0));
     lblTitolo.setForeground(Color.BLACK);
-  
-    Dimension dim = new Dimension(App.screenHeight/8, App.screenHeight/8);
-    pnlPartita = new PanelOpzioni(66);
-    pnlPartita.setOpaque(false);
-    MyButton avvia = pnlPartita.addButton("AVVIA", dim);
-    MyButton unisciti = pnlPartita.addButton("UNISCITI", dim);
-  
-    dim = new Dimension(App.screenHeight/10, App.screenHeight/10);
-    pnlOpzioni = new PanelOpzioni(33);
-    pnlOpzioni.setOpaque(false);
-    pnlOpzioni.setLayout(new BoxLayout(pnlOpzioni, BoxLayout.X_AXIS));
-    MyButton esci = pnlOpzioni.addButton("CHIUDI", dim);
-    MyButton info = pnlOpzioni.addButton("INFO", dim);
-    
-    JPanel temp = new JPanel(new GridLayout(2,1,0,0));
-    
-    temp.add(pnlPartita);
-    temp.add(pnlOpzioni);
-    
-    bottoni.add(avvia);
-    bottoni.add(unisciti);
-    bottoni.add(esci);
-    bottoni.add(info);
+
+    pnlBottoniPartita = new PnlBottoni(66);
+    pnlBottoniPartita.setBackground(Color.PINK);
+    bottoni.add(pnlBottoniPartita.addButton("AVVIA", e -> controller.iniziaPartita()));
+    bottoni.add(pnlBottoniPartita.addButton("UNISCITI", e -> controller.uniscitiAllaPartita()));
+
+    pnlBottoniOpzioni = new PnlBottoni(33);
+    pnlBottoniPartita.setBackground(Color.PINK);
+    pnlBottoniOpzioni.setLayout(new BoxLayout(pnlBottoniOpzioni, BoxLayout.X_AXIS));
+    bottoni.add(pnlBottoniOpzioni.addButton("CHIUDI", e -> controller.esci()));
+    bottoni.add(pnlBottoniOpzioni.addButton("INFO", e -> controller.visualizzaInfo()));
+
+    pnlPrincipale = new JPanel(new GridLayout(2, 1, 0, 0));
+    pnlPrincipale.add(pnlBottoniPartita);
+    pnlPrincipale.add(pnlBottoniOpzioni);
 
     this.add(lblTitolo, BorderLayout.NORTH);
-    //this.add(new JPanel(), BorderLayout.LINE_START);
-    this.add(temp, BorderLayout.CENTER);
-    //this.add(new JPanel(), BorderLayout.LINE_END);
-  
-    avvia.addActionListener(e-> controller.iniziaPartita());
-    unisciti.addActionListener(e-> controller.uniscitiAllaPartita());
-    esci.addActionListener(e-> controller.esci());
-    info.addActionListener(e-> controller.visualizzaInfo());
+    this.add(pnlPrincipale, BorderLayout.CENTER);
   }
 
   @Override

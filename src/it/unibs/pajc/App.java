@@ -1,22 +1,24 @@
 package it.unibs.pajc;
 
-import it.unibs.pajc.view.MainMenuView;
+import java.awt.EventQueue;
+import java.awt.GraphicsDevice;
+import java.awt.GraphicsEnvironment;
+import java.awt.Image;
 
-import javax.imageio.ImageIO;
-import javax.swing.*;
-import java.awt.*;
-import java.awt.image.BufferedImage;
-import java.io.File;
-import java.io.IOException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import javax.swing.ImageIcon;
+import javax.swing.JFrame;
+import javax.swing.JPanel;
+
+import it.unibs.pajc.view.MainMenuView;
 
 public class App {
   private static JFrame frame;
   private static JPanel pnlCorrente;
-  
+
   public static int screenWidth;
   public static int screenHeight;
+
+  private static final Image appIcon = new ImageIcon("assets/icon.png").getImage();
 
   public static void main(String[] args) {
     EventQueue.invokeLater(() -> new App());
@@ -26,44 +28,43 @@ public class App {
     GraphicsDevice gd = GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice();
     screenWidth = gd.getDisplayMode().getWidth();
     screenHeight = gd.getDisplayMode().getHeight();
-    
+
     inizializzaFrame();
-    inizializzaPnlMainMenu();
+    setPnlCorrente(new MainMenuView());
 
     frame.setVisible(true);
   }
 
   private void inizializzaFrame() {
     frame = new JFrame("Dugongo");
-    frame.setBounds(0, 0, screenWidth/4, screenHeight/4);
+    frame.setBounds(0, 0, screenWidth / 4, screenHeight / 4);
     frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     frame.setLocationRelativeTo(null);
-  
-    String filepath = "assets/icone/icon.png";
-    File file = new File(filepath);
-    BufferedImage bImage;
-    try {
-      bImage = ImageIO.read(file);
-      //set icon on JFrame menu bar, as in Windows system
-      frame.setIconImage(bImage);
-      //set icon on system tray, as in Mac OS X system
-      final Taskbar taskbar = Taskbar.getTaskbar();
-      taskbar.setIconImage(bImage);
-    } catch (IOException ex) {
-      Logger.getLogger(App.class.getName()).log(Level.SEVERE, null, ex);
-    }
+    frame.setIconImage(appIcon);
+    // Taskbar.getTaskbar().setIconImage(appIcon);
+
+    /*
+     * String filepath = "assets/icone/icon.png";
+     * File file = new File(filepath);
+     * BufferedImage bImage;
+     * try {
+     * bImage = ImageIO.read(file);
+     * //set icon on JFrame menu bar, as in Windows system
+     * frame.setIconImage(bImage);
+     * //set icon on system tray, as in Mac OS X system
+     * final Taskbar taskbar = Taskbar.getTaskbar();
+     * taskbar.setIconImage(bImage);
+     * } catch (IOException ex) {
+     * Logger.getLogger(App.class.getName()).log(Level.SEVERE, null, ex);
+     * }
+     */
   }
 
-  private void inizializzaPnlMainMenu() {
-    pnlCorrente = new MainMenuView();
-    frame.getContentPane().add(pnlCorrente);
-  }
-  
-  public static void setPanel(JPanel panel){
+  public static void setPnlCorrente(JPanel pnlCorrente) {
     frame.getContentPane().removeAll();
-    pnlCorrente = panel;
-    frame.getContentPane().add(pnlCorrente);
-    
+    App.pnlCorrente = pnlCorrente;
+    frame.getContentPane().add(App.pnlCorrente);
+
     frame.repaint();
     frame.revalidate();
   }
