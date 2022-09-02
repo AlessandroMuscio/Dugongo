@@ -32,25 +32,23 @@ public class MainMenuView extends JPanel {
     lblTitolo.setName("lblTitolo");
     lblTitolo.setBackground(new Color(0, 0, 0, 0));
     lblTitolo.setForeground(Color.BLACK);
-  
-    Dimension dim = new Dimension(App.screenHeight/8, App.screenHeight/8);
-    pnlPartita = new PanelOpzioni(66);
+    
+    pnlPartita = new PanelOpzioni(80);
     pnlPartita.setOpaque(false);
-    MyButton avvia = pnlPartita.addButton("AVVIA", dim);
-    MyButton unisciti = pnlPartita.addButton("UNISCITI", dim);
-  
-    dim = new Dimension(App.screenHeight/10, App.screenHeight/10);
-    pnlOpzioni = new PanelOpzioni(33);
+    MyButton avvia = pnlPartita.addButton("AVVIA");
+    MyButton unisciti = pnlPartita.addButton("UNISCITI");
+    
+    pnlOpzioni = new PanelOpzioni(40);
     pnlOpzioni.setOpaque(false);
-    pnlOpzioni.setLayout(new BoxLayout(pnlOpzioni, BoxLayout.X_AXIS));
-    MyButton esci = pnlOpzioni.addButton("CHIUDI", dim);
-    MyButton info = pnlOpzioni.addButton("INFO", dim);
+    pnlOpzioni.setLayout(new BorderLayout());
+    MyButton esci = pnlOpzioni.addButton("CHIUDI", BorderLayout.WEST);
+    MyButton info = pnlOpzioni.addButton("INFO", BorderLayout.EAST);
     
     JPanel temp = new JPanel(new GridLayout(2,1,0,0));
     
     temp.add(pnlPartita);
     temp.add(pnlOpzioni);
-    
+
     bottoni.add(avvia);
     bottoni.add(unisciti);
     bottoni.add(esci);

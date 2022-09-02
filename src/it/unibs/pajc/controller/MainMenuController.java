@@ -24,5 +24,7 @@ public class MainMenuController{
   public void visualizzaInfo() {
     new FrameInfo();
   }
-  public void esci() {System.exit(0);}
+  public void esci() {
+    System.exit(0);
+  }
 }

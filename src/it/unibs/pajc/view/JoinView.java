@@ -23,8 +23,8 @@ public class JoinView extends JPanel {
   
     PanelOpzioni panelOpzioni = new PanelOpzioni(33);
     Dimension dimension = new Dimension(50, 50);
-    JButton buttonChiudi = panelOpzioni.addButton("CLOSE", dimension);
-    JButton buttonPlay =panelOpzioni.addButton("PLAY", dimension);
+    JButton buttonChiudi = panelOpzioni.addButton("CLOSE");
+    JButton buttonPlay =panelOpzioni.addButton("PLAY");
     panelOpzioni.setOpaque(false);
     this.add(panelOpzioni, BorderLayout.SOUTH);
   

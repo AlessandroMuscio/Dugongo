@@ -12,7 +12,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 public class App {
-  private static JFrame frame;
+  public static JFrame frame;
   private static JPanel pnlCorrente;
   
   public static int screenWidth;
@@ -35,8 +35,9 @@ public class App {
 
   private void inizializzaFrame() {
     frame = new JFrame("Dugongo");
-    frame.setBounds(0, 0, screenWidth/4, screenHeight/4);
+    //frame.setBounds(0, 0, screenWidth/4, screenHeight/4);
     frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+    frame.setMinimumSize(new Dimension(600, 420));
     frame.setLocationRelativeTo(null);
   
     String filepath = "assets/icone/icon.png";
