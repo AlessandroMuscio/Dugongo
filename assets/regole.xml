@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<pagine size="4">
+  <pagina>
+    <img src="assets/icon.png"></img>
+    Obiettivo:
+
+    DUGONGO è un gioco di strategia e memoria in
+    cui i giocatori cercano di avere il minimo
+    punteggio in mano al termine della partita.
+
+
+
+    Numero di giocatori:
+
+    da 2 a 6.
+  </pagina>
+  <pagina>
+    Modalità di gioco:
+
+    ogni giocatore ha a disposizione 6 carte girate
+    di dorso, di queste ne conosce solamente 2, che
+    ha avuto la possibilità di guardare e
+    memorizzare per 5 secondi.
+    Ad ogni mano ciascun giocatore pesca e guarda,
+    senza mostrarla, una carta; che può decidere di
+    scartare o aggiungere girata di dorso al proprio
+    mazzo. In alternativa può utilizzare la carta
+    pescata per scartare una delle sue carte con il
+    medesimo valore. (È possibile formare coppie
+    anche carte che non si conoscono, perché coperte,
+    con il rischio però di non creare una coppia; in
+    questo caso si conclude la mano senza scartare)
+    Al termine del turno di ogni giocatore, gli altri
+    hanno 5 secondi per scartare eventuali carte in
+    loro possesso dello stesso valore dell'ultima
+    scartata.
+    Il gioco si conclude quando terminano le carte da
+    pescare, oppure, quando uno dei giocatori chiama:
+    “DUGONGO” durante il proprio turno, si completerà
+    un ultimo giro e poi si scopriranno le carte, il
+    vincitore sarà il giocatore con il minor punteggio
+    in mano.
+  </pagina>
+  <pagina>
+    Regole generali:
+
+    1) I giocatori sono obbligati a pescare una
+    carta ogni turno, a meno che decidano di
+    chiamare: “DUGONGO”.
+
+    2) Se durante il proprio turno un giocatore
+    decido di chiamare: “DUGONGO”, non può pescare
+    o scartare altre carte; seguirà alla chiamata
+    un ultimo giro in cui parteciperanno solo gli
+    avversari.
+
+    3) Se un giocatore decide di scartare una
+    coppia formata da due carte di valore
+    differente, mantiene entrambe nel proprio mazzo,
+    terminando il turno senza la possibilità di
+    scartare.
+
+    4) Il gioco termina anche nel caso in cui un
+    giocatore finisca le carte in proprio possesso
+    scartandole tutte.
+  </pagina>
+  <pagina>
+    Attribuzione dei punti:
+
+    Le carte hanno valore pari al proprio numero,
+    le figure valgono tutte 10. Il re di spade e
+    il re di bastoni sono carte DUGONGO e hanno
+    valore 0.
+    In caso di parità tra due giocatori, il
+    vincitore è quello con meno carte nel proprio
+    mazzo. Due giocatori con medesimo punteggio e
+    numero di carte sono entrambi vincitori.
+
+
+
+
+
+
+
+                ----- BUON GIOCO -----
+  </pagina>
+</pagine>

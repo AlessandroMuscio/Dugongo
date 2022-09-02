@@ -6,17 +6,14 @@ import it.unibs.pajc.view.HostView;
 import it.unibs.pajc.view.JoinView;
 
 public class MainMenuController {
-  private HostController hostController;
-  private JoinController joinController;
-
   public void iniziaPartita() {
-    hostController = new HostController();
+    // hostController = new HostController();
 
     App.setPnlCorrente(new HostView());
   }
 
   public void uniscitiAllaPartita() {
-    joinController = new JoinController();
+    // joinController = new JoinController();
 
     App.setPnlCorrente(new JoinView());
   }

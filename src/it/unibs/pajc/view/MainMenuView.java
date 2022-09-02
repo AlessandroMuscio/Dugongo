@@ -22,12 +22,16 @@ public class MainMenuView extends JPanel {
   private JPanel pnlPrincipale;
   private PnlBottoni pnlBottoniPartita;
   private PnlBottoni pnlBottoniOpzioni;
-  private int dimPrecedente = -1;
+  private int dimPrecedente;
   private MainMenuController controller;
 
   public MainMenuView() {
     lblTitolo = new JLabel("DUGONGO", SwingConstants.CENTER);
     bottoni = new ArrayList<MyButton>();
+    pnlPrincipale = new JPanel(new GridLayout(2, 1));
+    pnlBottoniPartita = new PnlBottoni(66);
+    pnlBottoniOpzioni = new PnlBottoni(33, new BoxLayout(pnlBottoniOpzioni, BoxLayout.X_AXIS));
+    dimPrecedente = -1;
     controller = new MainMenuController();
 
     inizializza();
@@ -41,18 +45,14 @@ public class MainMenuView extends JPanel {
     lblTitolo.setBackground(new Color(0, 0, 0, 0));
     lblTitolo.setForeground(Color.BLACK);
 
-    pnlBottoniPartita = new PnlBottoni(66);
     pnlBottoniPartita.setBackground(Color.PINK);
     bottoni.add(pnlBottoniPartita.addButton("AVVIA", e -> controller.iniziaPartita()));
     bottoni.add(pnlBottoniPartita.addButton("UNISCITI", e -> controller.uniscitiAllaPartita()));
 
-    pnlBottoniOpzioni = new PnlBottoni(33);
     pnlBottoniPartita.setBackground(Color.PINK);
-    pnlBottoniOpzioni.setLayout(new BoxLayout(pnlBottoniOpzioni, BoxLayout.X_AXIS));
     bottoni.add(pnlBottoniOpzioni.addButton("CHIUDI", e -> controller.esci()));
     bottoni.add(pnlBottoniOpzioni.addButton("INFO", e -> controller.visualizzaInfo()));
 
-    pnlPrincipale = new JPanel(new GridLayout(2, 1, 0, 0));
     pnlPrincipale.add(pnlBottoniPartita);
     pnlPrincipale.add(pnlBottoniOpzioni);
 

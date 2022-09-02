@@ -1,6 +1,7 @@
 package it.unibs.pajc.view;
 
 import java.awt.Cursor;
+import java.awt.LayoutManager;
 import java.awt.event.ActionListener;
 
 import javax.swing.JPanel;
@@ -13,6 +14,11 @@ public class PnlBottoni extends JPanel {
 
   public PnlBottoni(int percentuale) {
     this.percentuale = percentuale;
+  }
+
+  public PnlBottoni(int percentuale, LayoutManager layoutManager) {
+    this.percentuale = percentuale;
+    this.setLayout(layoutManager);
   }
 
   public MyButton addButton(String lbl, ActionListener actionListener) {
