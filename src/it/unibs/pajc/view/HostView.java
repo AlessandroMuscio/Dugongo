@@ -21,10 +21,10 @@ public class HostView extends JPanel {
     JLabel labelPartecipanti = new JLabel("PARTECIPANTI: " + partecipanti);
     this.add(labelPartecipanti, BorderLayout.CENTER);
 
-    PnlBottoni panelOpzioni = new PnlBottoni(33);
-    Dimension dimension = new Dimension(50, 50);
-    JButton buttonChiudi = panelOpzioni.addButton("CLOSE", dimension);
-    JButton buttonPlay = panelOpzioni.addButton("PLAY", dimension);
+    PanelOpzioni panelOpzioni = new PanelOpzioni(33);
+    JButton buttonChiudi = panelOpzioni.addButton("CHIUDI");
+    JButton buttonPlay = panelOpzioni.addButton("AVVIA");
+
     panelOpzioni.setOpaque(false);
     this.add(panelOpzioni, BorderLayout.SOUTH);
 
@@ -33,7 +33,13 @@ public class HostView extends JPanel {
       App.setPnlCorrente(new MainMenuView());
     });
 
-    buttonPlay.addActionListener(e -> HostController.close());
-
+    buttonPlay.addActionListener(e -> {
+      if (HostController.isReady()) {
+        GameView gameView = new GameView();
+        App.setPnlCorrente(gameView);
+      } else {
+        JOptionPane.showMessageDialog(new JFrame(), "Attendi che i client siano pronti per giocare");
+      }
+    });
   }
 }

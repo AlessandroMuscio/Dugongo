@@ -1,13 +1,10 @@
 package it.unibs.pajc;
 
 import javax.imageio.ImageIO;
-import java.awt.image.BufferedImage;
-import java.awt.Image;
+import java.awt.*;
 import java.io.File;
 import java.io.FileFilter;
-import java.io.FilenameFilter;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.Random;
 import java.util.Stack;
 import java.util.regex.Matcher;
@@ -71,8 +68,8 @@ public class Mazzo extends Carte {
           fileName = matcher.group();
           tmp = fileName.split("_");
 
-          valore = ValoreCarta.valueOf(tmp[0].toUpperCase());
-          seme = Seme.valueOf(tmp[1].toUpperCase());
+          valore = ValoreCarta.valueOf(tmp[1].toUpperCase());
+          seme = Seme.valueOf(tmp[0].toUpperCase());
           fronte = ImageIO.read(file);
 
           carta = new Carta(valore, seme, fronte);
@@ -82,6 +79,8 @@ public class Mazzo extends Carte {
     } catch (IOException e) {
       throw new RuntimeException(e);
     }
+    
+    stampa();
   }
 
   private void stampa() {

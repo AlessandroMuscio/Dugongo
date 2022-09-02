@@ -22,13 +22,9 @@ public class JoinView extends JPanel {
     this.add(panel, BorderLayout.CENTER);
 
     PnlBottoni panelOpzioni = new PnlBottoni(33);
-    Dimension dimension = new Dimension(50, 50);
-    JButton buttonChiudi = panelOpzioni.addButton("CLOSE", dimension);
-    JButton buttonPlay = panelOpzioni.addButton("PLAY", dimension);
+    panelOpzioni.addButton("CLOSE", e -> App.setPnlCorrente(new MainMenuView()));
+    panelOpzioni.addButton("PLAY", e -> JoinController.collegamento(indirizzoIP.getText(), porta.getText()));
     panelOpzioni.setOpaque(false);
     this.add(panelOpzioni, BorderLayout.SOUTH);
-
-    buttonChiudi.addActionListener(e -> App.setPnlCorrente(new MainMenuView()));
-    buttonPlay.addActionListener(e -> JoinController.collegamento(indirizzoIP.getText(), porta.getText()));
   }
 }

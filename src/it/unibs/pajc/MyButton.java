@@ -32,12 +32,11 @@ public class MyButton extends JButton {
       width = (int) (perc * dim.getWidth()) / 100;
       height = (int) (perc * dim.getHeight()) / 100;
 
-      int temp = Math.min(width, height);
+      int temp = Math.min(width, height) != 0 ? Math.min(width, height) : 1;
 
       icon = new ImageIcon("assets/icone/" + this.getText().toLowerCase() + ".png").getImage();
       icon = icon.getScaledInstance(temp, temp, Image.SCALE_DEFAULT);
-      this.setFont(new Font("Roboto", Font.PLAIN, height / 3));
-
+      this.setFont(new Font("Roboto", Font.PLAIN, temp / 5));
       this.setIcon(new ImageIcon(icon));
 
       dimPrecedente = dim;

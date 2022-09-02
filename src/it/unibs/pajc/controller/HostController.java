@@ -20,6 +20,7 @@ public class HostController {
   public static int port;
   private DugongoModel model;
   public static String IP_address;
+  public static boolean ready = true;
   
   /*public ServerController(View view) {
     
@@ -99,4 +100,7 @@ public class HostController {
     return null;
   }
   
+  public static boolean isReady() {
+    return ready;
+  }
 }
