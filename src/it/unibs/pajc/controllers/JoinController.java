@@ -1,5 +1,6 @@
 package it.unibs.pajc.controllers;
 
+import javax.swing.*;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -7,8 +8,6 @@ import java.io.PrintWriter;
 import java.net.Socket;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
-
-import javax.swing.JOptionPane;
 
 public class JoinController {
 
@@ -32,9 +31,6 @@ public class JoinController {
         JOptionPane.showMessageDialog(null,
             "IMPOSSIBILE STABILIRE LA CONNESSIONE\nI dati inseriti non sono corretti, ripeti l'operazione!",
             "Errore di Connessione", JOptionPane.ERROR_MESSAGE);
-
-        /*JOptionPane.showMessageDialog(null,
-            "IMPOSSIBILE STABILIRE LA CONNESSIONE\nI dati inseriti non sono corretti, ripeti l'operazione!");*/
       }
 
       executor = Executors.newFixedThreadPool(2); // crea un pool thread

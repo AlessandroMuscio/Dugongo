@@ -1,6 +1,8 @@
 package it.unibs.pajc.controllers;
 
+import it.unibs.pajc.App;
 import it.unibs.pajc.DugongoModel;
+import it.unibs.pajc.views.GameView;
 
 import java.io.IOException;
 import java.net.*;
@@ -9,19 +11,20 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 public class HostController {
-
+  
+  private static final String START = "@START";
   private final int MAX_HOST = 1;
   private final int MAX_PORT = 65536;
   private final int MIN_PORT = 49152;
   private ServerSocket server;
-  private static ExecutorService executorService;
+  private ExecutorService executorService;
   private Queue<Socket> turnoCorrente;
   private Queue<Socket> turnoSuccessivo;
-  private ArrayList<Socket> openSocket;
+  private ArrayList<ServerProtocol> openSocket;
   public static int port;
   private DugongoModel model;
   public static String IP_address;
-  public static boolean ready = true;
+  private boolean ready = true;
 
   public HostController() {
 
@@ -65,9 +68,9 @@ public class HostController {
       while (openSocket.size() < MAX_HOST) {
 
         Socket client = server.accept();
-        Protocol protocol = new Protocol(client);
-        Thread clientThread = new Thread(protocol);
-        openSocket.add(client);
+        ServerProtocol serverProtocol = new ServerProtocol(client);
+        Thread clientThread = new Thread(serverProtocol);
+        openSocket.add(serverProtocol);
         clientThread.start();
       }
 
@@ -97,6 +100,13 @@ public class HostController {
 
     return null;
   }
+  
+  public void startGame(){
+    GameView gameView = new GameView();
+    App.setPnlCorrente(gameView);
+    
+    sendToAll(START);
+  }
 
   /*private void listenToClient() {
     
@@ -125,22 +135,17 @@ public class HostController {
       e.printStackTrace();
     }
   }
+  */
   
-  
-  private void send() {
+  private void sendToAll(String message) {
     
-    try {
+    for (ServerProtocol sp : openSocket){
       
-      objOutputStream.writeObject(obj);
-      objOutputStream.reset();
-      
-    } catch (IOException e) {
-      
-      System.err.println("Error, data not sent: " + e.toString());
+      sp.send(message);
     }
-  }*/
+  }
 
-  public static boolean isReady() {
+  public boolean isReady() {
     return ready;
   }
 }
