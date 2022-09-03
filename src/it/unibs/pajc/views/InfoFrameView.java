@@ -3,7 +3,11 @@ package it.unibs.pajc.views;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Font;
+import java.awt.Graphics2D;
 import java.awt.GridLayout;
+import java.awt.Toolkit;
+
+import java.util.Map;
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;
@@ -24,10 +28,25 @@ public class InfoFrameView {
 
   public InfoFrameView() {
     controller = new InfoFrameController();
+
     inizializzaFrame();
     inizializzaPnlPrincipale();
 
     frame.setVisible(true);
+
+    Map<?, ?> desktopHints = (Map<?, ?>) Toolkit.getDefaultToolkit().getDesktopProperty("awt.font.desktophints");
+
+    if (desktopHints != null) {
+      ((Graphics2D) frame.getGraphics()).setRenderingHints(desktopHints);
+
+      ((Graphics2D) pnlPrincipale.getGraphics()).setRenderingHints(desktopHints);
+
+      for (int i = 0; i < pnlDirezioni.length; i++)
+        ((Graphics2D) pnlDirezioni[i].getGraphics()).setRenderingHints(desktopHints);
+    }
+
+    frame.repaint();
+    frame.revalidate();
   }
 
   private void inizializzaFrame() {
@@ -35,7 +54,7 @@ public class InfoFrameView {
 
     frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
     frame.setLocationRelativeTo(null);
-    frame.setSize(375, 500);
+    frame.setSize(390, 520);
     frame.setResizable(false);
     frame.setIconImage(App.getAppicon());
   }
@@ -62,7 +81,7 @@ public class InfoFrameView {
     pagina.setBorder(null);
     pagina.setBackground(Color.PINK);
     pagina.setForeground(Color.BLACK);
-    pagina.setFont(new Font("Helvetica", Font.PLAIN, 14));
+    pagina.setFont(new Font(Font.SANS_SERIF, Font.PLAIN, 14));
     pagina.setEditable(false);
   }
 
@@ -74,7 +93,6 @@ public class InfoFrameView {
 
       pnlDirezioni[i].setBorder(null);
       pnlDirezioni[i].setBackground(Color.PINK);
-      //pnlDirezioni[i].setSize(375, 100);
 
       if (i != 0)
         pnlDirezioni[i].addButton("INDIETRO", e -> controller.indietro());
@@ -102,7 +120,5 @@ public class InfoFrameView {
 
     pnlPrincipale.repaint();
     pnlPrincipale.revalidate();
-    /* frame.repaint();
-    frame.revalidate(); */
   }
 }

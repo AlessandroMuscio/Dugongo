@@ -2,6 +2,7 @@ package it.unibs.pajc;
 
 import java.awt.Color;
 import java.awt.Cursor;
+import java.awt.Font;
 import java.awt.LayoutManager;
 import java.awt.event.ActionListener;
 
@@ -27,6 +28,7 @@ public class PnlBottoni extends JPanel {
     button.setBorder(null);
     button.setBackground(Color.PINK);
     button.setCursor(new Cursor(Cursor.HAND_CURSOR));
+    button.setFont(new Font(Font.SANS_SERIF, Font.PLAIN, 14));
     button.setVerticalTextPosition(SwingConstants.BOTTOM);
     button.setHorizontalTextPosition(SwingConstants.CENTER);
 
