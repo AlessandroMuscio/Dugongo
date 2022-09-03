@@ -18,7 +18,6 @@ import it.unibs.pajc.controller.MainMenuController;
 
 public class MainMenuView extends JPanel {
   private JLabel lblTitolo;
-  private ArrayList<MyButton> bottoni;
   private JPanel pnlPrincipale;
   private PnlBottoni pnlBottoniPartita;
   private PnlBottoni pnlBottoniOpzioni;
@@ -27,10 +26,9 @@ public class MainMenuView extends JPanel {
 
   public MainMenuView() {
     lblTitolo = new JLabel("DUGONGO", SwingConstants.CENTER);
-    bottoni = new ArrayList<MyButton>();
     pnlPrincipale = new JPanel(new GridLayout(2, 1));
     pnlBottoniPartita = new PnlBottoni(66);
-    pnlBottoniOpzioni = new PnlBottoni(33, new BoxLayout(pnlBottoniOpzioni, BoxLayout.X_AXIS));
+    pnlBottoniOpzioni = new PnlBottoni(33);
     dimPrecedente = -1;
     controller = new MainMenuController();
 
@@ -46,12 +44,12 @@ public class MainMenuView extends JPanel {
     lblTitolo.setForeground(Color.BLACK);
 
     pnlBottoniPartita.setBackground(Color.PINK);
-    bottoni.add(pnlBottoniPartita.addButton("AVVIA", e -> controller.iniziaPartita()));
-    bottoni.add(pnlBottoniPartita.addButton("UNISCITI", e -> controller.uniscitiAllaPartita()));
+    pnlBottoniPartita.addButton("AVVIA", e -> controller.iniziaPartita());
+    pnlBottoniPartita.addButton("UNISCITI", e -> controller.uniscitiAllaPartita());
 
-    pnlBottoniPartita.setBackground(Color.PINK);
-    bottoni.add(pnlBottoniOpzioni.addButton("CHIUDI", e -> controller.esci()));
-    bottoni.add(pnlBottoniOpzioni.addButton("INFO", e -> controller.visualizzaInfo()));
+    pnlBottoniOpzioni.setBackground(Color.PINK);
+    pnlBottoniOpzioni.addButton("CHIUDI", e -> controller.esci());
+    pnlBottoniOpzioni.addButton("INFO", e -> controller.visualizzaInfo());
 
     pnlPrincipale.add(pnlBottoniPartita);
     pnlPrincipale.add(pnlBottoniOpzioni);
@@ -69,8 +67,6 @@ public class MainMenuView extends JPanel {
       int perc = (10 * dim) / 100;
 
       lblTitolo.setFont(new Font("Roboto", Font.PLAIN, perc));
-      for (JButton bottone : bottoni)
-        bottone.setFont(new Font("Roboto", Font.PLAIN, perc));
 
       dimPrecedente = dim;
     }

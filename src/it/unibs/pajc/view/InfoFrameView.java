@@ -2,50 +2,29 @@ package it.unibs.pajc.view;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
-import java.awt.Component;
 import java.awt.Font;
 import java.awt.GridLayout;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.util.ArrayList;
-import java.util.LinkedList;
 
 import javax.swing.JFrame;
-import javax.swing.JLabel;
-import javax.swing.SwingConstants;
-import javax.xml.stream.FactoryConfigurationError;
-import javax.xml.stream.XMLInputFactory;
-import javax.xml.stream.XMLStreamConstants;
-import javax.xml.stream.XMLStreamException;
-import javax.xml.stream.XMLStreamReader;
+import javax.swing.JPanel;
+import javax.swing.JTextPane;
 
-import it.unibs.pajc.MyButton;
+import it.unibs.pajc.App;
+import it.unibs.pajc.controller.InfoFrameController;
 
 public class InfoFrameView {
-  private static final String percorsoRegole = "assets/regole.xml";
-  private static ArrayList<String> pagine;
+  private static JFrame frame;
+  private static JPanel pnlPrincipale;
 
-  private JFrame frame;
+  private static JTextPane pagina;
+  private static PnlBottoni[] pnlDirezioni;
 
-  private JLabel titolo;
-  private JLabel pagina;
-  private PnlBottoni[] direzioni;
-  private MyButton[] bottoni;
-
-  private int index;
+  private static InfoFrameController controller;
 
   public InfoFrameView() {
+    controller = new InfoFrameController();
     inizializzaFrame();
-    inizializzaTitolo();
-    index = 0;
-    pagine = new ArrayList<String>();
-    try {
-      caricaPagine();
-    } catch (FileNotFoundException | XMLStreamException | FactoryConfigurationError e) {
-      e.printStackTrace();
-    }
-    inizializzaPagina();
-    inizializzaDirezioni();
+    inizializzaPnlPrincipale();
 
     frame.setVisible(true);
   }
@@ -53,61 +32,73 @@ public class InfoFrameView {
   private void inizializzaFrame() {
     frame = new JFrame("Regole di Gioco");
 
-    frame.setLayout(new BorderLayout());
-    frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+    frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
     frame.setLocationRelativeTo(null);
     frame.setSize(375, 500);
     frame.setResizable(false);
+    frame.setIconImage(App.getAppicon());
   }
 
-  private void inizializzaTitolo() {
-    titolo = new JLabel("Regole di Gioco", SwingConstants.CENTER);
+  private void inizializzaPnlPrincipale() {
+    pnlPrincipale = new JPanel(new BorderLayout());
 
-    titolo.setBorder(null);
-    titolo.setBackground(new Color(0, 0, 0, 0));
-    titolo.setForeground(Color.BLACK);
-    titolo.setFont(new Font("Roboto", Font.PLAIN, 40));
+    pnlPrincipale.setBorder(null);
+    pnlPrincipale.setBackground(Color.PINK);
 
-    addToFrame(titolo, BorderLayout.NORTH);
-  }
+    inizializzaPagina();
+    inizializzaDirezioni();
 
-  private void caricaPagine() throws FileNotFoundException, XMLStreamException, FactoryConfigurationError {
-    XMLStreamReader reader;
+    pnlPrincipale.add(pagina, BorderLayout.CENTER);
+    pnlPrincipale.add(pnlDirezioni[0], BorderLayout.PAGE_END);
 
-    if (pagine == null || pagine.isEmpty()) {
-      reader = XMLInputFactory.newInstance().createXMLStreamReader(percorsoRegole, new FileInputStream(percorsoRegole));
-
-      while (reader.hasNext()) {
-        if (reader.getEventType() == XMLStreamConstants.CHARACTERS && reader.getLocalName().equals("pagina"))
-          pagine.add(reader.getText());
-      }
-    }
+    frame.getContentPane().add(pnlPrincipale);
   }
 
   private void inizializzaPagina() {
-    pagina = new JLabel(pagine.get(index), SwingConstants.CENTER);
+    pagina = new JTextPane();
+    pagina.setText(controller.getCurrentPage());
 
     pagina.setBorder(null);
-    pagina.setBackground(new Color(0, 0, 0, 0));
+    pagina.setBackground(Color.PINK);
     pagina.setForeground(Color.BLACK);
-    pagina.setFont(new Font("Roboto", Font.PLAIN, 20));
-
-    addToFrame(pagina, BorderLayout.CENTER);
+    pagina.setFont(new Font("Helvetica", Font.PLAIN, 14));
+    pagina.setEditable(false);
   }
 
   private void inizializzaDirezioni() {
-    direzioni = new PnlBottoni[3];
-    // bottoni = new MyButton("", perc, actionListener)
+    pnlDirezioni = new PnlBottoni[3];
 
-    for (int i = 0; i < direzioni.length; i++) {
-      direzioni[i] = new PnlBottoni(20, new GridLayout(1, 2));
+    for (int i = 0; i < pnlDirezioni.length; i++) {
+      pnlDirezioni[i] = new PnlBottoni(50, new GridLayout(1, 2));
 
-      direzioni[i].setBorder(null);
-      direzioni[i].setBackground(Color.PINK);
+      pnlDirezioni[i].setBorder(null);
+      pnlDirezioni[i].setBackground(Color.PINK);
+      pnlDirezioni[i].setSize(375, 100);
+
+      if (i != 0)
+        pnlDirezioni[i].addButton("INDIETRO", e -> controller.indietro());
+
+      if (i == 0 || i == (pnlDirezioni.length - 1))
+        pnlDirezioni[i].addButton("ESCI", e -> controller.esci(frame));
+
+      if (i != (pnlDirezioni.length - 1))
+        pnlDirezioni[i].addButton("AVANTI", e -> controller.avanti());
     }
   }
 
-  private void addToFrame(Component comp, Object constraints) {
-    frame.getContentPane().add(comp, constraints);
+  public static void refreshFrame() {
+    pagina.setText(controller.getCurrentPage());
+
+    pnlPrincipale.remove(pnlPrincipale.getComponentCount() - 1);
+
+    if (controller.getIndex() == 0)
+      pnlPrincipale.add(pnlDirezioni[0], BorderLayout.PAGE_END);
+    else if (controller.getIndex() == (controller.getPagesNumber() - 1))
+      pnlPrincipale.add(pnlDirezioni[2], BorderLayout.PAGE_END);
+    else
+      pnlPrincipale.add(pnlDirezioni[1], BorderLayout.PAGE_END);
+
+    frame.repaint();
+    frame.revalidate();
   }
 }

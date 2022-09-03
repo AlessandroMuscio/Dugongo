@@ -54,4 +54,8 @@ public class App {
     frame.repaint();
     frame.revalidate();
   }
+
+  public static Image getAppicon() {
+    return appIcon;
+  }
 }

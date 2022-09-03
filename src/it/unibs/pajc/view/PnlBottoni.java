@@ -1,5 +1,6 @@
 package it.unibs.pajc.view;
 
+import java.awt.Color;
 import java.awt.Cursor;
 import java.awt.LayoutManager;
 import java.awt.event.ActionListener;
@@ -21,17 +22,16 @@ public class PnlBottoni extends JPanel {
     this.setLayout(layoutManager);
   }
 
-  public MyButton addButton(String lbl, ActionListener actionListener) {
-    MyButton btnNewButton = new MyButton(lbl, percentuale, actionListener);
+  public void addButton(String lbl, ActionListener actionListener) {
+    MyButton button = new MyButton(lbl, percentuale, actionListener);
 
-    btnNewButton.setBorder(null);
-    btnNewButton.setOpaque(false);
-    btnNewButton.setCursor(new Cursor(Cursor.HAND_CURSOR));
-    btnNewButton.setVerticalTextPosition(SwingConstants.BOTTOM);
-    btnNewButton.setHorizontalTextPosition(SwingConstants.CENTER);
+    button.setBorderPainted(false);
+    button.setBorder(null);
+    button.setBackground(Color.PINK);
+    button.setCursor(new Cursor(Cursor.HAND_CURSOR));
+    button.setVerticalTextPosition(SwingConstants.BOTTOM);
+    button.setHorizontalTextPosition(SwingConstants.CENTER);
 
-    this.add(btnNewButton);
-
-    return btnNewButton;
+    this.add(button);
   }
 }
