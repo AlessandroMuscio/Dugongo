@@ -43,7 +43,7 @@ public class JoinView extends JPanel {
 
     titolo.setBackground(new Color(0, 0, 0, 0));
     titolo.setForeground(Color.BLACK);
-    titolo.setFont(new Font("Roboto", Font.PLAIN, 14));
+    titolo.setFont(new Font("Roboto", Font.PLAIN, 20));
   }
 
   private void inizializzaPnlTextFields() {
@@ -54,6 +54,8 @@ public class JoinView extends JPanel {
 
     for (int i = 0; i < textFields.length; i++) {
       textFields[i] = new MyTextField(placeholders[i]);
+      textFields[i].setFont(new Font("Roboto", Font.PLAIN, 14));
+      textFields[i].setBackground(Color.PINK);
 
       pnlTextFields.add(textFields[i]);
     }
@@ -66,6 +68,7 @@ public class JoinView extends JPanel {
     pnlOpzioni.setBackground(Color.PINK);
 
     pnlOpzioni.addButton("ESCI", e -> App.setPnlCorrente(new MainMenuView()));
-    pnlOpzioni.addButton("AVVIA", e -> controller.collegamento(textFields[0].getText(), textFields[1].getText(), textFields[2].getText()));
+    pnlOpzioni.addButton("AVVIA",
+        e -> controller.collegamento(textFields[0].getText(), textFields[1].getText(), textFields[2].getText()));
   }
 }

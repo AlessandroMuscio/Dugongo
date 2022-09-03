@@ -21,13 +21,10 @@ public class MyButton extends JButton {
   @Override
   protected void paintComponent(Graphics g) {
     Dimension dim;
-    int width;
-    int height;
 
     super.paintComponent(g);
 
     dim = this.getParent().getSize();
-
     if (dimPrecedente.equals(new Dimension(-1, -1)) || !dimPrecedente.equals(dim)) {
       int temp = (int) Math.min(dim.getWidth(), dim.getHeight());
       temp = (perc * temp) / 100;

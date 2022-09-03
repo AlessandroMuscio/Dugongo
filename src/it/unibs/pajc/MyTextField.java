@@ -1,10 +1,7 @@
 package it.unibs.pajc;
 
-import java.awt.Graphics2D;
-import java.awt.Color;
 import java.awt.Component;
-import java.awt.Graphics;
-import java.awt.RenderingHints;
+import java.awt.Color;
 import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
 

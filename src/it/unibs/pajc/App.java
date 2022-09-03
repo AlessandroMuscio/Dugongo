@@ -12,6 +12,8 @@ public class App {
   private static final Image appIcon = new ImageIcon("assets/icon.png").getImage();
 
   public static void main(String[] args) {
+    System.out.println(System.getProperty("os.name"));
+
     EventQueue.invokeLater(() -> new App());
   }
 
@@ -48,7 +50,6 @@ public class App {
     App.pnlCorrente = pnlCorrente;
     frame.getContentPane().add(App.pnlCorrente);
 
-    Mazzo mazzo = new Mazzo();
     frame.repaint();
     frame.revalidate();
   }

@@ -1,14 +1,16 @@
 package it.unibs.pajc;
 
-import javax.imageio.ImageIO;
-import java.awt.*;
+import java.awt.Image;
+
 import java.io.File;
 import java.io.FileFilter;
-import java.io.IOException;
+
 import java.util.Collections;
-import java.util.Stack;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import java.util.Stack;
+
+import javax.swing.ImageIcon;
 
 public class Mazzo extends Carte {
   private final File folder = new File("assets/carte");
@@ -48,24 +50,20 @@ public class Mazzo extends Carte {
     String[] tmp;
     Carta carta;
 
-    try {
-      for (File file : folder.listFiles(filter)) {
-        matcher = pattern.matcher(file.toString());
+    for (File file : folder.listFiles(filter)) {
+      matcher = pattern.matcher(file.toString());
 
-        if (matcher.find()) {
-          fileName = matcher.group();
-          tmp = fileName.split("_");
+      if (matcher.find()) {
+        fileName = matcher.group();
+        tmp = fileName.split("_");
 
-          seme = Seme.valueOf(tmp[0].toUpperCase());
-          valore = ValoreCarta.valueOf(tmp[1].toUpperCase());
-          fronte = ImageIO.read(file);
+        seme = Seme.valueOf(tmp[0].toUpperCase());
+        valore = ValoreCarta.valueOf(tmp[1].toUpperCase());
+        fronte = new ImageIcon(file.toString()).getImage();
 
-          carta = new Carta(valore, seme, fronte);
-          mazzo.add(carta);
-        }
+        carta = new Carta(valore, seme, fronte);
+        mazzo.add(carta);
       }
-    } catch (IOException e) {
-      throw new RuntimeException(e);
     }
   }
 
