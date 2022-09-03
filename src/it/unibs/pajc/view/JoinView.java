@@ -66,6 +66,6 @@ public class JoinView extends JPanel {
     pnlOpzioni.setBackground(Color.PINK);
 
     pnlOpzioni.addButton("ESCI", e -> App.setPnlCorrente(new MainMenuView()));
-    pnlOpzioni.addButton("AVVIA", e -> JoinController.collegamento(textFields[0].getText(), textFields[1].getText()));
+    pnlOpzioni.addButton("AVVIA", e -> controller.collegamento(textFields[0].getText(), textFields[1].getText(), textFields[2].getText()));
   }
 }

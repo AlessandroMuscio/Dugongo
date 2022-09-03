@@ -10,38 +10,36 @@ import java.util.concurrent.Executors;
 
 public class JoinController {
   
-  private static Socket CSocket;
+  private Socket CSocket;
+  private BufferedReader reader;
+  private PrintWriter writer;
+  private ExecutorService executor;
   
   public JoinController() {
   
   }
   
-  public static void collegamento(String indirizzoIP, String porta) {
+  public void collegamento(String indirizzoIP, String porta, String nome) {
     
     try {
-  
-      ExecutorService ex = Executors.newFixedThreadPool(2);
-      
       CSocket = new Socket(indirizzoIP, Integer.parseInt(porta));
-      
-      ex.submit(() -> clientToServer(CSocket));
-      ex.submit(() -> serverToClient(CSocket));
-      
+      reader = new BufferedReader(new InputStreamReader(System.in));
+      writer = new PrintWriter(CSocket.getOutputStream());
     } catch (IOException e) {
       throw new RuntimeException(e);
     }
+  
+    executor = Executors.newFixedThreadPool(2); // crea un pool thread
+    executor.execute(this::listen);
   }
   
-  protected static void clientToServer(Socket client) {
+  private void send() {
     
-    try (
-            BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
-            PrintWriter writer = new PrintWriter(client.getOutputStream());
-    ){
+    try{
       
-      String request;
+      String request =  "CULO STO INVIANDO " + CSocket.getPort();
       
-      while ( (request = reader.readLine()) != null ) {
+      while ( !CSocket.isClosed() ) {
         
         writer.write(request);
       }
@@ -51,22 +49,18 @@ public class JoinController {
     }
   }
   
-  protected static void serverToClient(Socket client) {
+  private void listen() {
     
-    try (
-            BufferedReader reader = new BufferedReader(new InputStreamReader(client.getInputStream()));
-    ){
-      
-      String response;
-      
-      while ( (response = reader.readLine()) != null ) {
-        
-        System.out.println(String.format("\n[%s]\n", response));
+    String response;
+    
+    try{
+      while ( !CSocket.isClosed() ) {
+    
+        if((response = reader.readLine()) != null){
+          System.out.println(String.format("\n[%s]\n", response));
+        }
       }
-      
-    }
-    catch (Exception e) {
-    
+    } catch( IOException e){
     
     }
   }

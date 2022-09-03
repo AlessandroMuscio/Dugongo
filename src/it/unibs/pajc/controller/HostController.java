@@ -4,9 +4,7 @@ import it.unibs.pajc.DugongoModel;
 
 import java.io.IOException;
 import java.net.*;
-import java.util.ArrayList;
-import java.util.Enumeration;
-import java.util.Random;
+import java.util.*;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
@@ -15,26 +13,20 @@ public class HostController {
   private final int MAX_HOST = 1;
   private final int MAX_PORT = 65536;
   private final int MIN_PORT =  49152;
+  private ServerSocket server;
   private static ExecutorService executorService;
+  private Queue<Socket> turnoCorrente;
+  private Queue<Socket> turnoSuccessivo;
   private ArrayList<Socket> openSocket;
   public static int port;
   private DugongoModel model;
   public static String IP_address;
   public static boolean ready = true;
   
-  /*public ServerController(View view) {
-    
-    this.view = view;
-    openSocket = new ArrayList<>();
-    model = new DugongoModel();
-    executorService = Executors.newCachedThreadPool();
-  
-    initialize();
-    executorService.execute(this::startServer);
-  }*/
-  
   public HostController() {
-    
+  
+    turnoCorrente = new LinkedList<>();
+    turnoSuccessivo = new LinkedList<>();
     openSocket = new ArrayList<>();
     model = new DugongoModel();
     executorService = Executors.newCachedThreadPool();
@@ -43,13 +35,17 @@ public class HostController {
     executorService.execute(this::startServer);
   }
   
-  public static void close(){
+  public void close(){
     executorService.shutdownNow();
+    try {
+      server.close();
+    } catch (IOException e) {
+      throw new RuntimeException(e);
+    }
   }
   
   public void initialize() {
     Random random = new Random();
-    
     try {
       IP_address = getIPaddress();
       port = random.nextInt((MAX_PORT - MIN_PORT) + 1) + MIN_PORT;
@@ -62,9 +58,11 @@ public class HostController {
   
     System.out.println("STARTING...");
     
-    try (ServerSocket server = new ServerSocket(port)){
+    try{
+  
+      server = new ServerSocket(port);
       
-      while( openSocket.size() <= MAX_HOST ) {
+      while( openSocket.size() < MAX_HOST ) {
       
         Socket client = server.accept();
         Protocol protocol = new Protocol(client);
@@ -99,6 +97,48 @@ public class HostController {
     
     return null;
   }
+  
+  /*private void listenToClient() {
+    
+    try {
+      
+      while(client.isClosed() == false) {
+        
+        Player tmpPlayer = (Player) objInputStream.readObject();
+        Player remotePlayer = battlefield.getRemotePlayer();
+        
+        remotePlayer.setXSpeed(tmpPlayer.getXSpeed());
+        remotePlayer.setYSpeed(tmpPlayer.getYSpeed());
+        
+        if(tmpPlayer.isShooting())
+          remotePlayer.shoot();
+
+//				System.out.println("xSpeed: " + battlefield.getRemotePlayer().getXSpeed() + ", ySpeed: " + battlefield.getRemotePlayer().getYSpeed());
+      }
+      
+    } catch (IOException e) {
+      
+      e.printStackTrace();
+      
+    } catch (ClassNotFoundException e) {
+      // TODO Auto-generated catch block
+      e.printStackTrace();
+    }
+  }
+  
+  
+  private void send() {
+    
+    try {
+      
+      objOutputStream.writeObject(obj);
+      objOutputStream.reset();
+      
+    } catch (IOException e) {
+      
+      System.err.println("Error, data not sent: " + e.toString());
+    }
+  }*/
   
   public static boolean isReady() {
     return ready;

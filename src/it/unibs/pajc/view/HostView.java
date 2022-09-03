@@ -28,7 +28,7 @@ public class HostView extends JPanel {
 
     PnlBottoni panelOpzioni = new PnlBottoni(33);
     panelOpzioni.addButton("ESCI", e -> {
-      HostController.close();
+      hostController.close();
       App.setPnlCorrente(new MainMenuView());
     });
     panelOpzioni.addButton("AVVIA", e -> {
