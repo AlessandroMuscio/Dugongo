@@ -100,7 +100,9 @@ public class InfoFrameView {
     else
       pnlPrincipale.add(pnlDirezioni[1], BorderLayout.PAGE_END);
 
-    frame.repaint();
-    frame.revalidate();
+    pnlPrincipale.repaint();
+    pnlPrincipale.revalidate();
+    /* frame.repaint();
+    frame.revalidate(); */
   }
 }

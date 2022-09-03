@@ -29,10 +29,8 @@ public class MyButton extends JButton {
     dim = this.getParent().getSize();
 
     if (dimPrecedente.equals(new Dimension(-1, -1)) || !dimPrecedente.equals(dim)) {
-      width = (int) (perc * dim.getWidth()) / 100;
-      height = (int) (perc * dim.getHeight()) / 100;
-
-      int temp = Math.min(width, height); //!= 0 ? Math.min(width, height) : 1;
+      int temp = (int) Math.min(dim.getWidth(), dim.getHeight());
+      temp = (perc * temp) / 100; //!= 0 ? Math.min(width, height) : 1;
 
       icon = new ImageIcon("assets/icone/" + this.getText().toLowerCase() + ".png").getImage();
       icon = icon.getScaledInstance(temp, temp, Image.SCALE_DEFAULT);
