@@ -1,20 +1,20 @@
-package it.unibs.pajc.view;
+package it.unibs.pajc.views;
 
 import it.unibs.pajc.App;
 import it.unibs.pajc.PnlBottoni;
-import it.unibs.pajc.controller.HostController;
+import it.unibs.pajc.controllers.HostController;
 
 import javax.swing.*;
 import java.awt.*;
 
 public class HostView extends JPanel {
-  
+
   private HostController hostController;
 
   public HostView() {
 
     hostController = new HostController();
-    
+
     this.setLayout(new BorderLayout());
     this.setBackground(Color.PINK);
 

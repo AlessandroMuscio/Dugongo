@@ -1,4 +1,4 @@
-package it.unibs.pajc.view;
+package it.unibs.pajc.views;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
@@ -11,7 +11,7 @@ import javax.swing.JTextPane;
 
 import it.unibs.pajc.App;
 import it.unibs.pajc.PnlBottoni;
-import it.unibs.pajc.controller.InfoFrameController;
+import it.unibs.pajc.controllers.InfoFrameController;
 
 public class InfoFrameView {
   private static JFrame frame;

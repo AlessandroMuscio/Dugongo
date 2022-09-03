@@ -1,4 +1,4 @@
-package it.unibs.pajc.view;
+package it.unibs.pajc.views;
 
 import it.unibs.pajc.App;
 import it.unibs.pajc.MyButton;

@@ -1,4 +1,4 @@
-package it.unibs.pajc.controller;
+package it.unibs.pajc.controllers;
 
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -10,7 +10,7 @@ import javax.xml.stream.XMLStreamConstants;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamReader;
 
-import it.unibs.pajc.view.InfoFrameView;
+import it.unibs.pajc.views.InfoFrameView;
 
 public class InfoFrameController {
   private static final String percorsoRegole = "assets/regole.xml";

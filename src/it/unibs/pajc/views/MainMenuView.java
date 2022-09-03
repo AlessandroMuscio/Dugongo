@@ -1,4 +1,4 @@
-package it.unibs.pajc.view;
+package it.unibs.pajc.views;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
@@ -11,7 +11,7 @@ import javax.swing.JPanel;
 import javax.swing.SwingConstants;
 
 import it.unibs.pajc.PnlBottoni;
-import it.unibs.pajc.controller.MainMenuController;
+import it.unibs.pajc.controllers.MainMenuController;
 
 public class MainMenuView extends JPanel {
   private JLabel lblTitolo;

@@ -1,8 +1,9 @@
 package it.unibs.pajc;
 
-import it.unibs.pajc.view.MainMenuView;
-
 import javax.swing.*;
+
+import it.unibs.pajc.views.MainMenuView;
+
 import java.awt.*;
 
 public class App {
@@ -12,8 +13,6 @@ public class App {
   private static final Image appIcon = new ImageIcon("assets/icon.png").getImage();
 
   public static void main(String[] args) {
-    System.out.println(System.getProperty("os.name"));
-
     EventQueue.invokeLater(() -> new App());
   }
 
@@ -37,12 +36,9 @@ public class App {
     frame.setMinimumSize(new Dimension(600, 420));
     frame.setLocationRelativeTo(null);
     frame.setIconImage(appIcon);
-    /* if(  Taskbar.getTaskbar() != null ){
+
+    if (System.getProperty("os.name").contains("Mac"))
       Taskbar.getTaskbar().setIconImage(appIcon);
-    }
-    else{
-      frame.setIconImage(appIcon);
-    } */
   }
 
   public static void setPnlCorrente(JPanel pnlCorrente) {

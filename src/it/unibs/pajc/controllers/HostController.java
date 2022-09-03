@@ -1,4 +1,4 @@
-package it.unibs.pajc.controller;
+package it.unibs.pajc.controllers;
 
 import it.unibs.pajc.DugongoModel;
 
@@ -9,10 +9,10 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 public class HostController {
-  
+
   private final int MAX_HOST = 1;
   private final int MAX_PORT = 65536;
-  private final int MIN_PORT =  49152;
+  private final int MIN_PORT = 49152;
   private ServerSocket server;
   private static ExecutorService executorService;
   private Queue<Socket> turnoCorrente;
@@ -22,20 +22,20 @@ public class HostController {
   private DugongoModel model;
   public static String IP_address;
   public static boolean ready = true;
-  
+
   public HostController() {
-  
+
     turnoCorrente = new LinkedList<>();
     turnoSuccessivo = new LinkedList<>();
     openSocket = new ArrayList<>();
     model = new DugongoModel();
     executorService = Executors.newCachedThreadPool();
-  
+
     initialize();
     executorService.execute(this::startServer);
   }
-  
-  public void close(){
+
+  public void close() {
     executorService.shutdownNow();
     try {
       server.close();
@@ -43,7 +43,7 @@ public class HostController {
       throw new RuntimeException(e);
     }
   }
-  
+
   public void initialize() {
     Random random = new Random();
     try {
@@ -53,51 +53,51 @@ public class HostController {
       throw new RuntimeException(e);
     }
   }
-  
+
   private void startServer() {
-  
+
     System.out.println("STARTING...");
-    
-    try{
-  
+
+    try {
+
       server = new ServerSocket(port);
-      
-      while( openSocket.size() < MAX_HOST ) {
-      
+
+      while (openSocket.size() < MAX_HOST) {
+
         Socket client = server.accept();
         Protocol protocol = new Protocol(client);
         Thread clientThread = new Thread(protocol);
         openSocket.add(client);
         clientThread.start();
       }
-    
+
     } catch (IOException e) {
-    
+
       System.err.println("ERRORE DI COMUNICAZIONE " + e + "TOMMASO CULO!");
     }
-    
+
     System.out.println("EXIT...");
   }
-  
+
   private String getIPaddress() throws SocketException {
     Enumeration<NetworkInterface> networkInterfaces = NetworkInterface.getNetworkInterfaces();
-    
+
     while (networkInterfaces.hasMoreElements()) {
       NetworkInterface networkInterface = networkInterfaces.nextElement();
-      
+
       for (Enumeration<InetAddress> inetAddresses = networkInterface.getInetAddresses(); inetAddresses
-              .hasMoreElements();) {
+          .hasMoreElements();) {
         InetAddress inetAddress = inetAddresses.nextElement();
-        
+
         if (!inetAddress.isLoopbackAddress())
           if (inetAddress instanceof Inet4Address)
             return inetAddress.getHostAddress();
       }
     }
-    
+
     return null;
   }
-  
+
   /*private void listenToClient() {
     
     try {
@@ -112,8 +112,8 @@ public class HostController {
         
         if(tmpPlayer.isShooting())
           remotePlayer.shoot();
-
-//				System.out.println("xSpeed: " + battlefield.getRemotePlayer().getXSpeed() + ", ySpeed: " + battlefield.getRemotePlayer().getYSpeed());
+  
+  //				System.out.println("xSpeed: " + battlefield.getRemotePlayer().getXSpeed() + ", ySpeed: " + battlefield.getRemotePlayer().getYSpeed());
       }
       
     } catch (IOException e) {
@@ -139,7 +139,7 @@ public class HostController {
       System.err.println("Error, data not sent: " + e.toString());
     }
   }*/
-  
+
   public static boolean isReady() {
     return ready;
   }
