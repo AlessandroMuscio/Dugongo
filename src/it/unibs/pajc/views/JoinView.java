@@ -55,8 +55,6 @@ public class JoinView extends JPanel {
     for (int i = 0; i < textFields.length; i++) {
       textFields[i] = new MyTextField(placeholders[i]);
       textFields[i].setFont(new Font("Roboto", Font.PLAIN, 14));
-      //textFields[i].setBackground(Color.PINK);
-      //textFields[i].setOpaque(false);
 
       pnlTextFields.add(textFields[i]);
     }
