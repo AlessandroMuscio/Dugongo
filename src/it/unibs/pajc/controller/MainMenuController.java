@@ -1,7 +1,6 @@
 package it.unibs.pajc.controller;
 
 import it.unibs.pajc.App;
-import it.unibs.pajc.view.FrameInfo;
 import it.unibs.pajc.view.HostView;
 import it.unibs.pajc.view.InfoFrameView;
 import it.unibs.pajc.view.JoinView;

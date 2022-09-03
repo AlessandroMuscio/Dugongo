@@ -1,6 +1,7 @@
 package it.unibs.pajc.view;
 
 import it.unibs.pajc.App;
+import it.unibs.pajc.PnlBottoni;
 import it.unibs.pajc.controller.HostController;
 
 import javax.swing.*;

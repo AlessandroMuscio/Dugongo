@@ -10,6 +10,7 @@ import javax.swing.JPanel;
 import javax.swing.JTextPane;
 
 import it.unibs.pajc.App;
+import it.unibs.pajc.PnlBottoni;
 import it.unibs.pajc.controller.InfoFrameController;
 
 public class InfoFrameView {
@@ -73,7 +74,7 @@ public class InfoFrameView {
 
       pnlDirezioni[i].setBorder(null);
       pnlDirezioni[i].setBackground(Color.PINK);
-      pnlDirezioni[i].setSize(375, 100);
+      //pnlDirezioni[i].setSize(375, 100);
 
       if (i != 0)
         pnlDirezioni[i].addButton("INDIETRO", e -> controller.indietro());
@@ -87,13 +88,14 @@ public class InfoFrameView {
   }
 
   public static void refreshFrame() {
+    int index = controller.getIndex();
     pagina.setText(controller.getCurrentPage());
 
     pnlPrincipale.remove(pnlPrincipale.getComponentCount() - 1);
 
-    if (controller.getIndex() == 0)
+    if (index == 0)
       pnlPrincipale.add(pnlDirezioni[0], BorderLayout.PAGE_END);
-    else if (controller.getIndex() == (controller.getPagesNumber() - 1))
+    else if (index == (controller.getPagesNumber() - 1))
       pnlPrincipale.add(pnlDirezioni[2], BorderLayout.PAGE_END);
     else
       pnlPrincipale.add(pnlDirezioni[1], BorderLayout.PAGE_END);

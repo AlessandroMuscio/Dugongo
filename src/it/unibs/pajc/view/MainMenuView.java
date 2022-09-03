@@ -2,18 +2,13 @@ package it.unibs.pajc.view;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
-import java.awt.Font;
-import java.awt.Graphics;
 import java.awt.GridLayout;
-import java.util.ArrayList;
 
-import javax.swing.BoxLayout;
-import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.SwingConstants;
 
-import it.unibs.pajc.MyButton;
+import it.unibs.pajc.PnlBottoni;
 import it.unibs.pajc.controller.MainMenuController;
 
 public class MainMenuView extends JPanel {
@@ -21,7 +16,7 @@ public class MainMenuView extends JPanel {
   private JPanel pnlPrincipale;
   private PnlBottoni pnlBottoniPartita;
   private PnlBottoni pnlBottoniOpzioni;
-  private int dimPrecedente;
+  //private int dimPrecedente;
   private MainMenuController controller;
 
   public MainMenuView() {
@@ -29,7 +24,7 @@ public class MainMenuView extends JPanel {
     pnlPrincipale = new JPanel(new GridLayout(2, 1));
     pnlBottoniPartita = new PnlBottoni(66);
     pnlBottoniOpzioni = new PnlBottoni(33);
-    dimPrecedente = -1;
+    //dimPrecedente = -1;
     controller = new MainMenuController();
 
     inizializza();
@@ -58,17 +53,17 @@ public class MainMenuView extends JPanel {
     this.add(pnlPrincipale, BorderLayout.CENTER);
   }
 
-  @Override
+  /* @Override
   protected void paintComponent(Graphics g) {
     super.paintComponent(g);
-
+  
     int dim = Math.min(this.getParent().getSize().width, this.getParent().getSize().height);
     if (dimPrecedente == -1 || dimPrecedente != dim) {
       int perc = (10 * dim) / 100;
-
+    
       lblTitolo.setFont(new Font("Roboto", Font.PLAIN, perc));
-
+    
       dimPrecedente = dim;
     }
-  }
+  } */
 }

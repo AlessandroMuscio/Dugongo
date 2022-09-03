@@ -1,8 +1,8 @@
 package it.unibs.pajc;
 
 import java.awt.Dimension;
+import java.awt.DisplayMode;
 import java.awt.EventQueue;
-import java.awt.GraphicsDevice;
 import java.awt.GraphicsEnvironment;
 import java.awt.Image;
 
@@ -16,8 +16,7 @@ public class App {
   public static JFrame frame;
   private static JPanel pnlCorrente;
 
-  public static int screenWidth;
-  public static int screenHeight;
+  public static Dimension screenSize;
 
   private static final Image appIcon = new ImageIcon("assets/icon.png").getImage();
 
@@ -26,21 +25,23 @@ public class App {
   }
 
   public App() {
-    GraphicsDevice gd = GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice();
-    screenWidth = gd.getDisplayMode().getWidth();
-    screenHeight = gd.getDisplayMode().getHeight();
-
+    setScreenSize();
     inizializzaFrame();
     setPnlCorrente(new MainMenuView());
 
     frame.setVisible(true);
   }
 
+  private void setScreenSize() {
+    DisplayMode dm = GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice().getDisplayMode();
+    screenSize = new Dimension(dm.getWidth(), dm.getHeight());
+  }
+
   private void inizializzaFrame() {
     frame = new JFrame("Dugongo");
-    // frame.setBounds(0, 0, screenWidth/4, screenHeight/4);
+    frame.setBounds(0, 0, screenSize.width / 4, screenSize.height / 4);
     frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-    frame.setMinimumSize(new Dimension(600, 420));
+    //frame.setMinimumSize(new Dimension(600, 420));
     frame.setLocationRelativeTo(null);
     frame.setIconImage(appIcon);
     // Taskbar.getTaskbar().setIconImage(appIcon);

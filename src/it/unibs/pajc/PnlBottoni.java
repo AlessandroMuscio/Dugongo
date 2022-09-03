@@ -1,4 +1,4 @@
-package it.unibs.pajc.view;
+package it.unibs.pajc;
 
 import java.awt.Color;
 import java.awt.Cursor;
@@ -7,8 +7,6 @@ import java.awt.event.ActionListener;
 
 import javax.swing.JPanel;
 import javax.swing.SwingConstants;
-
-import it.unibs.pajc.MyButton;
 
 public class PnlBottoni extends JPanel {
   private int percentuale;

@@ -102,6 +102,6 @@ public class InfoFrameController {
   }
 
   public void esci(JFrame frame) {
-    frame.setVisible(false);
+    frame.dispose();
   }
 }
