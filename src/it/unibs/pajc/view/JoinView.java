@@ -8,8 +8,12 @@ import javax.swing.*;
 import java.awt.*;
 
 public class JoinView extends JPanel {
+  
+  private JoinController joinController;
 
   public JoinView() {
+    
+    joinController = new JoinController();
 
     JLabel labelTitolo = new JLabel("JOIN GAME:");
     this.add(labelTitolo, BorderLayout.NORTH);
@@ -23,8 +27,8 @@ public class JoinView extends JPanel {
     this.add(panel, BorderLayout.CENTER);
 
     PnlBottoni panelOpzioni = new PnlBottoni(33);
-    panelOpzioni.addButton("CLOSE", e -> App.setPnlCorrente(new MainMenuView()));
-    panelOpzioni.addButton("PLAY", e -> JoinController.collegamento(indirizzoIP.getText(), porta.getText()));
+    panelOpzioni.addButton("ESCI", e -> App.setPnlCorrente(new MainMenuView()));
+    panelOpzioni.addButton("AVVIA", e -> JoinController.collegamento(indirizzoIP.getText(), porta.getText()));
     panelOpzioni.setOpaque(false);
     this.add(panelOpzioni, BorderLayout.SOUTH);
   }

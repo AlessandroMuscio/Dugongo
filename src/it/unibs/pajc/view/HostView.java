@@ -8,9 +8,13 @@ import javax.swing.*;
 import java.awt.*;
 
 public class HostView extends JPanel {
+  
+  private HostController hostController;
 
   public HostView() {
 
+    hostController = new HostController();
+    
     this.setLayout(new BorderLayout());
     this.setBackground(Color.PINK);
 
@@ -23,7 +27,7 @@ public class HostView extends JPanel {
     this.add(labelPartecipanti, BorderLayout.CENTER);
 
     PnlBottoni panelOpzioni = new PnlBottoni(33);
-    panelOpzioni.addButton("CHIUDI", e -> {
+    panelOpzioni.addButton("ESCI", e -> {
       HostController.close();
       App.setPnlCorrente(new MainMenuView());
     });

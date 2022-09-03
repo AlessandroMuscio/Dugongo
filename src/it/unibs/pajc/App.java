@@ -1,23 +1,14 @@
 package it.unibs.pajc;
 
-import java.awt.Dimension;
-import java.awt.DisplayMode;
-import java.awt.EventQueue;
-import java.awt.GraphicsEnvironment;
-import java.awt.Image;
-
-import javax.swing.ImageIcon;
-import javax.swing.JFrame;
-import javax.swing.JPanel;
-
 import it.unibs.pajc.view.MainMenuView;
+
+import javax.swing.*;
+import java.awt.*;
 
 public class App {
   public static JFrame frame;
   private static JPanel pnlCorrente;
-
   public static Dimension screenSize;
-
   private static final Image appIcon = new ImageIcon("assets/icon.png").getImage();
 
   public static void main(String[] args) {
@@ -41,10 +32,15 @@ public class App {
     frame = new JFrame("Dugongo");
     frame.setBounds(0, 0, screenSize.width / 4, screenSize.height / 2);
     frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-    //frame.setMinimumSize(new Dimension(600, 420));
+    frame.setMinimumSize(new Dimension(600, 420));
     frame.setLocationRelativeTo(null);
-    frame.setIconImage(appIcon);
-    // Taskbar.getTaskbar().setIconImage(appIcon);
+    
+    if(  Taskbar.getTaskbar() != null ){
+      Taskbar.getTaskbar().setIconImage(appIcon);
+    }
+    else{
+      frame.setIconImage(appIcon);
+    }
   }
 
   public static void setPnlCorrente(JPanel pnlCorrente) {
@@ -52,6 +48,7 @@ public class App {
     App.pnlCorrente = pnlCorrente;
     frame.getContentPane().add(App.pnlCorrente);
 
+    Mazzo mazzo = new Mazzo();
     frame.repaint();
     frame.revalidate();
   }

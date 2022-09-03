@@ -5,7 +5,7 @@ import java.awt.*;
 import java.io.File;
 import java.io.FileFilter;
 import java.io.IOException;
-import java.util.Random;
+import java.util.Collections;
 import java.util.Stack;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -18,6 +18,7 @@ public class Mazzo extends Carte {
     this.mazzo = new Stack<>();
     inizializza();
     mescola();
+    stampa();
   }
 
   public Carta scarta() {
@@ -26,19 +27,7 @@ public class Mazzo extends Carte {
 
   // Metodo generico per randomizzare un elenco in Java usando Fisher–Yates shuffle
   public void mescola() {
-    Random random = new Random();
-
-    // inizia dalla fine dell'elenco
-    for (int i = mazzo.size() - 1; i >= 1; i--) {
-      // ottiene un indice casuale `j` tale che `0 <= j <= i`
-      int j = random.nextInt(i + 1);
-
-      // scambia l'elemento nella i-esima posizione nell'elenco con l'elemento in
-      // indice `j` generato casualmente
-      Carta temp = mazzo.get(i);
-      mazzo.set(i, mazzo.get(j));
-      this.mazzo.set(j, temp);
-    }
+    Collections.shuffle(mazzo);
   }
 
   private void inizializza() {
@@ -54,8 +43,8 @@ public class Mazzo extends Carte {
     Pattern pattern = Pattern.compile("([A-Z])\\w+");
     Matcher matcher;
     String fileName;
-    ValoreCarta valore;
     Seme seme;
+    ValoreCarta valore;
     Image fronte;
     String[] tmp;
     Carta carta;
@@ -67,9 +56,9 @@ public class Mazzo extends Carte {
         if (matcher.find()) {
           fileName = matcher.group();
           tmp = fileName.split("_");
-
-          valore = ValoreCarta.valueOf(tmp[1].toUpperCase());
+  
           seme = Seme.valueOf(tmp[0].toUpperCase());
+          valore = ValoreCarta.valueOf(tmp[1].toUpperCase());
           fronte = ImageIO.read(file);
 
           carta = new Carta(valore, seme, fronte);
@@ -79,8 +68,6 @@ public class Mazzo extends Carte {
     } catch (IOException e) {
       throw new RuntimeException(e);
     }
-    
-    stampa();
   }
 
   private void stampa() {
