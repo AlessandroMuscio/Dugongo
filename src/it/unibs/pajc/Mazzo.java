@@ -18,7 +18,6 @@ public class Mazzo extends Carte {
     this.mazzo = new Stack<>();
     inizializza();
     mescola();
-    stampa();
   }
 
   public Carta scarta() {
@@ -56,7 +55,7 @@ public class Mazzo extends Carte {
         if (matcher.find()) {
           fileName = matcher.group();
           tmp = fileName.split("_");
-  
+
           seme = Seme.valueOf(tmp[0].toUpperCase());
           valore = ValoreCarta.valueOf(tmp[1].toUpperCase());
           fronte = ImageIO.read(file);

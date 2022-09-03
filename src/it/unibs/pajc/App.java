@@ -30,17 +30,17 @@ public class App {
 
   private void inizializzaFrame() {
     frame = new JFrame("Dugongo");
-    frame.setBounds(0, 0, screenSize.width / 4, screenSize.height / 2);
+    frame.setBounds(0, 0, screenSize.width / 4, screenSize.height / 4);
     frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     frame.setMinimumSize(new Dimension(600, 420));
     frame.setLocationRelativeTo(null);
-    
-    if(  Taskbar.getTaskbar() != null ){
+    frame.setIconImage(appIcon);
+    /* if(  Taskbar.getTaskbar() != null ){
       Taskbar.getTaskbar().setIconImage(appIcon);
     }
     else{
       frame.setIconImage(appIcon);
-    }
+    } */
   }
 
   public static void setPnlCorrente(JPanel pnlCorrente) {

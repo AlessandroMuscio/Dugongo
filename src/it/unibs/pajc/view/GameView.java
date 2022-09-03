@@ -8,7 +8,7 @@ import java.awt.*;
 
 public class GameView extends JPanel {
 
-  static GraphicsDevice device = GraphicsEnvironment.getLocalGraphicsEnvironment().getScreenDevices()[0];
+  private static GraphicsDevice device = GraphicsEnvironment.getLocalGraphicsEnvironment().getScreenDevices()[0];
   private JButton[] tavolo;
   private Image sfondo = new ImageIcon("assets/generiche/sfondo.jpeg").getImage();
 
