@@ -61,7 +61,7 @@ public class ServerProtocol implements Runnable {
   
   public void send(String message) {
   
-    writer.write(message);
+    writer.println(message);
     writer.flush();
   }
 

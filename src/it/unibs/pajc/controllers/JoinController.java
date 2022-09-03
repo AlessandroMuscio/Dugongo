@@ -50,7 +50,7 @@ public class JoinController {
 
       while (!CSocket.isClosed()) {
 
-        writer.write(request);
+        writer.println(request);
       }
     } catch (Exception e) {
 
