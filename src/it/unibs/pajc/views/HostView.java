@@ -32,9 +32,8 @@ public class HostView extends JPanel {
       App.setPnlCorrente(new MainMenuView());
     });
     panelOpzioni.addButton("AVVIA", e -> {
-      if (HostController.isReady()) {
-        GameView gameView = new GameView();
-        App.setPnlCorrente(gameView);
+      if (hostController.isReady()) {
+        hostController.startGame();
       } else {
         JOptionPane.showMessageDialog(new JFrame(), "Attendi che i client siano pronti per giocare");
       }

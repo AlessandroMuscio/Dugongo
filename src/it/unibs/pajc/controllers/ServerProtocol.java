@@ -8,9 +8,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.function.Consumer;
 
-public class Protocol implements Runnable {
-
-  private static ArrayList<Protocol> clients = new ArrayList<>();
+public class ServerProtocol implements Runnable {
+  
   private static HashMap<String, Consumer<ClientEvent>> commandMap;
 
   static {
@@ -29,10 +28,9 @@ public class Protocol implements Runnable {
   private String name;
   private boolean isRunning = true;
 
-  public Protocol(Socket client) {
+  public ServerProtocol(Socket client) {
 
     this.client = client;
-    clients.add(this);
   }
 
   private void play() {
@@ -46,12 +44,12 @@ public class Protocol implements Runnable {
     // SCARTA LE CARTE
   }
 
-  protected void pesca(Protocol sender) {
+  protected void pesca(ServerProtocol sender) {
 
     // PESCA LA CARTA
   }
 
-  protected void dugongo(Protocol sender) {
+  protected void dugongo(ServerProtocol sender) {
 
     // TERMINA IL TURNO E COMINCIA L'ULTIMO GIRO (SERVE UN SEND TO ALL)
   }
@@ -60,51 +58,26 @@ public class Protocol implements Runnable {
 
     isRunning = false;
   }
+  
+  public void send(String message) {
+  
+    writer.println(message);
+    writer.flush();
+  }
 
   public void run() {
 
     try {
-      /*writer = new ObjectOutputStream(client.getOutputStream());
-      reader = new ObjectInputStream(client.getInputStream());*/
 
       reader = new BufferedReader(new InputStreamReader(client.getInputStream()));
       writer = new PrintWriter(client.getOutputStream(), true);
-      name = null;
 
       System.out.println("CLIENT ONLINE " + client.getPort());
-
-      String request;
-
-      do {
-
-        writer.flush();
-        writer.println("PLEASE, INSERT YOUR NICKNAME: ");
-        name = reader.readLine();
-
-        System.out.println(name);
-      } while (name != null && name.length() < 3);
-
-      writer.println("WELCOME " + name);
-
-      while (isRunning && (request = reader.readLine()) != null) {
-
-        System.out.println("PROCESSING REQUEST: " + request);
-
-        ClientEvent e = ClientEvent.parse(this, request);
-        Consumer<ClientEvent> commandExecutor = (e.command != null ? commandMap.get(e.command.toUpperCase())
-            : commandMap.get("@default@"));
-
-        commandExecutor.accept(e);
-      }
-
-      writer.printf("GOODBYE %s\n", name);
-
     } catch (Exception e) {
       e.printStackTrace();
     } finally {
       try {
         client.close();
-        clients.remove(this);
       } catch (IOException e) {
         throw new RuntimeException(e);
       }

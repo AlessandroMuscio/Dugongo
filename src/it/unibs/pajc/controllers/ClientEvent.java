@@ -4,18 +4,18 @@ import java.util.ArrayList;
 
 public class ClientEvent {
 
-  Protocol sender;
+  ServerProtocol sender;
   String command;
   ArrayList<String> parameters = new ArrayList<>();
 
-  private ClientEvent(Protocol sender, String command, ArrayList<String> parameters) {
+  private ClientEvent(ServerProtocol sender, String command, ArrayList<String> parameters) {
 
     this.sender = sender;
     this.command = command;
     this.parameters = parameters;
   }
 
-  public static ClientEvent parse(Protocol sender, String message) {
+  public static ClientEvent parse(ServerProtocol sender, String message) {
 
     String command = null;
     ArrayList<String> parameters = new ArrayList<String>();
