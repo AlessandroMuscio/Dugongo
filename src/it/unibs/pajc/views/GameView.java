@@ -1,7 +1,7 @@
 package it.unibs.pajc.views;
 
 import it.unibs.pajc.App;
-import it.unibs.pajc.MyButton;
+import it.unibs.pajc.myComponents.MyButton;
 
 import javax.swing.*;
 import java.awt.*;

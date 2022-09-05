@@ -24,8 +24,8 @@ public class MainMenuView extends JPanel {
   public MainMenuView() {
     lblTitolo = new JLabel("DUGONGO", SwingConstants.CENTER);
     pnlPrincipale = new JPanel(new GridLayout(2, 1));
-    pnlBottoniPartita = new PnlBottoni(66);
-    pnlBottoniOpzioni = new PnlBottoni(33);
+    pnlBottoniPartita = new PnlBottoni(50/*, new GridLayout(1, 2)*/);
+    pnlBottoniOpzioni = new PnlBottoni(30/*, new GridLayout(1, 2)*/);
     dimPrecedente = -1;
     controller = new MainMenuController();
 
@@ -51,7 +51,7 @@ public class MainMenuView extends JPanel {
     pnlPrincipale.add(pnlBottoniPartita);
     pnlPrincipale.add(pnlBottoniOpzioni);
 
-    this.add(lblTitolo, BorderLayout.NORTH);
+    this.add(lblTitolo, BorderLayout.PAGE_START);
     this.add(pnlPrincipale, BorderLayout.CENTER);
   }
 

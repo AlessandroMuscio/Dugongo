@@ -67,9 +67,9 @@ public class Mazzo extends Carte {
     }
   }
 
-  private void stampa() {
+  /* private void stampa() {
     for (Carta c : mazzo) {
       System.out.println(c.getSeme());
     }
-  }
+  } */
 }
