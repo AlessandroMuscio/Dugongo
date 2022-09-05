@@ -1,24 +1,33 @@
 package it.unibs.pajc.views;
 
-import it.unibs.pajc.App;
-import it.unibs.pajc.PnlBottoni;
+import java.awt.BorderLayout;
+import java.awt.Color;
+import java.awt.GridLayout;
+
+import javax.swing.JPanel;
+import javax.swing.SwingConstants;
+
 import it.unibs.pajc.controllers.JoinController;
+import it.unibs.pajc.myComponents.MyButton;
+import it.unibs.pajc.myComponents.MyLabel;
 import it.unibs.pajc.myComponents.MyTextField;
 
-import javax.swing.*;
-import java.awt.*;
-
 public class JoinView extends JPanel {
-  private JLabel titolo;
-  private JPanel pnlTextFields;
   private static final String[] placeholders = { "Inserisci l'indirizzo IP", "Inserisci la porta",
       "Inserisci il tuo nome" };
+
+  private MyLabel lblTitolo;
+  private JPanel pnlTextFields;
   private MyTextField[] textFields;
-  private PnlBottoni pnlOpzioni;
+  private JPanel pnlOpzioni;
 
   private JoinController controller;
 
   public JoinView() {
+    lblTitolo = new MyLabel("Unisciti ad una partita:", SwingConstants.LEFT, 8);
+    pnlTextFields = new JPanel(new GridLayout(3, 1));
+    textFields = new MyTextField[placeholders.length];
+    pnlOpzioni = new JPanel(new GridLayout(1, 2));
     controller = new JoinController();
 
     inizializza();
@@ -26,47 +35,21 @@ public class JoinView extends JPanel {
 
   private void inizializza() {
     this.setLayout(new BorderLayout());
-    this.setBorder(null);
     this.setBackground(Color.PINK);
 
-    inizializzaTitolo();
-    inizializzaPnlTextFields();
-    inizializzaPnlOpzioni();
-
-    this.add(titolo, BorderLayout.PAGE_START);
-    this.add(pnlTextFields, BorderLayout.CENTER);
-    this.add(pnlOpzioni, BorderLayout.PAGE_END);
-  }
-
-  private void inizializzaTitolo() {
-    titolo = new JLabel("Unisciti ad una partita:", SwingConstants.LEFT);
-
-    titolo.setBackground(new Color(0, 0, 0, 0));
-    titolo.setForeground(Color.BLACK);
-    titolo.setFont(new Font("Roboto", Font.PLAIN, 20));
-  }
-
-  private void inizializzaPnlTextFields() {
-    pnlTextFields = new JPanel(new GridLayout(3, 1));
-    textFields = new MyTextField[placeholders.length];
-
     pnlTextFields.setBackground(Color.PINK);
-
     for (int i = 0; i < textFields.length; i++) {
-      textFields[i] = new MyTextField(placeholders[i], 20);
+      textFields[i] = new MyTextField(placeholders[i], 8);
 
       pnlTextFields.add(textFields[i]);
     }
-  }
 
-  private void inizializzaPnlOpzioni() {
-    pnlOpzioni = new PnlBottoni(50, new GridLayout(1, 2));
-
-    pnlOpzioni.setBorder(null);
     pnlOpzioni.setBackground(Color.PINK);
+    pnlOpzioni.add(new MyButton("ESCI", 95, 0, false, (e) -> controller.esci()));
+    pnlOpzioni.add(new MyButton("AVVIA", 95, 0, false, (e) -> controller.iniziaCollegamento(textFields)));
 
-    pnlOpzioni.addButton("ESCI", e -> App.setPnlCorrente(new MainMenuView()));
-    pnlOpzioni.addButton("AVVIA",
-        e -> controller.collegamento(textFields[0].getText(), textFields[1].getText(), textFields[2].getText()));
+    this.add(lblTitolo, BorderLayout.PAGE_START);
+    this.add(pnlTextFields, BorderLayout.CENTER);
+    this.add(pnlOpzioni, BorderLayout.PAGE_END);
   }
 }
