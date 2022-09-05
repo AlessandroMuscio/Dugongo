@@ -23,7 +23,6 @@ public class MyLabel extends JLabel {
     this.setOpaque(false);
     this.setBackground(Color.PINK);
     this.setForeground(Color.BLACK);
-
   }
 
   @Override
