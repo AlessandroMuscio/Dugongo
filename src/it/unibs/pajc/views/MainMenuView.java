@@ -6,26 +6,26 @@ import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.GridLayout;
 
-import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.SwingConstants;
 
-import it.unibs.pajc.PnlBottoni;
 import it.unibs.pajc.controllers.MainMenuController;
+import it.unibs.pajc.myComponents.MyButton;
+import it.unibs.pajc.myComponents.MyLabel;
 
 public class MainMenuView extends JPanel {
-  private JLabel lblTitolo;
+  private MyLabel lblTitolo;
   private JPanel pnlPrincipale;
-  private PnlBottoni pnlBottoniPartita;
-  private PnlBottoni pnlBottoniOpzioni;
+  private JPanel pnlBottoniPartita;
+  private JPanel pnlBottoniOpzioni;
   private int dimPrecedente;
   private MainMenuController controller;
 
   public MainMenuView() {
-    lblTitolo = new JLabel("DUGONGO", SwingConstants.CENTER);
+    lblTitolo = new MyLabel("DUGONGO", SwingConstants.CENTER, 15);
     pnlPrincipale = new JPanel(new GridLayout(2, 1));
-    pnlBottoniPartita = new PnlBottoni(50/*, new GridLayout(1, 2)*/);
-    pnlBottoniOpzioni = new PnlBottoni(30/*, new GridLayout(1, 2)*/);
+    pnlBottoniPartita = new JPanel();
+    pnlBottoniOpzioni = new JPanel();
     dimPrecedente = -1;
     controller = new MainMenuController();
 
@@ -36,17 +36,13 @@ public class MainMenuView extends JPanel {
     this.setLayout(new BorderLayout());
     this.setBackground(Color.PINK);
 
-    lblTitolo.setName("lblTitolo");
-    lblTitolo.setBackground(new Color(0, 0, 0, 0));
-    lblTitolo.setForeground(Color.BLACK);
-
     pnlBottoniPartita.setBackground(Color.PINK);
-    pnlBottoniPartita.addButton("AVVIA", e -> controller.iniziaPartita());
-    pnlBottoniPartita.addButton("UNISCITI", e -> controller.uniscitiAllaPartita());
+    pnlBottoniPartita.add(new MyButton("AVVIA", 50, 10, true, (e) -> controller.iniziaPartita()));
+    pnlBottoniPartita.add(new MyButton("UNISCITI", 50, 10, true, (e) -> controller.uniscitiAllaPartita()));
 
     pnlBottoniOpzioni.setBackground(Color.PINK);
-    pnlBottoniOpzioni.addButton("CHIUDI", e -> controller.esci());
-    pnlBottoniOpzioni.addButton("INFO", e -> controller.visualizzaInfo());
+    pnlBottoniOpzioni.add(new MyButton("CHIUDI", 30, 8, true, (e) -> controller.esci()));
+    pnlBottoniOpzioni.add(new MyButton("INFO", 30, 8, true, (e) -> controller.visualizzaInfo()));
 
     pnlPrincipale.add(pnlBottoniPartita);
     pnlPrincipale.add(pnlBottoniOpzioni);

@@ -1,9 +1,9 @@
 package it.unibs.pajc.views;
 
 import it.unibs.pajc.App;
-import it.unibs.pajc.MyTextField;
 import it.unibs.pajc.PnlBottoni;
 import it.unibs.pajc.controllers.JoinController;
+import it.unibs.pajc.myComponents.MyTextField;
 
 import javax.swing.*;
 import java.awt.*;
@@ -53,8 +53,7 @@ public class JoinView extends JPanel {
     pnlTextFields.setBackground(Color.PINK);
 
     for (int i = 0; i < textFields.length; i++) {
-      textFields[i] = new MyTextField(placeholders[i]);
-      textFields[i].setFont(new Font("Roboto", Font.PLAIN, 14));
+      textFields[i] = new MyTextField(placeholders[i], 20);
 
       pnlTextFields.add(textFields[i]);
     }

@@ -3,13 +3,13 @@ package it.unibs.pajc.myComponents;
 import java.awt.Color;
 import java.awt.Cursor;
 import java.awt.Dimension;
-import java.awt.event.ActionListener;
 import java.awt.Font;
-import java.awt.Graphics2D;
 import java.awt.Graphics;
+import java.awt.Graphics2D;
 import java.awt.Image;
 import java.awt.Insets;
 import java.awt.RenderingHints;
+import java.awt.event.ActionListener;
 
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -76,7 +76,7 @@ public class MyButton extends JButton {
       this.setIcon(new ImageIcon(scaledIcon));
 
       if (showText)
-        this.setFont(new Font(Font.MONOSPACED, Font.PLAIN, fontScalingFactor));
+        this.setFont(new Font("Roboto", Font.PLAIN, fontScalingFactor));
 
       parentPreviousSize = parentCurrentSize;
     }

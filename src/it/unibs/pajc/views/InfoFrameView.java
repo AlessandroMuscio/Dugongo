@@ -5,24 +5,22 @@ import java.awt.Color;
 import java.awt.Font;
 import java.awt.Graphics2D;
 import java.awt.GridLayout;
-import java.awt.Toolkit;
-
-import java.util.Map;
+import java.awt.RenderingHints;
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JTextPane;
 
 import it.unibs.pajc.App;
-import it.unibs.pajc.PnlBottoni;
 import it.unibs.pajc.controllers.InfoFrameController;
+import it.unibs.pajc.myComponents.MyButton;
 
 public class InfoFrameView {
   private static JFrame frame;
   private static JPanel pnlPrincipale;
 
   private static JTextPane pagina;
-  private static PnlBottoni[] pnlDirezioni;
+  private static JPanel[] pnlDirezioni;
 
   private static InfoFrameController controller;
 
@@ -33,27 +31,13 @@ public class InfoFrameView {
     inizializzaPnlPrincipale();
 
     frame.setVisible(true);
-
-    Map<?, ?> desktopHints = (Map<?, ?>) Toolkit.getDefaultToolkit().getDesktopProperty("awt.font.desktophints");
-
-    if (desktopHints != null) {
-      ((Graphics2D) frame.getGraphics()).setRenderingHints(desktopHints);
-
-      ((Graphics2D) pnlPrincipale.getGraphics()).setRenderingHints(desktopHints);
-
-      for (int i = 0; i < pnlDirezioni.length; i++)
-        ((Graphics2D) pnlDirezioni[i].getGraphics()).setRenderingHints(desktopHints);
-    }
-
-    frame.repaint();
-    frame.revalidate();
   }
 
   private void inizializzaFrame() {
     frame = new JFrame("Regole di Gioco");
 
     frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-    frame.setLocationRelativeTo(null);
+    frame.setLocationRelativeTo(App.frame);
     frame.setSize(390, 520);
     frame.setResizable(false);
     frame.setIconImage(App.getAppicon());
@@ -78,36 +62,37 @@ public class InfoFrameView {
     pagina = new JTextPane();
     pagina.setText(controller.getCurrentPage());
 
-    pagina.setBorder(null);
     pagina.setBackground(Color.PINK);
     pagina.setForeground(Color.BLACK);
-    pagina.setFont(new Font(Font.SANS_SERIF, Font.PLAIN, 14));
+    pagina.setFont(new Font(Font.MONOSPACED, Font.PLAIN, 14));
     pagina.setEditable(false);
   }
 
   private void inizializzaDirezioni() {
-    pnlDirezioni = new PnlBottoni[3];
+    pnlDirezioni = new JPanel[3];
 
     for (int i = 0; i < pnlDirezioni.length; i++) {
-      pnlDirezioni[i] = new PnlBottoni(50, new GridLayout(1, 2));
+      pnlDirezioni[i] = new JPanel(new GridLayout(1, 2));
 
       pnlDirezioni[i].setBorder(null);
       pnlDirezioni[i].setBackground(Color.PINK);
 
       if (i != 0)
-        pnlDirezioni[i].addButton("INDIETRO", e -> controller.indietro());
+        pnlDirezioni[i].add(new MyButton("INDIETRO", 90, 0, false, (e) -> controller.indietro()));
 
       if (i == 0 || i == (pnlDirezioni.length - 1))
-        pnlDirezioni[i].addButton("ESCI", e -> controller.esci(frame));
+        pnlDirezioni[i].add(new MyButton("ESCI", 90, 0, false, (e) -> controller.esci(frame)));
 
       if (i != (pnlDirezioni.length - 1))
-        pnlDirezioni[i].addButton("AVANTI", e -> controller.avanti());
+        pnlDirezioni[i].add(new MyButton("AVANTI", 90, 0, false, (e) -> controller.avanti()));
     }
   }
 
   public static void refreshFrame() {
     int index = controller.getIndex();
     pagina.setText(controller.getCurrentPage());
+    ((Graphics2D) pagina.getGraphics()).setRenderingHint(RenderingHints.KEY_ANTIALIASING,
+        RenderingHints.VALUE_ANTIALIAS_ON);
 
     pnlPrincipale.remove(pnlPrincipale.getComponentCount() - 1);
 
@@ -118,7 +103,13 @@ public class InfoFrameView {
     else
       pnlPrincipale.add(pnlDirezioni[1], BorderLayout.PAGE_END);
 
+    pagina.repaint();
+    pagina.revalidate();
+
     pnlPrincipale.repaint();
     pnlPrincipale.revalidate();
+
+    frame.repaint();
+    frame.revalidate();
   }
 }

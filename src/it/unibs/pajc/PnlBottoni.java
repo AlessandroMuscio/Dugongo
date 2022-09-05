@@ -11,7 +11,6 @@ import javax.swing.ImageIcon;
 import javax.swing.JPanel;
 import javax.swing.SwingConstants;
 
-import it.unibs.pajc.myComponents.JImage;
 import it.unibs.pajc.myComponents.MyButton;
 
 public class PnlBottoni extends JPanel {
@@ -25,14 +24,6 @@ public class PnlBottoni extends JPanel {
     this.percentuale = percentuale;
     this.setLayout(layoutManager);
   }
-
-  /* public void addButton(String lbl, ActionListener listener) {
-    JImage button = new JImage(new ImageIcon("assets/icone/" + lbl.toLowerCase() + ".png"));
-  
-    button.addActionListener(listener);
-  
-    this.add(button);
-  } */
 
   public void addButton(String lbl, ActionListener actionListener) {
     MyButton button = new MyButton(lbl, percentuale, 10, true, actionListener);

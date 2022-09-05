@@ -1,10 +1,17 @@
 package it.unibs.pajc;
 
-import javax.swing.*;
+import java.awt.Dimension;
+import java.awt.DisplayMode;
+import java.awt.EventQueue;
+import java.awt.GraphicsEnvironment;
+import java.awt.Image;
+import java.awt.Taskbar;
+
+import javax.swing.ImageIcon;
+import javax.swing.JFrame;
+import javax.swing.JPanel;
 
 import it.unibs.pajc.views.MainMenuView;
-
-import java.awt.*;
 
 public class App {
   public static JFrame frame;
