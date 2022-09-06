@@ -17,7 +17,7 @@ public class App {
   public static JFrame frame;
   private static JPanel pnlCorrente;
   public static Dimension screenSize;
-  private static final Image appIcon = new ImageIcon("assets/icon.png").getImage();
+  private static final Image appIcon = new ImageIcon("src/it/unibs/pajc/assets/icon.png").getImage();
 
   public static void main(String[] args) {
     EventQueue.invokeLater(() -> new App());

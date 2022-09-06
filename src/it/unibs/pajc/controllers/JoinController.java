@@ -1,11 +1,7 @@
 package it.unibs.pajc.controllers;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
-import java.io.PrintWriter;
 import java.net.Socket;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -140,38 +136,5 @@ public class JoinController {
         "Errore d'Inserimento",
         JOptionPane.ERROR_MESSAGE);
     return -1;
-  }
-
-  /*
-   * private void send() {
-   * 
-   * try {
-   * 
-   * String request = "CULO STO INVIANDO " + socket.getPort();
-   * 
-   * while (!socket.isClosed()) {
-   * 
-   * writer.println(request);
-   * }
-   * } catch (Exception e) {
-   * 
-   * }
-   * }
-   */
-
-  private void listen() {
-
-    String response;
-
-    try {
-      while (!socket.isClosed()) {
-
-        if ((response = reader.readLine()) != null) {
-          System.out.println(String.format("\n[%s]\n", response));
-        }
-      }
-    } catch (IOException e) {
-
-    }
   }
 }

@@ -16,7 +16,7 @@ import javax.swing.JButton;
 import javax.swing.SwingConstants;
 
 public class MyButton extends JButton {
-  private static final String iconsPath = "assets/icone/";
+  private static final String iconsPath = "src/it/unibs/pajc/assets/icone/";
   private static final String iconsExt = ".png";
 
   private Dimension parentPreviousSize;
