@@ -3,6 +3,8 @@ package it.unibs.pajc.controllers;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.io.PrintWriter;
 import java.net.Socket;
 import java.util.concurrent.ExecutorService;
@@ -11,6 +13,9 @@ import java.util.concurrent.Executors;
 import javax.swing.JOptionPane;
 
 import it.unibs.pajc.App;
+import it.unibs.pajc.DGNGserver.Answer;
+import it.unibs.pajc.DGNGserver.DGNG;
+import it.unibs.pajc.DGNGserver.Request;
 import it.unibs.pajc.myComponents.MyTextField;
 import it.unibs.pajc.views.MainMenuView;
 
@@ -23,8 +28,8 @@ public class JoinController {
   private String name;
 
   private Socket socket;
-  private BufferedReader reader;
-  private PrintWriter writer;
+  private ObjectInputStream reader;
+  private ObjectOutputStream writer;
   private ExecutorService executor;
 
   public JoinController() {
@@ -52,12 +57,18 @@ public class JoinController {
     if (areInputsValid()) {
       try {
         socket = new Socket(ipAddress, port);
-        reader = new BufferedReader(new InputStreamReader(System.in));
-        writer = new PrintWriter(socket.getOutputStream());
+        writer = new ObjectOutputStream(socket.getOutputStream());
+        reader = new ObjectInputStream(socket.getInputStream());
+        Request request = new Request(DGNG.DUGONGO);
 
-        writer.println(reader.readLine());
-        //executor.execute(this::listen);
-      } catch (IOException e) {
+        writer.writeObject(request);
+
+        Answer answer = (Answer) reader.readObject();
+
+        if (answer.getAnswer() == DGNG.REQUEST_OK) {
+          JOptionPane.showMessageDialog(null, answer.getMessage(), answer.getTitle(), JOptionPane.INFORMATION_MESSAGE);
+        }
+      } catch (Exception e) {
         JOptionPane.showMessageDialog(null, "ERRORE!\nImpossibile stabilire la connessione con il server",
             "Errore di Connessione", JOptionPane.ERROR_MESSAGE);
       }
@@ -131,20 +142,22 @@ public class JoinController {
     return -1;
   }
 
-  private void send() {
-
-    try {
-
-      String request = "CULO STO INVIANDO " + socket.getPort();
-
-      while (!socket.isClosed()) {
-
-        writer.println(request);
-      }
-    } catch (Exception e) {
-
-    }
-  }
+  /*
+   * private void send() {
+   * 
+   * try {
+   * 
+   * String request = "CULO STO INVIANDO " + socket.getPort();
+   * 
+   * while (!socket.isClosed()) {
+   * 
+   * writer.println(request);
+   * }
+   * } catch (Exception e) {
+   * 
+   * }
+   * }
+   */
 
   private void listen() {
 

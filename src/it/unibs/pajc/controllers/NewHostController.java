@@ -14,11 +14,12 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 import it.unibs.pajc.App;
+import it.unibs.pajc.DGNGserver.ServerThread;
 import it.unibs.pajc.myComponents.MySocket;
-import it.unibs.pajc.protocols.HostProtocol;
 import it.unibs.pajc.views.MainMenuView;
 
 public class NewHostController {
+  private static final int MAX_REQUESTS = 3;
   private static final int MAX_CLIENTS = 6;
   private static final int MIN_PORT = 49152;
   private static final int MAX_PORT = 65536;
@@ -57,28 +58,30 @@ public class NewHostController {
   }
 
   private void startServer() {
-    System.out.printf("Starting server at port %d...\n", port);
+    try {
+      ServerSocket server = new ServerSocket(port, MAX_REQUESTS);
+      System.out.printf("Starting server at port %d...\n", port);
 
-    try (ServerSocket server = new ServerSocket(port)) {
       while (connectedClients.size() <= MAX_CLIENTS) {
         Socket client = server.accept();
-        HostProtocol hostProtocol = new HostProtocol(client);
-        Thread clientThread = new Thread(hostProtocol);
+        // ServerThread clientThread = new ServerThread(client);
+        System.out.println("Request received");
 
         connectedClients.add(client);
-        clientThread.start();
+        new ServerThread(client).start();
       }
     } catch (IOException e) {
-      System.err.printf("Communication error: %s\n", e);
-      e.printStackTrace();
-    } finally {
-      System.out.println("Closing...");
-      try {
-        closeServer();
-      } catch (IOException e) {
-        e.printStackTrace();
-      }
-    }
+      System.out.println("ERRORE: " + e);
+    } /*
+       * finally {
+       * System.out.println("Closing...");
+       * try {
+       * closeServer();
+       * } catch (IOException e) {
+       * e.printStackTrace();
+       * }
+       * }
+       */
   }
 
   public String getIPaddress() {
