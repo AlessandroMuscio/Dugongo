@@ -32,7 +32,7 @@ public class NewHostView extends JPanel {
     pnlServerCredentials = new JPanel(new GridBagLayout());
     pnlUsers = new JPanel(new GridBagLayout());
     pnlOpzioni = new JPanel(new GridLayout(1, 2));
-    controller = new NewHostController();
+    controller = NewHostController.getInstance();
 
     inizializza();
   }
@@ -98,7 +98,7 @@ public class NewHostView extends JPanel {
   private void inizializzaPnlUsers() {
     pnlUsers.setBackground(Color.PINK);
 
-    ArrayList<String> userNames = controller.getUsersNames();
+    ArrayList<String> userNames = controller.getClientsNames();
     GridBagConstraints constraints = new GridBagConstraints();
 
     constraints.fill = GridBagConstraints.HORIZONTAL;

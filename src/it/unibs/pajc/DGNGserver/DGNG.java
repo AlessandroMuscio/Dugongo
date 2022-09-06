@@ -6,10 +6,11 @@ public class DGNG {
   public static final int MAX_PORT = 65536;
 
   // Comandi DGNG
-  public static final int GIOCA = 0;
-  public static final int SCARTA = 1;
-  public static final int PESCA = 2;
-  public static final int DUGONGO = 3;
+  public static final int UNISCITI = 0;
+  public static final int GIOCA = 1;
+  public static final int SCARTA = 2;
+  public static final int PESCA = 3;
+  public static final int DUGONGO = 4;
   public static final int ESCI = -1;
 
   // Risposte DGNG

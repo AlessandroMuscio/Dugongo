@@ -2,7 +2,7 @@ package it.unibs.pajc.controllers;
 
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
-import java.net.Socket;
+import java.net.SocketOption;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
@@ -12,6 +12,7 @@ import it.unibs.pajc.App;
 import it.unibs.pajc.DGNGserver.Answer;
 import it.unibs.pajc.DGNGserver.DGNG;
 import it.unibs.pajc.DGNGserver.Request;
+import it.unibs.pajc.myComponents.MySocket;
 import it.unibs.pajc.myComponents.MyTextField;
 import it.unibs.pajc.views.MainMenuView;
 
@@ -23,7 +24,7 @@ public class JoinController {
   private int port;
   private String name;
 
-  private Socket socket;
+  private MySocket client;
   private ObjectInputStream reader;
   private ObjectOutputStream writer;
   private ExecutorService executor;
@@ -52,10 +53,10 @@ public class JoinController {
   private void link() {
     if (areInputsValid()) {
       try {
-        socket = new Socket(ipAddress, port);
-        writer = new ObjectOutputStream(socket.getOutputStream());
-        reader = new ObjectInputStream(socket.getInputStream());
-        Request request = new Request(DGNG.DUGONGO);
+        client = new MySocket(ipAddress, port, name);
+        writer = new ObjectOutputStream(client.getOutputStream());
+        reader = new ObjectInputStream(client.getInputStream());
+        Request request = new Request(DGNG.UNISCITI, new Object[] { name });
 
         writer.writeObject(request);
 
