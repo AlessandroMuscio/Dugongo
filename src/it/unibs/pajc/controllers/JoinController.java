@@ -53,9 +53,10 @@ public class JoinController {
       try {
         socket = new Socket(ipAddress, port);
         reader = new BufferedReader(new InputStreamReader(System.in));
-        writer = new PrintWriter(System.out);
+        writer = new PrintWriter(socket.getOutputStream());
 
-        executor.execute(this::listen);
+        writer.println(reader.readLine());
+        //executor.execute(this::listen);
       } catch (IOException e) {
         JOptionPane.showMessageDialog(null, "ERRORE!\nImpossibile stabilire la connessione con il server",
             "Errore di Connessione", JOptionPane.ERROR_MESSAGE);

@@ -5,7 +5,9 @@ import java.awt.Color;
 import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.GridLayout;
+import java.net.SocketException;
 
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.SwingConstants;
 
@@ -37,7 +39,15 @@ public class MainMenuView extends JPanel {
     this.setBackground(Color.PINK);
 
     pnlBottoniPartita.setBackground(Color.PINK);
-    pnlBottoniPartita.add(new MyButton("AVVIA", 50, 10, true, (e) -> controller.iniziaPartita()));
+    pnlBottoniPartita.add(new MyButton("AVVIA", 50, 10, true, (e) -> {
+      try {
+        controller.iniziaPartita();
+      } catch (SocketException e1) {
+        JOptionPane.showMessageDialog(null,
+            "ERRORE!Impossibile creare il server.\nControllare se il vostro router blocca l'apertura di alcune porte e riprovare",
+            "Errore Server", JOptionPane.ERROR_MESSAGE);
+      }
+    }));
     pnlBottoniPartita.add(new MyButton("UNISCITI", 50, 10, true, (e) -> controller.uniscitiAllaPartita()));
 
     pnlBottoniOpzioni.setBackground(Color.PINK);

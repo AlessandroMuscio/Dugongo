@@ -5,8 +5,11 @@ import java.awt.Color;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.GridLayout;
+import java.io.IOException;
+import java.net.SocketException;
 import java.util.ArrayList;
 
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.SwingConstants;
 
@@ -15,6 +18,7 @@ import it.unibs.pajc.myComponents.MyButton;
 import it.unibs.pajc.myComponents.MyLabel;
 
 public class NewHostView extends JPanel {
+  private MyLabel lblTitolo;
   private JPanel pnlCenter;
   private JPanel pnlServerCredentials;
   private JPanel pnlUsers;
@@ -22,7 +26,8 @@ public class NewHostView extends JPanel {
 
   private NewHostController controller;
 
-  public NewHostView() {
+  public NewHostView() throws SocketException {
+    lblTitolo = new MyLabel("Stato del Server", SwingConstants.CENTER, 8);
     pnlCenter = new JPanel(new GridLayout(2, 1));
     pnlServerCredentials = new JPanel(new GridBagLayout());
     pnlUsers = new JPanel(new GridBagLayout());
@@ -38,15 +43,22 @@ public class NewHostView extends JPanel {
 
     pnlCenter.setBackground(Color.pink);
     inizializzaPnlServerCredentials();
-    inizializzaPnlUsers(controller.getUsersNames());
+    inizializzaPnlUsers();
     pnlCenter.add(pnlServerCredentials);
     pnlCenter.add(pnlUsers);
 
     pnlOpzioni.setBackground(Color.PINK);
-    pnlOpzioni.add(new MyButton("ESCI", 95, 0, false, (e) -> controller.esci()));
+    pnlOpzioni.add(new MyButton("ESCI", 95, 0, false, (e) -> {
+      try {
+        controller.esci();
+      } catch (IOException exception) {
+        JOptionPane.showMessageDialog(null, "ERRORE!\nC'è stato un problema nella chiusura del server, riprovare",
+            "Errore Server", JOptionPane.ERROR_MESSAGE);
+      }
+    }));
     pnlOpzioni.add(new MyButton("AVVIA", 95, 0, false, null));
 
-    // this.add(pnlServerCredentials, BorderLayout.PAGE_START);
+    this.add(lblTitolo, BorderLayout.PAGE_START);
     this.add(pnlCenter, BorderLayout.CENTER);
     this.add(pnlOpzioni, BorderLayout.PAGE_END);
   }
@@ -74,16 +86,19 @@ public class NewHostView extends JPanel {
 
     constraints.gridx = 0;
     constraints.gridy = 2;
-    pnlServerCredentials.add(new MyLabel("192.168.1.141", SwingConstants.CENTER, fontScalingPercentage), constraints);
+    pnlServerCredentials.add(new MyLabel(controller.getIPaddress(), SwingConstants.CENTER, fontScalingPercentage),
+        constraints);
 
     constraints.gridx = 1;
     constraints.gridy = 2;
-    pnlServerCredentials.add(new MyLabel("65421", SwingConstants.CENTER, fontScalingPercentage), constraints);
+    pnlServerCredentials.add(
+        new MyLabel(String.valueOf(controller.getPort()), SwingConstants.CENTER, fontScalingPercentage), constraints);
   }
 
-  private void inizializzaPnlUsers(ArrayList<String> userNames) {
+  private void inizializzaPnlUsers() {
     pnlUsers.setBackground(Color.PINK);
 
+    ArrayList<String> userNames = controller.getUsersNames();
     GridBagConstraints constraints = new GridBagConstraints();
 
     constraints.fill = GridBagConstraints.HORIZONTAL;
