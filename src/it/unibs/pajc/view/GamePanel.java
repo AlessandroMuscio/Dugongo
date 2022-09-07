@@ -1,17 +1,18 @@
 package it.unibs.pajc.view;
 
+import it.unibs.pajc.controllers.ServerController;
 import it.unibs.pajc.myComponents.MyButton;
 
 import javax.swing.*;
 import java.awt.*;
+import java.io.IOException;
 
 public class GamePanel extends JPanel {
 
   private static GraphicsDevice device = GraphicsEnvironment.getLocalGraphicsEnvironment().getScreenDevices()[0];
-  private JButton[] tavolo;
-  private Image sfondo = new ImageIcon("assets/generiche/sfondo.jpeg").getImage();
-
-  private Image retro = new ImageIcon("assets/icone/carte/Retro.png").getImage();
+  private MyButton[] tavolo;
+  private Image sfondo = new ImageIcon("src/it/unibs/pajc/assets/generiche/sfondo.jpeg").getImage();
+  //private Image retro = new ImageIcon("src/assets/icone/carte/retro.png").getImage();
   private Dimension screenSize;
 
   public GamePanel() {
@@ -19,8 +20,8 @@ public class GamePanel extends JPanel {
     setScreenSize();
     
     //PORTA LA FINESTRA A SCHERMO INTERO
-    //device.setFullScreenWindow(View.frame);
-    //View.frame.repaint();
+    device.setFullScreenWindow(View.getInstance().getFrame());
+    View.getInstance().getFrame().repaint();
 
     //INIZIALIZZO IL PANNELLO DI STATO CONTENTE I MAZZI E LE INFORMAZIONI DI GIOCO
     JPanel pnlStato = new JPanel();
@@ -32,10 +33,10 @@ public class GamePanel extends JPanel {
     pnlMazzo.setPreferredSize(new Dimension((int) (screenSize.width * 0.3), (int) (screenSize.height * 0.3)));
     pnlMazzo.setOpaque(false);
 
-    JButton buttonMazzo = new JButton();
+    MyButton buttonMazzo = new MyButton("retro", 92,0,false);
     buttonMazzo.setPreferredSize(new Dimension((int) (screenSize.width * 0.1), (int) (screenSize.height * 0.3)));
     pnlMazzo.add(buttonMazzo, BorderLayout.WEST);
-    JButton buttonScartate = new JButton();
+    MyButton buttonScartate = new MyButton("retro", 92,0,false);
     buttonScartate.setPreferredSize(new Dimension((int) (screenSize.width * 0.1), (int) (screenSize.height * 0.3)));
     pnlMazzo.add(buttonScartate, BorderLayout.EAST);
 
@@ -53,12 +54,11 @@ public class GamePanel extends JPanel {
     pnlTavolo.setOpaque(false);
     tavolo = new MyButton[20];
 
-    for (JButton b : tavolo) {
-      b = new JButton();
-      b.setIcon(new ImageIcon(retro));
+    for (MyButton b : tavolo) {
+      b = new MyButton("retro", 48,0,false);
       pnlTavolo.add(b);
 
-      JButton finalB = b;
+      MyButton finalB = b;
       b.addActionListener(e -> {
         if (finalB.isVisible()) {
           //AGGIUNGI ALL'ELENCO DELLE CARTE DA SCARTARE
@@ -104,7 +104,14 @@ public class GamePanel extends JPanel {
     JButton buttonClose = new JButton("CLOSE");
     buttonClose.addActionListener(e -> {
       device.setFullScreenWindow(null);
-     //View.setPnlCorrente(new MenuPanel());
+    
+      try {
+        ServerController.getInstance().closeServer();
+      } catch (IOException ex) {
+        throw new RuntimeException(ex);
+      }
+  
+      View.getInstance().setPnlCorrente(new MenuPanel());
     });
     pnlAzioni.add(buttonClose);
 
