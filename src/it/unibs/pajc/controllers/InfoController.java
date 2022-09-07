@@ -1,23 +1,37 @@
 package it.unibs.pajc.controllers;
 
-import it.unibs.pajc.view.InfoFrameView;
-
-import javax.swing.*;
-import javax.xml.stream.*;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 
+import javax.xml.stream.FactoryConfigurationError;
+import javax.xml.stream.XMLInputFactory;
+import javax.xml.stream.XMLStreamConstants;
+import javax.xml.stream.XMLStreamException;
+import javax.xml.stream.XMLStreamReader;
+
+import it.unibs.pajc.view.InfoView;
+import it.unibs.pajc.view.View;
+
 public class InfoController {
-  private static final String percorsoRegole = "src/it/unibs/pajc/assets/regole.xml";
+  private static final String RULES_PATH = "src/it/unibs/pajc/assets/regole.xml";
+
+  private InfoView view;
+
   private String[] pagine;
   private int index;
 
   public InfoController() {
-    index = 0;
     try {
+      view = InfoView.getInstance();
       caricaPagine();
+
+      view.getIndietroButton().addActionListener((e) -> indietro());
+      view.getEsciButton().addActionListener((e) -> esci());
+      view.getAvantiButton().addActionListener((e) -> avanti());
+
+      view.getFrame().setVisible(true);
     } catch (FileNotFoundException | XMLStreamException | FactoryConfigurationError e) {
-      e.printStackTrace();
+      View.getInstance().showError("ERRORE!\nC'è stato un problema nel caricamento delle regole", "Errore Interno");
     }
   }
 
@@ -26,7 +40,7 @@ public class InfoController {
     boolean page = false;
 
     if (pagine == null || pagine.length == 0) {
-      reader = XMLInputFactory.newInstance().createXMLStreamReader(percorsoRegole, new FileInputStream(percorsoRegole));
+      reader = XMLInputFactory.newInstance().createXMLStreamReader(RULES_PATH, new FileInputStream(RULES_PATH));
 
       while (reader.hasNext()) {
         switch (reader.getEventType()) {
@@ -72,31 +86,36 @@ public class InfoController {
     return parsed.toString();
   }
 
-  public String getCurrentPage() {
+  private String getCurrentPage() {
     return pagine[index];
   }
 
-  public int getIndex() {
-    return index;
-  }
-
-  public int getPagesNumber() {
-    return pagine.length;
-  }
-
-  public void avanti() {
-    index++;
-
-    InfoFrameView.refreshFrame();
-  }
-
-  public void indietro() {
+  private void indietro() {
     index--;
 
-    InfoFrameView.refreshFrame();
+    refreshView();
   }
 
-  public void esci(JFrame frame) {
-    frame.dispose();
+  private void esci() {
+    view.getFrame().dispose();
+  }
+
+  private void avanti() {
+    index++;
+
+    refreshView();
+  }
+
+  private void refreshView() {
+    view.setPagina(getCurrentPage());
+
+    if (index == 0)
+      view.changePnlDirezione(0);
+    else if (index == (pagine.length - 1))
+      view.changePnlDirezione(2);
+    else
+      view.changePnlDirezione(1);
+
+    view.refreshFrame();
   }
 }
