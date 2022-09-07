@@ -15,7 +15,7 @@ import java.net.Socket;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
-public class ClientController {
+public class ClientController extends Controller{
   private static final int MIN_PORT = 49152;
   private static final int MAX_PORT = 65536;
 
@@ -27,6 +27,9 @@ public class ClientController {
   private ObjectInputStream reader;
   private ObjectOutputStream writer;
   private ExecutorService executor;
+  
+  private GamePanel gamePanel;
+  
 
   public ClientController() {
     executor = Executors.newFixedThreadPool(2);
@@ -71,7 +74,7 @@ public class ClientController {
       reader = new ObjectInputStream(client.getInputStream());
       executor.execute(this::listenToServer);
       sendToServer(DGNG.NOME, name);
-      View.getInstance().setPnlCorrente(new GamePanel());
+      //View.getInstance().setPnlCorrente(new GamePanel());
     } catch (Exception e) {
       JOptionPane.showMessageDialog(null, "ERRORE!\nImpossibile stabilire la connessione con il server",
           "Errore di Connessione", JOptionPane.ERROR_MESSAGE);
@@ -84,8 +87,18 @@ public class ClientController {
 
       while (!client.isClosed()) {
 
-        Answer tmp = (Answer) reader.readObject();
-        System.out.println(tmp.getMessage());
+        Answer answer = (Answer) reader.readObject();
+        System.out.println(answer.getMessage());
+  
+        switch (answer.getAnswer()) {
+          case DGNG.START:
+            gamePanel = new GamePanel();
+            View.getInstance().setPnlCorrente(gamePanel);
+            break;
+            
+          case DGNG.CHANGE:
+            gamePanel.setData(super.getModel().getData());
+        }
       }
       System.out.println("Data received");
       // immettere l'oggetto nel model

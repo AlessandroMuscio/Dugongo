@@ -13,10 +13,11 @@ public class DGNG {
   public static final int ESCI = -1;
   public static final int NOME = -2;
 
-
   // Risposte DGNG
   public static final int SERVER_ERROR = 0;
   public static final int REQUEST_OK = 1;
+  public static final int START = 2;
+  public static final int CHANGE = 3;
 
   // Dimensione del buffer
   public static final int PACKAGE_DIM = 1000; // 1kB

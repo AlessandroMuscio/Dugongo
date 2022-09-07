@@ -1,5 +1,6 @@
 package it.unibs.pajc.controllers;
 
+import it.unibs.pajc.DugongoModel;
 import it.unibs.pajc.view.*;
 
 import java.io.IOException;
@@ -11,11 +12,11 @@ public class Controller {
   private MenuPanel menuPanel;
   private ServerPanel serverPanel;
   private ClientPanel clientPanel;
-  private GamePanel gamePanel;
   
   private ServerController serverController;
   private ClientController clientController;
   private InfoController infoController;
+  private DugongoModel model;
 
   public Controller(){
     view = View.getInstance();
@@ -81,7 +82,14 @@ public class Controller {
   private void avviaPartita(){
     clientController = new ClientController();
     clientController.joinGame(serverController.getIPaddress(), serverController.getPort()); //CREA UN NUOVO SOCKET SU 127.0.0.1 E MI COLLEGA IN LOCALE COME CLIENT
-    //serverController.avvia(); //GENERA IL MODEL, AVVIA LA PARTITA INVIANDO A TUTTI I CLIENT IL SEGNALE PER APRIRE IL GAMEPANEL
+    serverController.avvia(); //GENERA IL MODEL, AVVIA LA PARTITA INVIANDO A TUTTI I CLIENT IL SEGNALE PER APRIRE IL GAMEPANEL
   }
   
+  public DugongoModel getModel() {
+    return model;
+  }
+  
+  public void setModel(DugongoModel model) {
+    this.model = model;
+  }
 }
