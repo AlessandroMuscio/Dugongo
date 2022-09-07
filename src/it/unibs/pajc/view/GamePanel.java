@@ -1,12 +1,11 @@
-package it.unibs.pajc.views;
+package it.unibs.pajc.view;
 
-import it.unibs.pajc.App;
 import it.unibs.pajc.myComponents.MyButton;
 
 import javax.swing.*;
 import java.awt.*;
 
-public class GameView extends JPanel {
+public class GamePanel extends JPanel {
 
   private static GraphicsDevice device = GraphicsEnvironment.getLocalGraphicsEnvironment().getScreenDevices()[0];
   private JButton[] tavolo;
@@ -14,41 +13,41 @@ public class GameView extends JPanel {
 
   private Image retro = new ImageIcon("assets/icone/carte/Retro.png").getImage();
 
-  public GameView() {
+  public GamePanel() {
 
     //PORTA LA FINESTRA A SCHERMO INTERO
-    device.setFullScreenWindow(App.frame);
-    App.frame.repaint();
+    device.setFullScreenWindow(View.frame);
+    View.frame.repaint();
 
     //INIZIALIZZO IL PANNELLO DI STATO CONTENTE I MAZZI E LE INFORMAZIONI DI GIOCO
     JPanel pnlStato = new JPanel();
     pnlStato.setLayout(new BorderLayout());
     pnlStato.setOpaque(false);
-    pnlStato.setPreferredSize(new Dimension(App.screenSize.width, (int) (App.screenSize.height * 0.3)));
+    pnlStato.setPreferredSize(new Dimension(View.screenSize.width, (int) (View.screenSize.height * 0.3)));
 
     JPanel pnlMazzo = new JPanel();
-    pnlMazzo.setPreferredSize(new Dimension((int) (App.screenSize.width * 0.3), (int) (App.screenSize.height * 0.3)));
+    pnlMazzo.setPreferredSize(new Dimension((int) (View.screenSize.width * 0.3), (int) (View.screenSize.height * 0.3)));
     pnlMazzo.setOpaque(false);
 
     JButton buttonMazzo = new JButton();
     buttonMazzo
-        .setPreferredSize(new Dimension((int) (App.screenSize.width * 0.1), (int) (App.screenSize.height * 0.3)));
+        .setPreferredSize(new Dimension((int) (View.screenSize.width * 0.1), (int) (View.screenSize.height * 0.3)));
     pnlMazzo.add(buttonMazzo, BorderLayout.WEST);
     JButton buttonScartate = new JButton();
     buttonScartate
-        .setPreferredSize(new Dimension((int) (App.screenSize.width * 0.1), (int) (App.screenSize.height * 0.3)));
+        .setPreferredSize(new Dimension((int) (View.screenSize.width * 0.1), (int) (View.screenSize.height * 0.3)));
     pnlMazzo.add(buttonScartate, BorderLayout.EAST);
 
     pnlStato.add(pnlMazzo, BorderLayout.WEST);
 
     JPanel pnlPartita = new JPanel();
-    pnlPartita.setPreferredSize(new Dimension((int) (App.screenSize.width * 0.3), (int) (App.screenSize.height * 0.3)));
+    pnlPartita.setPreferredSize(new Dimension((int) (View.screenSize.width * 0.3), (int) (View.screenSize.height * 0.3)));
     pnlPartita.setBackground(Color.yellow);
     pnlStato.add(pnlPartita, BorderLayout.EAST);
 
     //INIZIALIZZO IL PANNELLO DI GIOCO (CIOE' IL TAVOLO)
     JPanel pnlTavolo = new JPanel();
-    pnlTavolo.setPreferredSize(new Dimension(App.screenSize.width, (int) (App.screenSize.height * 0.6)));
+    pnlTavolo.setPreferredSize(new Dimension(View.screenSize.width, (int) (View.screenSize.height * 0.6)));
     pnlTavolo.setLayout(new GridLayout(2, 10, 0, 0));
     pnlTavolo.setOpaque(false);
     tavolo = new MyButton[20];
@@ -68,7 +67,7 @@ public class GameView extends JPanel {
 
     //INIZIALIZZO IL PANNELLO AZIONI CON LE POSSIBILI OPERAZIONI DA ESEGUIRE DURANTE LA PARTITA
     JPanel pnlAzioni = new JPanel();
-    pnlAzioni.setPreferredSize(new Dimension(App.screenSize.width, (int) (App.screenSize.height * 0.08)));
+    pnlAzioni.setPreferredSize(new Dimension(View.screenSize.width, (int) (View.screenSize.height * 0.08)));
     pnlAzioni.setLayout(new GridLayout(1, 5, 0, 0));
     pnlAzioni.setOpaque(false);
 
@@ -104,7 +103,7 @@ public class GameView extends JPanel {
     JButton buttonClose = new JButton("CLOSE");
     buttonClose.addActionListener(e -> {
       device.setFullScreenWindow(null);
-      App.setPnlCorrente(new MainMenuView());
+     // View.setPnlCorrente(new MenuPanel());
     });
     pnlAzioni.add(buttonClose);
 

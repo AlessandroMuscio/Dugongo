@@ -1,19 +1,7 @@
 package it.unibs.pajc.myComponents;
 
-import java.awt.Color;
-import java.awt.Cursor;
-import java.awt.Dimension;
-import java.awt.Font;
-import java.awt.Graphics;
-import java.awt.Graphics2D;
-import java.awt.Image;
-import java.awt.Insets;
-import java.awt.RenderingHints;
-import java.awt.event.ActionListener;
-
-import javax.swing.ImageIcon;
-import javax.swing.JButton;
-import javax.swing.SwingConstants;
+import javax.swing.*;
+import java.awt.*;
 
 public class MyButton extends JButton {
   private static final String iconsPath = "src/it/unibs/pajc/assets/icone/";
@@ -26,8 +14,7 @@ public class MyButton extends JButton {
   private int iconScalingPercentage;
   private int fontScalingPercentage;
 
-  public MyButton(String text, int iconScalingPercentage, int fontScalingPercentage, boolean showText,
-      ActionListener listener) {
+  public MyButton(String text, int iconScalingPercentage, int fontScalingPercentage, boolean showText) {
     super(text, new ImageIcon(iconsPath + text.toLowerCase() + iconsExt));
 
     this.parentPreviousSize = new Dimension(-1, -1);
@@ -38,8 +25,6 @@ public class MyButton extends JButton {
 
     if (!showText)
       this.setText(null);
-
-    this.addActionListener(listener);
 
     this.setBorderPainted(false);
     this.setContentAreaFilled(false);

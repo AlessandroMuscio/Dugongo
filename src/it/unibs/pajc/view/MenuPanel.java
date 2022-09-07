@@ -1,58 +1,48 @@
-package it.unibs.pajc.views;
+package it.unibs.pajc.view;
 
-import java.awt.BorderLayout;
-import java.awt.Color;
-import java.awt.Font;
-import java.awt.Graphics;
-import java.awt.GridLayout;
-import java.net.SocketException;
-
-import javax.swing.JOptionPane;
-import javax.swing.JPanel;
-import javax.swing.SwingConstants;
-
-import it.unibs.pajc.controllers.MainMenuController;
 import it.unibs.pajc.myComponents.MyButton;
 import it.unibs.pajc.myComponents.MyLabel;
 
-public class MainMenuView extends JPanel {
+import javax.swing.*;
+import java.awt.*;
+
+public class MenuPanel extends JPanel {
   private MyLabel lblTitolo;
   private JPanel pnlPrincipale;
   private JPanel pnlBottoniPartita;
   private JPanel pnlBottoniOpzioni;
+  
+  private MyButton avviaButton;
+  private MyButton uniscitiButton;
+  private MyButton chiudiButton;
+  private MyButton infoButton;
   private int dimPrecedente;
-  private MainMenuController controller;
 
-  public MainMenuView() {
+  public MenuPanel() {
     lblTitolo = new MyLabel("DUGONGO", SwingConstants.CENTER, 15);
     pnlPrincipale = new JPanel(new GridLayout(2, 1));
     pnlBottoniPartita = new JPanel();
     pnlBottoniOpzioni = new JPanel();
     dimPrecedente = -1;
-    controller = new MainMenuController();
-
+    avviaButton = new MyButton("AVVIA", 50, 10, true);
+    uniscitiButton = new MyButton("UNISCITI", 50, 10, true);
+    chiudiButton = new MyButton("CHIUDI", 30, 8, true);
+    infoButton = new MyButton("INFO", 30, 8, true);
+    
     inizializza();
   }
-
+ 
   private void inizializza() {
     this.setLayout(new BorderLayout());
     this.setBackground(Color.PINK);
 
     pnlBottoniPartita.setBackground(Color.PINK);
-    pnlBottoniPartita.add(new MyButton("AVVIA", 50, 10, true, (e) -> {
-      try {
-        controller.iniziaPartita();
-      } catch (SocketException e1) {
-        JOptionPane.showMessageDialog(null,
-            "ERRORE!Impossibile creare il server.\nControllare se il vostro router blocca l'apertura di alcune porte e riprovare",
-            "Errore Server", JOptionPane.ERROR_MESSAGE);
-      }
-    }));
-    pnlBottoniPartita.add(new MyButton("UNISCITI", 50, 10, true, (e) -> controller.uniscitiAllaPartita()));
+    pnlBottoniPartita.add(avviaButton);
+    pnlBottoniPartita.add(uniscitiButton);
 
     pnlBottoniOpzioni.setBackground(Color.PINK);
-    pnlBottoniOpzioni.add(new MyButton("CHIUDI", 30, 8, true, (e) -> controller.esci()));
-    pnlBottoniOpzioni.add(new MyButton("INFO", 30, 8, true, (e) -> controller.visualizzaInfo()));
+    pnlBottoniOpzioni.add(chiudiButton);
+    pnlBottoniOpzioni.add(infoButton);
 
     pnlPrincipale.add(pnlBottoniPartita);
     pnlPrincipale.add(pnlBottoniOpzioni);
@@ -73,5 +63,21 @@ public class MainMenuView extends JPanel {
 
       dimPrecedente = dim;
     }
+  }
+  
+  public MyButton getAvviaButton() {
+    return avviaButton;
+  }
+  
+  public MyButton getUniscitiButton() {
+    return uniscitiButton;
+  }
+  
+  public MyButton getChiudiButton() {
+    return chiudiButton;
+  }
+  
+  public MyButton getInfoButton() {
+    return infoButton;
   }
 }

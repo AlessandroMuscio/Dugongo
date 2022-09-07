@@ -1,18 +1,14 @@
-package it.unibs.pajc.views;
+package it.unibs.pajc.view;
 
-import java.awt.BorderLayout;
-import java.awt.Color;
-import java.awt.GridLayout;
-
-import javax.swing.JPanel;
-import javax.swing.SwingConstants;
-
-import it.unibs.pajc.controllers.JoinController;
+import it.unibs.pajc.controllers.ClientController;
 import it.unibs.pajc.myComponents.MyButton;
 import it.unibs.pajc.myComponents.MyLabel;
 import it.unibs.pajc.myComponents.MyTextField;
 
-public class JoinView extends JPanel {
+import javax.swing.*;
+import java.awt.*;
+
+public class ClientPanel extends JPanel {
   private static final String[] placeholders = { "Inserisci l'indirizzo IP", "Inserisci la porta",
       "Inserisci il tuo nome" };
 
@@ -20,15 +16,19 @@ public class JoinView extends JPanel {
   private JPanel pnlTextFields;
   private MyTextField[] textFields;
   private JPanel pnlOpzioni;
+  private MyButton esciButton;
+  private MyButton avviaButton;
 
-  private JoinController controller;
+  private ClientController controller;
 
-  public JoinView() {
+  public ClientPanel() {
     lblTitolo = new MyLabel("Unisciti ad una partita:", SwingConstants.LEFT, 8);
     pnlTextFields = new JPanel(new GridLayout(3, 1));
     textFields = new MyTextField[placeholders.length];
     pnlOpzioni = new JPanel(new GridLayout(1, 2));
-    controller = new JoinController();
+    controller = new ClientController();
+    esciButton = new MyButton("ESCI", 95, 0, false);
+    avviaButton = new MyButton("AVVIA", 95, 0, false);
 
     inizializza();
   }
@@ -43,13 +43,25 @@ public class JoinView extends JPanel {
 
       pnlTextFields.add(textFields[i]);
     }
-
+    
     pnlOpzioni.setBackground(Color.PINK);
-    pnlOpzioni.add(new MyButton("ESCI", 95, 0, false, (e) -> controller.esci()));
-    pnlOpzioni.add(new MyButton("AVVIA", 95, 0, false, (e) -> controller.iniziaCollegamento(textFields)));
+    pnlOpzioni.add(esciButton);
+    pnlOpzioni.add(avviaButton);
 
     this.add(lblTitolo, BorderLayout.PAGE_START);
     this.add(pnlTextFields, BorderLayout.CENTER);
     this.add(pnlOpzioni, BorderLayout.PAGE_END);
+  }
+  
+  public MyTextField[] getTextFields() {
+    return textFields;
+  }
+  
+  public MyButton getEsciButton() {
+    return esciButton;
+  }
+  
+  public MyButton getAvviaButton() {
+    return avviaButton;
   }
 }

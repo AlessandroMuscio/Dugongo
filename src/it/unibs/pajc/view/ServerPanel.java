@@ -1,38 +1,34 @@
-package it.unibs.pajc.views;
+package it.unibs.pajc.view;
 
-import java.awt.BorderLayout;
-import java.awt.Color;
-import java.awt.GridBagConstraints;
-import java.awt.GridBagLayout;
-import java.awt.GridLayout;
-import java.io.IOException;
-import java.net.SocketException;
-import java.util.ArrayList;
-
-import javax.swing.JOptionPane;
-import javax.swing.JPanel;
-import javax.swing.SwingConstants;
-
-import it.unibs.pajc.controllers.NewHostController;
+import it.unibs.pajc.controllers.ServerController;
 import it.unibs.pajc.myComponents.MyButton;
 import it.unibs.pajc.myComponents.MyLabel;
 
-public class NewHostView extends JPanel {
+import javax.swing.*;
+import java.awt.*;
+import java.net.SocketException;
+import java.util.ArrayList;
+
+public class ServerPanel extends JPanel {
   private MyLabel lblTitolo;
   private JPanel pnlCenter;
   private JPanel pnlServerCredentials;
   private JPanel pnlUsers;
   private JPanel pnlOpzioni;
+  private MyButton esciButton;
+  private MyButton avviaButton;
 
-  private NewHostController controller;
+  private ServerController controller;
 
-  public NewHostView() throws SocketException {
+  public ServerPanel() throws SocketException {
     lblTitolo = new MyLabel("Stato del Server", SwingConstants.CENTER, 8);
     pnlCenter = new JPanel(new GridLayout(2, 1));
     pnlServerCredentials = new JPanel(new GridBagLayout());
     pnlUsers = new JPanel(new GridBagLayout());
     pnlOpzioni = new JPanel(new GridLayout(1, 2));
-    controller = NewHostController.getInstance();
+    controller = ServerController.getInstance();
+    esciButton = new MyButton("ESCI", 95, 0, false);
+    avviaButton = new MyButton("AVVIA", 95, 0, false);
 
     inizializza();
   }
@@ -48,15 +44,8 @@ public class NewHostView extends JPanel {
     pnlCenter.add(pnlUsers);
 
     pnlOpzioni.setBackground(Color.PINK);
-    pnlOpzioni.add(new MyButton("ESCI", 95, 0, false, (e) -> {
-      try {
-        controller.esci();
-      } catch (IOException exception) {
-        JOptionPane.showMessageDialog(null, "ERRORE!\nC'è stato un problema nella chiusura del server, riprovare",
-            "Errore Server", JOptionPane.ERROR_MESSAGE);
-      }
-    }));
-    pnlOpzioni.add(new MyButton("AVVIA", 95, 0, false, null));
+    pnlOpzioni.add(esciButton);
+    pnlOpzioni.add(avviaButton);
 
     this.add(lblTitolo, BorderLayout.PAGE_START);
     this.add(pnlCenter, BorderLayout.CENTER);
@@ -113,5 +102,13 @@ public class NewHostView extends JPanel {
       constraints.gridy = (i % (userNames.size() / 2)) + 1;
       pnlUsers.add(new MyLabel(userNames.get(i), SwingConstants.CENTER, 10), constraints);
     }
+  }
+  
+  public MyButton getEsciButton() {
+    return esciButton;
+  }
+  
+  public MyButton getAvviaButton() {
+    return avviaButton;
   }
 }

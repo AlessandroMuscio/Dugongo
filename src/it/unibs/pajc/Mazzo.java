@@ -1,19 +1,16 @@
 package it.unibs.pajc;
 
-import java.awt.Image;
-
+import javax.swing.*;
+import java.awt.*;
 import java.io.File;
 import java.io.FileFilter;
-
 import java.util.Collections;
+import java.util.Stack;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-import java.util.Stack;
-
-import javax.swing.ImageIcon;
 
 public class Mazzo extends Carte {
-  private final File folder = new File("assets/carte");
+  private final File folder = new File("src/it/unibs/pajc/assets/carte");
   private Stack<Carta> mazzo;
 
   public Mazzo() {

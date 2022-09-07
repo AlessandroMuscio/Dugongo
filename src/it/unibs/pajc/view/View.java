@@ -1,34 +1,29 @@
-package it.unibs.pajc;
+package it.unibs.pajc.view;
 
-import java.awt.Dimension;
-import java.awt.DisplayMode;
-import java.awt.EventQueue;
-import java.awt.GraphicsEnvironment;
-import java.awt.Image;
-import java.awt.Taskbar;
+import javax.swing.*;
+import java.awt.*;
 
-import javax.swing.ImageIcon;
-import javax.swing.JFrame;
-import javax.swing.JPanel;
-
-import it.unibs.pajc.views.MainMenuView;
-
-public class App {
+public class View {
+  
+  private static View singleton = null;
   public static JFrame frame;
   private static JPanel pnlCorrente;
   public static Dimension screenSize;
   private static final Image appIcon = new ImageIcon("src/it/unibs/pajc/assets/icon.png").getImage();
 
-  public static void main(String[] args) {
-    EventQueue.invokeLater(() -> new App());
-  }
-
-  public App() {
+  private View() {
     setScreenSize();
     inizializzaFrame();
-    setPnlCorrente(new MainMenuView());
 
     frame.setVisible(true);
+  }
+  
+  public static View getInstance(){
+    if (singleton == null){
+      singleton = new View();
+    }
+    
+    return singleton;
   }
 
   private void setScreenSize() {
@@ -48,13 +43,17 @@ public class App {
       Taskbar.getTaskbar().setIconImage(appIcon);
   }
 
-  public static void setPnlCorrente(JPanel pnlCorrente) {
+  public void setPnlCorrente(JPanel pnlCorrente) {
     frame.getContentPane().removeAll();
-    App.pnlCorrente = pnlCorrente;
-    frame.getContentPane().add(App.pnlCorrente);
+    View.pnlCorrente = pnlCorrente;
+    frame.getContentPane().add(View.pnlCorrente);
 
     frame.repaint();
     frame.revalidate();
+  }
+  
+  public void showError(String messaggio, String titolo){
+    JOptionPane.showMessageDialog(null, messaggio, titolo, JOptionPane.ERROR_MESSAGE);
   }
 
   public static Image getAppicon() {

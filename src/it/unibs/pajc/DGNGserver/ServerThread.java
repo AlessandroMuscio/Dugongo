@@ -5,7 +5,7 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
 
-import it.unibs.pajc.controllers.NewHostController;
+import it.unibs.pajc.controllers.ServerController;
 
 public class ServerThread extends Thread {
   private Socket client;
@@ -29,7 +29,7 @@ public class ServerThread extends Thread {
         case DGNG.UNISCITI:
           String name = String.valueOf(request.getAttributes()[0]);
 
-          NewHostController.getInstance().addClientName(name);
+          ServerController.getInstance().addClientName(name);
           break;
 
         case DGNG.GIOCA:

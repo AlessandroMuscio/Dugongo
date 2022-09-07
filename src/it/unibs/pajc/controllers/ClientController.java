@@ -1,22 +1,18 @@
 package it.unibs.pajc.controllers;
 
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
-import java.net.SocketOption;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-
-import javax.swing.JOptionPane;
-
-import it.unibs.pajc.App;
 import it.unibs.pajc.DGNGserver.Answer;
 import it.unibs.pajc.DGNGserver.DGNG;
 import it.unibs.pajc.DGNGserver.Request;
 import it.unibs.pajc.myComponents.MySocket;
 import it.unibs.pajc.myComponents.MyTextField;
-import it.unibs.pajc.views.MainMenuView;
 
-public class JoinController {
+import javax.swing.*;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+
+public class ClientController {
   private static final int MIN_PORT = 49152;
   private static final int MAX_PORT = 65536;
 
@@ -29,12 +25,8 @@ public class JoinController {
   private ObjectOutputStream writer;
   private ExecutorService executor;
 
-  public JoinController() {
+  public ClientController() {
     executor = Executors.newFixedThreadPool(2);
-  }
-
-  public void esci() {
-    App.setPnlCorrente(new MainMenuView());
   }
 
   public void iniziaCollegamento(MyTextField[] textFields) {

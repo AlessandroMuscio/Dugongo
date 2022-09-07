@@ -1,19 +1,9 @@
-package it.unibs.pajc.views;
+package it.unibs.pajc.view;
 
-import java.awt.BorderLayout;
-import java.awt.Color;
-import java.awt.Font;
-import java.awt.Graphics2D;
-import java.awt.GridLayout;
-import java.awt.RenderingHints;
+import it.unibs.pajc.controllers.InfoController;
 
-import javax.swing.JFrame;
-import javax.swing.JPanel;
-import javax.swing.JTextPane;
-
-import it.unibs.pajc.App;
-import it.unibs.pajc.controllers.InfoFrameController;
-import it.unibs.pajc.myComponents.MyButton;
+import javax.swing.*;
+import java.awt.*;
 
 public class InfoFrameView {
   private static JFrame frame;
@@ -22,10 +12,10 @@ public class InfoFrameView {
   private static JTextPane pagina;
   private static JPanel[] pnlDirezioni;
 
-  private static InfoFrameController controller;
+  private static InfoController controller;
 
   public InfoFrameView() {
-    controller = new InfoFrameController();
+    controller = new InfoController();
 
     inizializzaFrame();
     inizializzaPnlPrincipale();
@@ -37,10 +27,10 @@ public class InfoFrameView {
     frame = new JFrame("Regole di Gioco");
 
     frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-    frame.setLocationRelativeTo(App.frame);
+    frame.setLocationRelativeTo(View.frame);
     frame.setSize(390, 520);
     frame.setResizable(false);
-    frame.setIconImage(App.getAppicon());
+    frame.setIconImage(View.getAppicon());
   }
 
   private void inizializzaPnlPrincipale() {
@@ -50,7 +40,7 @@ public class InfoFrameView {
     pnlPrincipale.setBackground(Color.PINK);
 
     inizializzaPagina();
-    inizializzaDirezioni();
+    //inizializzaDirezioni();
 
     pnlPrincipale.add(pagina, BorderLayout.CENTER);
     pnlPrincipale.add(pnlDirezioni[0], BorderLayout.PAGE_END);
@@ -67,7 +57,7 @@ public class InfoFrameView {
     pagina.setFont(new Font(Font.MONOSPACED, Font.PLAIN, 14));
     pagina.setEditable(false);
   }
-
+/*
   private void inizializzaDirezioni() {
     pnlDirezioni = new JPanel[3];
 
@@ -86,7 +76,7 @@ public class InfoFrameView {
       if (i != (pnlDirezioni.length - 1))
         pnlDirezioni[i].add(new MyButton("AVANTI", 90, 0, false, (e) -> controller.avanti()));
     }
-  }
+  }*/
 
   public static void refreshFrame() {
     int index = controller.getIndex();

@@ -1,23 +1,18 @@
 package it.unibs.pajc.controllers;
 
+import it.unibs.pajc.view.InfoFrameView;
+
+import javax.swing.*;
+import javax.xml.stream.*;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 
-import javax.swing.JFrame;
-import javax.xml.stream.FactoryConfigurationError;
-import javax.xml.stream.XMLInputFactory;
-import javax.xml.stream.XMLStreamConstants;
-import javax.xml.stream.XMLStreamException;
-import javax.xml.stream.XMLStreamReader;
-
-import it.unibs.pajc.views.InfoFrameView;
-
-public class InfoFrameController {
-  private static final String percorsoRegole = "assets/regole.xml";
+public class InfoController {
+  private static final String percorsoRegole = "src/it/unibs/pajc/assets/regole.xml";
   private String[] pagine;
   private int index;
 
-  public InfoFrameController() {
+  public InfoController() {
     index = 0;
     try {
       caricaPagine();

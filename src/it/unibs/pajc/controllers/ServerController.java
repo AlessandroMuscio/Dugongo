@@ -1,25 +1,17 @@
 package it.unibs.pajc.controllers;
 
+import it.unibs.pajc.DGNGserver.ServerThread;
+
 import java.io.IOException;
-import java.net.Inet4Address;
-import java.net.InetAddress;
-import java.net.NetworkInterface;
-import java.net.ServerSocket;
-import java.net.Socket;
-import java.net.SocketException;
+import java.net.*;
 import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.Random;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
-import it.unibs.pajc.App;
-import it.unibs.pajc.DGNGserver.ServerThread;
-import it.unibs.pajc.myComponents.MySocket;
-import it.unibs.pajc.views.MainMenuView;
-
-public class NewHostController {
-  private static NewHostController singleton = null;
+public class ServerController {
+  private static ServerController singleton = null;
 
   private static final int MAX_REQUESTS = 3;
   private static final int MAX_CLIENTS = 6;
@@ -32,7 +24,7 @@ public class NewHostController {
   private int port;
   private ExecutorService executors;
 
-  private NewHostController() throws SocketException {
+  private ServerController() throws SocketException {
     connectedClients = new ArrayList<Socket>();
     clientsNames = new ArrayList<String>();
     IPaddress = getLocalIPaddress();
@@ -42,9 +34,9 @@ public class NewHostController {
     executors.execute(this::startServer);
   }
 
-  public static NewHostController getInstance() throws SocketException {
+  public static ServerController getInstance() throws SocketException {
     if (singleton == null)
-      singleton = new NewHostController();
+      singleton = new ServerController();
 
     return singleton;
   }
@@ -101,14 +93,13 @@ public class NewHostController {
     return clientsNames;
   }
 
-  public void esci() throws IOException {
-    closeServer();
-    App.setPnlCorrente(new MainMenuView());
-  }
-
-  private void closeServer() throws IOException {
-    for (Socket connectedClient : connectedClients)
-      if (!connectedClient.isClosed())
+  public void closeServer() throws IOException {
+    for (Socket connectedClient : connectedClients) {
+      if (!connectedClient.isClosed()) {
         connectedClient.close();
+      }
+    }
+    singleton = null;
+    System.out.println("Server closed");
   }
 }
