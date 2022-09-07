@@ -24,6 +24,7 @@ public class InfoController {
     try {
       view = InfoView.getInstance();
       caricaPagine();
+      view.setPagina(getCurrentPage());
 
       view.getIndietroButton().addActionListener((e) -> indietro());
       view.getEsciButton().addActionListener((e) -> esci());
