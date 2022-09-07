@@ -11,17 +11,23 @@ public class ServerThread extends Thread {
   private Socket client;
   private Request request;
   private Answer answer;
+  private ObjectInputStream objectReader;
+  private ObjectOutputStream objectWriter;
 
   public ServerThread(Socket client) {
     this.client = client;
+    try {
+      objectReader = new ObjectInputStream(client.getInputStream());
+      objectWriter = new ObjectOutputStream(client.getOutputStream());
+    } catch (IOException e) {
+      e.printStackTrace();
+    }
   }
 
   public void run() {
     // byte[] buffer = new byte[DGNG.PACKAGE_DIM];
 
     try {
-      ObjectInputStream objectReader = new ObjectInputStream(client.getInputStream());
-      ObjectOutputStream objectWriter = new ObjectOutputStream(client.getOutputStream());
       request = (Request) objectReader.readObject();
       System.out.println(request);
 
@@ -35,7 +41,7 @@ public class ServerThread extends Thread {
 
         case DGNG.SCARTA:
           answer = new Answer(DGNG.REQUEST_OK, "Richiesta ricevuta", "Scartando...");
-          
+
           objectWriter.writeObject(answer);
           objectWriter.flush();
           break;
@@ -69,16 +75,12 @@ public class ServerThread extends Thread {
           close();
           break;
       }
-
-      objectReader.close();
-      objectWriter.close();
-      close();
     } catch (Exception e) {
       e.printStackTrace();
     }
   }
-  
-  public boolean isClosed(){
+
+  public boolean isClosed() {
     return client.isClosed();
   }
 
@@ -86,13 +88,13 @@ public class ServerThread extends Thread {
     if (!client.isClosed())
       client.close();
   }
-  
-  public void send(int codice){
+
+  public void send(int codice) {
     try {
-      ObjectOutputStream objectWriter = new ObjectOutputStream(client.getOutputStream());
       Answer answer = new Answer(codice);
-      
+
       objectWriter.writeObject(answer);
+      objectWriter.flush();
     } catch (IOException e) {
       throw new RuntimeException(e);
     }
