@@ -1,11 +1,11 @@
 package it.unibs.pajc.DGNGserver;
 
+import it.unibs.pajc.controllers.ServerController;
+
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
-
-import it.unibs.pajc.controllers.ServerController;
 
 public class ServerThread extends Thread {
   private Socket client;
@@ -58,6 +58,10 @@ public class ServerThread extends Thread {
 
           objectWriter.writeObject(answer);
           objectWriter.flush();
+          break;
+          
+        case DGNG.READY:
+          System.out.println("Il client " + client.getPort() + " è pronto per giocare");
           break;
 
         case DGNG.ESCI:

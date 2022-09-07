@@ -12,6 +12,7 @@ public class DGNG {
   public static final int PESCA = 3;
   public static final int DUGONGO = 4;
   public static final int ESCI = -1;
+  public static final int READY = -2;
 
   // Risposte DGNG
   public static final int SERVER_ERROR = 0;

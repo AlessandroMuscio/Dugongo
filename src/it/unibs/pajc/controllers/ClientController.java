@@ -64,9 +64,7 @@ public class ClientController {
       while(!client.isClosed()) {
         
         Answer tmp = (Answer) reader.readObject();
-       
-       // view.revalidate();
-       // view.repaint();
+        System.out.println(tmp.getMessage());
       }
       System.out.println("Data received");
       // immettere l'oggetto nel model
@@ -79,10 +77,10 @@ public class ClientController {
   }
   
   
-  private void sendToServer() {
+  private void sendToServer(int code) {
     
     try {
-      Request request = new Request(DGNG.REQUEST_OK);
+      Request request = new Request(code);
       
       writer.writeUnshared(request);
       writer.flush();
@@ -161,6 +159,6 @@ public class ClientController {
   
   public void ready() {
     //SEND TO SERVER @READY
-    //sendToServer(DGNG.SERVER_ERROR);
+    sendToServer(DGNG.READY);
   }
 }
