@@ -13,7 +13,7 @@ import java.util.*;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
-public class ServerController extends Controller{
+public class ServerController extends Controller {
   private static ServerController singleton = null;
 
   private static final int MAX_REQUESTS = 3;
@@ -77,21 +77,25 @@ public class ServerController extends Controller{
       System.out.println("ERRORE: " + e);
     }
   }
-  
-  public void updatedModel(ChangeEvent e){
+
+  public void updatedModel(ChangeEvent e) {
     sendToAllClients(DGNG.CHANGE);
   }
-  
-  public void avvia(){
+
+  public void avvia() {
     super.setModel(new DugongoModel());
     super.getModel().addChangeListener(this::updatedModel);
     sendToAllClients(DGNG.START);
   }
-  
-  private void sendToAllClients(int code){
-    for (ServerThread temp : connectedClients){
-      temp.send(code);
+
+  private void sendToAllClients(int code) {
+    for (ServerThread connectedClient : connectedClients) {
+      connectedClient.send(code);
     }
+  }
+
+  public HashMap<Integer, String> getClientsNames() {
+    return clientsNames;
   }
 
   public String getIPaddress() {

@@ -63,7 +63,6 @@ public class ClientController extends Controller {
   }
 
   public void joinGame(String ipAddress, int port) {
-
     this.ipAddress = ipAddress;
     this.port = port;
 
@@ -73,7 +72,6 @@ public class ClientController extends Controller {
       reader = new ObjectInputStream(client.getInputStream());
       executor.execute(this::listenToServer);
       sendToServer(DGNG.NOME, new Object[] { name });
-      //View.getInstance().setPnlCorrente(new GamePanel());
     } catch (Exception e) {
       JOptionPane.showMessageDialog(null, "ERRORE!\nImpossibile stabilire la connessione con il server",
           "Errore di Connessione", JOptionPane.ERROR_MESSAGE);
@@ -188,5 +186,9 @@ public class ClientController extends Controller {
           JOptionPane.ERROR_MESSAGE);
     }
     return -1;
+  }
+
+  public void setName(String name) {
+    this.name = name;
   }
 }

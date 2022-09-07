@@ -46,31 +46,42 @@ public class Controller {
     do {
       name = JOptionPane.showInputDialog(null, "Qual'è il tuo nome?", "Inserimento Nome", JOptionPane.QUESTION_MESSAGE);
 
-      notValid = name == null || name.isBlank() || name.replace(" ", "").length() < 4;
-      if (notValid)
-        JOptionPane.showMessageDialog(null,
-            "ATTENZIONE!\nNome assente o errato\nIl nome deve essere maggiore di 4 caratteri, spazi esclusi",
-            "Errore d'Inserimento", JOptionPane.ERROR_MESSAGE);
+      if (name != null) {
+        notValid = name.isBlank() || name.replace(" ", "").length() < 4;
+        if (notValid)
+          JOptionPane.showMessageDialog(null,
+              "ATTENZIONE!\nNome assente o errato\nIl nome deve essere maggiore di 4 caratteri, spazi esclusi",
+              "Errore d'Inserimento", JOptionPane.ERROR_MESSAGE);
+      } else {
+        notValid = false;
+      }
     } while (notValid);
 
-    serverController = ServerController.getInstance();
-    serverPanel = new ServerPanel();
+    if (name != null) {
+      serverController = ServerController.getInstance();
 
-    serverPanel.getLblIPaddress().setText(serverController.getIPaddress());
-    serverPanel.getLblPort().setText(String.valueOf(serverController.getPort()));
+      clientController = new ClientController();
+      clientController.setName(name);
 
-    serverPanel.getEsciButton().addActionListener((e) -> {
-      try {
-        serverController.closeServer();
-        esci();
-      } catch (IOException ex) {
-        view.showError("ERRORE!\nC'è stato un problema nella chiusura del server, riprovare", "Errore Server");
-      }
-    });
-    serverPanel.getAvviaButton().addActionListener((e) -> avviaPartita());
+      serverPanel = new ServerPanel();
 
-    view.setPnlCorrente(serverPanel);
-    serverController.addClientName(serverController.getPort(), name);
+      serverPanel.getLblIPaddress().setText(serverController.getIPaddress());
+      serverPanel.getLblPort().setText(String.valueOf(serverController.getPort()));
+
+      serverPanel.getEsciButton().addActionListener((e) -> {
+        try {
+          serverController.closeServer();
+          esci();
+        } catch (IOException ex) {
+          view.showError("ERRORE!\nC'è stato un problema nella chiusura del server, riprovare", "Errore Server");
+        }
+      });
+      serverPanel.getAvviaButton().addActionListener((e) -> serverController.avvia());
+
+      view.setPnlCorrente(serverPanel);
+
+      clientController.joinGame(serverController.getIPaddress(), serverController.getPort());
+    }
   }
 
   private void uniscitiAllaPartita() {
@@ -96,12 +107,6 @@ public class Controller {
 
   private void esci() {
     view.setPnlCorrente(menuPanel);
-  }
-
-  private void avviaPartita() {
-    clientController = new ClientController();
-    clientController.joinGame(serverController.getIPaddress(), serverController.getPort()); //CREA UN NUOVO SOCKET SU 127.0.0.1 E MI COLLEGA IN LOCALE COME CLIENT
-    serverController.avvia(); //GENERA IL MODEL, AVVIA LA PARTITA INVIANDO A TUTTI I CLIENT IL SEGNALE PER APRIRE IL GAMEPANEL
   }
 
   public DugongoModel getModel() {
