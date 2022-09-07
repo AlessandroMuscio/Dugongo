@@ -1,12 +1,11 @@
 package it.unibs.pajc.controllers;
 
+import it.unibs.pajc.DGNGserver.DGNG;
 import it.unibs.pajc.DGNGserver.ServerThread;
 
 import java.io.IOException;
 import java.net.*;
-import java.util.ArrayList;
-import java.util.Enumeration;
-import java.util.Random;
+import java.util.*;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
@@ -15,20 +14,18 @@ public class ServerController {
 
   private static final int MAX_REQUESTS = 3;
   private static final int MAX_CLIENTS = 6;
-  private static final int MIN_PORT = 49152;
-  private static final int MAX_PORT = 65536;
 
   private ArrayList<Socket> connectedClients;
-  private ArrayList<String> clientsNames;
+  private HashMap<Integer, String> clientsNames;
   private String IPaddress;
   private int port;
   private ExecutorService executors;
 
   private ServerController() throws SocketException {
-    connectedClients = new ArrayList<Socket>();
-    clientsNames = new ArrayList<String>();
+    connectedClients = new ArrayList<>();
+    clientsNames = new HashMap<>();
     IPaddress = getLocalIPaddress();
-    port = (new Random()).nextInt(MIN_PORT, MAX_PORT + 1);
+    port = new Random().nextInt(DGNG.MIN_PORT, DGNG.MAX_PORT + 1);
     executors = Executors.newCachedThreadPool();
 
     executors.execute(this::startServer);
@@ -85,12 +82,12 @@ public class ServerController {
     return port;
   }
 
-  public void addClientName(String name) {
-    clientsNames.add(name);
+  public void addClientName(int port, String name) {
+    clientsNames.put(port, name);
   }
 
-  public ArrayList<String> getClientsNames() {
-    return clientsNames;
+  public Collection<String> getClientsNames() {
+    return clientsNames.values();
   }
 
   public void closeServer() throws IOException {

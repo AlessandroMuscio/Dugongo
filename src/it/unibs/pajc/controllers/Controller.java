@@ -60,8 +60,7 @@ public class Controller {
     clientPanel.getEsciButton().addActionListener((e) -> esci());
     clientPanel.getAvviaButton().addActionListener((e) -> {
       clientController.iniziaCollegamento(clientPanel.getTextFields());
-      clientController.ready(); //OLTRE A SETTARE READY INVIA AL SERVER UN MESSAGGIO READY
-      view.setPnlCorrente(null); //SERVER UN PANEL ATTESA IN CUI SI ASPETTA CHE IL SERVER AVVII LA PARTITA
+      view.setPnlCorrente(new WaitingPanel()); //SERVER UN PANEL ATTESA IN CUI SI ASPETTA CHE IL SERVER AVVII LA PARTITA
     });
     
     view.setPnlCorrente(clientPanel);
@@ -80,8 +79,8 @@ public class Controller {
   }
   
   private void avviaPartita(){
-    //clientController = new ClientController();
-    //serverController.joinGame(); //CREA UN NUOVO SOCKET SU 127.0.0.1 E MI COLLEGA IN LOCALE COME CLIENT
+    clientController = new ClientController();
+    clientController.joinGame(serverController.getIPaddress(), serverController.getPort()); //CREA UN NUOVO SOCKET SU 127.0.0.1 E MI COLLEGA IN LOCALE COME CLIENT
     //serverController.avvia(); //GENERA IL MODEL, AVVIA LA PARTITA INVIANDO A TUTTI I CLIENT IL SEGNALE PER APRIRE IL GAMEPANEL
   }
   
