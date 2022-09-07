@@ -13,7 +13,6 @@ public class DGNG {
   public static final int ESCI = -1;
   public static final int NOME = -2;
 
-
   // Risposte DGNG
   public static final int SERVER_ERROR = 0;
   public static final int REQUEST_OK = 1;

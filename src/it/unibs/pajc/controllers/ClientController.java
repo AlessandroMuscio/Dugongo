@@ -52,7 +52,7 @@ public class ClientController {
         writer = new ObjectOutputStream(client.getOutputStream());
         reader = new ObjectInputStream(client.getInputStream());
         executor.execute(this::listenToServer);
-        sendToServer(DGNG.NOME, name);
+        sendToServer(DGNG.NOME, new Object[] { name });
       } catch (Exception e) {
         JOptionPane.showMessageDialog(null, "ERRORE!\nImpossibile stabilire la connessione con il server",
             "Errore di Connessione", JOptionPane.ERROR_MESSAGE);
@@ -70,7 +70,7 @@ public class ClientController {
       writer = new ObjectOutputStream(client.getOutputStream());
       reader = new ObjectInputStream(client.getInputStream());
       executor.execute(this::listenToServer);
-      sendToServer(DGNG.NOME, name);
+      sendToServer(DGNG.NOME, new Object[] { name });
       View.getInstance().setPnlCorrente(new GamePanel());
     } catch (Exception e) {
       JOptionPane.showMessageDialog(null, "ERRORE!\nImpossibile stabilire la connessione con il server",
@@ -97,10 +97,10 @@ public class ClientController {
     }
   }
 
-  private void sendToServer(int code, String testo) {
+  private void sendToServer(int code, Object[] attributes) {
 
     try {
-      Request request = new Request(code, testo);
+      Request request = new Request(code, attributes);
 
       writer.writeUnshared(request);
       writer.flush();

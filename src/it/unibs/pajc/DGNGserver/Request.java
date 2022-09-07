@@ -5,25 +5,13 @@ import java.util.Arrays;
 
 public class Request implements Serializable {
   private int request;
-  private String testo;
   private Object[] attributes;
 
-  public Request(int request, String testo, Object[] attributes) {
+  public Request(int request, Object[] attributes) {
     this.request = request;
-    this.testo = testo;
     this.attributes = attributes;
   }
 
-  public Request(int request, String testo) {
-    this.request = request;
-    this.testo = testo;
-    attributes = null;
-  }
-  
-  public String getTesto() {
-    return testo;
-  }
-  
   public int getRequest() {
     return request;
   }

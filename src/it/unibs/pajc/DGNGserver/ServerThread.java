@@ -57,7 +57,7 @@ public class ServerThread extends Thread {
           break;
 
         case DGNG.NOME:
-          ServerController.getInstance().addClientName(client.getPort(), request.getTesto());
+          ServerController.getInstance().addClientName(client.getPort(), String.valueOf(request.getAttributes()[0]));
           break;
 
         case DGNG.ESCI:

@@ -8,25 +8,31 @@ import javax.swing.*;
 import java.awt.*;
 import java.net.SocketException;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.Collections;
 
 public class ServerPanel extends JPanel {
   private MyLabel lblTitolo;
+
   private JPanel pnlCenter;
   private JPanel pnlServerCredentials;
+  private MyLabel lblIPaddress;
+  private MyLabel lblPort;
   private JPanel pnlUsers;
+
   private JPanel pnlOpzioni;
   private MyButton esciButton;
   private MyButton avviaButton;
-
-  private ServerController controller;
 
   public ServerPanel() throws SocketException {
     lblTitolo = new MyLabel("Stato del Server", SwingConstants.CENTER, 8);
     pnlCenter = new JPanel(new GridLayout(2, 1));
     pnlServerCredentials = new JPanel(new GridBagLayout());
+    lblIPaddress = new MyLabel("", SwingConstants.CENTER, 10);
+    lblPort = new MyLabel("", SwingConstants.CENTER, 10);
     pnlUsers = new JPanel(new GridBagLayout());
     pnlOpzioni = new JPanel(new GridLayout(1, 2));
-    controller = ServerController.getInstance();
     esciButton = new MyButton("ESCI", 95, 0, false);
     avviaButton = new MyButton("AVVIA", 95, 0, false);
 
@@ -38,9 +44,12 @@ public class ServerPanel extends JPanel {
     this.setBackground(Color.PINK);
 
     pnlCenter.setBackground(Color.pink);
+
     inizializzaPnlServerCredentials();
-    aggiornaPnlUsers();
+    inizializzaPnlUsers();
+
     pnlCenter.add(pnlServerCredentials);
+    pnlCenter.add(pnlUsers);
 
     pnlOpzioni.setBackground(Color.PINK);
     pnlOpzioni.add(esciButton);
@@ -74,22 +83,16 @@ public class ServerPanel extends JPanel {
 
     constraints.gridx = 0;
     constraints.gridy = 2;
-    pnlServerCredentials.add(new MyLabel(controller.getIPaddress(), SwingConstants.CENTER, fontScalingPercentage),
-        constraints);
+    pnlServerCredentials.add(lblIPaddress, constraints);
 
     constraints.gridx = 1;
     constraints.gridy = 2;
-    pnlServerCredentials.add(
-        new MyLabel(String.valueOf(controller.getPort()), SwingConstants.CENTER, fontScalingPercentage), constraints);
+    pnlServerCredentials.add(lblPort, constraints);
   }
 
-  public void aggiornaPnlUsers() {
-    if (pnlCenter.getComponentCount() != 0)
-      pnlCenter.remove(pnlCenter.getComponentCount() - 1);
-
+  private void inizializzaPnlUsers() {
     pnlUsers.setBackground(Color.PINK);
 
-    ArrayList<String> userNames = new ArrayList<String>(controller.getClientsNames());
     GridBagConstraints constraints = new GridBagConstraints();
 
     constraints.fill = GridBagConstraints.HORIZONTAL;
@@ -99,13 +102,44 @@ public class ServerPanel extends JPanel {
     pnlUsers.add(new MyLabel("Utenti collegati al momento:", SwingConstants.CENTER, 10), constraints);
 
     constraints.gridwidth = 1;
+    constraints.gridy = 1;
+    pnlUsers.add(new MyLabel("You", SwingConstants.CENTER, 10), constraints);
+  }
+
+  public void repaintPnlUsers(ArrayList<String> userNames) {
+    pnlCenter.remove(pnlUsers);
+    pnlUsers = new JPanel(new GridBagLayout());
+    inizializzaPnlUsers();
+
+    GridBagConstraints constraints = new GridBagConstraints();
+    int x = 1, y = 1;
+
+    constraints.fill = GridBagConstraints.HORIZONTAL;
     for (int i = 0; i < userNames.size(); i++) {
-      constraints.gridx = (i % 2);
-      constraints.gridy = (i % (userNames.size() >= 3 ? userNames.size() / 2 : userNames.size())) + 1;
+      constraints.gridx = x;
+      constraints.gridy = y;
       pnlUsers.add(new MyLabel(userNames.get(i), SwingConstants.CENTER, 10), constraints);
+
+      if (i % 2 == 0) {
+        x = 0;
+        y++;
+      } else {
+        x++;
+      }
     }
 
     pnlCenter.add(pnlUsers);
+
+    pnlCenter.repaint();
+    pnlCenter.revalidate();
+  }
+
+  public MyLabel getLblIPaddress() {
+    return lblIPaddress;
+  }
+
+  public MyLabel getLblPort() {
+    return lblPort;
   }
 
   public MyButton getEsciButton() {
@@ -114,11 +148,5 @@ public class ServerPanel extends JPanel {
 
   public MyButton getAvviaButton() {
     return avviaButton;
-  }
-
-  @Override
-  public void repaint() {
-    super.repaint();
-    //aggiornaPnlUsers();
   }
 }

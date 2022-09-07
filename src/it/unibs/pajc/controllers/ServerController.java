@@ -88,19 +88,7 @@ public class ServerController {
     clientsNames.put(port, name);
 
     ServerPanel p = (ServerPanel) View.getInstance().getPnlCorrente();
-    p.aggiornaPnlUsers();
-    p.repaint();
-    p.revalidate();
-
-    View.getInstance().getFrame().getContentPane().repaint();
-    View.getInstance().getFrame().getContentPane().revalidate();
-
-    View.getInstance().getFrame().repaint();
-    View.getInstance().getFrame().revalidate();
-  }
-
-  public Collection<String> getClientsNames() {
-    return clientsNames.values();
+    p.repaintPnlUsers(new ArrayList<String>(clientsNames.values()));
   }
 
   public void closeServer() throws IOException {
