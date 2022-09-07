@@ -41,7 +41,6 @@ public class ServerPanel extends JPanel {
     inizializzaPnlServerCredentials();
     aggiornaPnlUsers();
     pnlCenter.add(pnlServerCredentials);
-    pnlCenter.add(pnlUsers);
 
     pnlOpzioni.setBackground(Color.PINK);
     pnlOpzioni.add(esciButton);
@@ -85,6 +84,9 @@ public class ServerPanel extends JPanel {
   }
 
   public void aggiornaPnlUsers() {
+    if (pnlCenter.getComponentCount() != 0)
+      pnlCenter.remove(pnlCenter.getComponentCount() - 1);
+
     pnlUsers.setBackground(Color.PINK);
 
     ArrayList<String> userNames = new ArrayList<String>(controller.getClientsNames());
@@ -99,9 +101,11 @@ public class ServerPanel extends JPanel {
     constraints.gridwidth = 1;
     for (int i = 0; i < userNames.size(); i++) {
       constraints.gridx = (i % 2);
-      constraints.gridy = (i % (userNames.size() > 1 ? userNames.size() / 2 : userNames.size())) + 1;
+      constraints.gridy = (i % (userNames.size() >= 3 ? userNames.size() / 2 : userNames.size())) + 1;
       pnlUsers.add(new MyLabel(userNames.get(i), SwingConstants.CENTER, 10), constraints);
     }
+
+    pnlCenter.add(pnlUsers);
   }
 
   public MyButton getEsciButton() {

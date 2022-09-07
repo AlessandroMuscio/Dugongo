@@ -15,7 +15,7 @@ public class ServerController {
   private static ServerController singleton = null;
 
   private static final int MAX_REQUESTS = 3;
-  private static final int MAX_CLIENTS = 6;
+  private static final int MAX_CLIENTS = 5;
 
   private ArrayList<Socket> connectedClients;
   private HashMap<Integer, String> clientsNames;
@@ -63,7 +63,7 @@ public class ServerController {
     try (ServerSocket server = new ServerSocket(port, MAX_REQUESTS)) {
       System.out.printf("Starting server at port %d...\n", port);
 
-      while (connectedClients.size() <= MAX_CLIENTS) {
+      while (connectedClients.size() < MAX_CLIENTS) {
         Socket client = server.accept();
         ServerThread clientThread = new ServerThread(client);
         System.out.println("Request received");
