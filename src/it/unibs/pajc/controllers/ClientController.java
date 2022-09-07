@@ -4,6 +4,8 @@ import it.unibs.pajc.DGNGserver.Answer;
 import it.unibs.pajc.DGNGserver.DGNG;
 import it.unibs.pajc.DGNGserver.Request;
 import it.unibs.pajc.myComponents.MyTextField;
+import it.unibs.pajc.view.GamePanel;
+import it.unibs.pajc.view.View;
 
 import javax.swing.*;
 import java.io.IOException;
@@ -57,6 +59,24 @@ public class ClientController {
     }
   }
   
+  public void joinGame(String ipAddress, int port) {
+    
+    this.ipAddress = ipAddress;
+    this.port = port;
+  
+    try {
+      client = new Socket(ipAddress, port);
+      writer = new ObjectOutputStream(client.getOutputStream());
+      reader = new ObjectInputStream(client.getInputStream());
+      executor.execute(this::listenToServer);
+      sendToServer(DGNG.NOME, name);
+      View.getInstance().setPnlCorrente(new GamePanel());
+    } catch (Exception e) {
+      JOptionPane.showMessageDialog(null, "ERRORE!\nImpossibile stabilire la connessione con il server",
+              "Errore di Connessione", JOptionPane.ERROR_MESSAGE);
+    }
+  }
+  
   private void listenToServer() {
     
     try {
@@ -77,10 +97,10 @@ public class ClientController {
   }
   
   
-  private void sendToServer(int code) {
+  private void sendToServer(int code, String testo) {
     
     try {
-      Request request = new Request(code);
+      Request request = new Request(code, testo);
       
       writer.writeUnshared(request);
       writer.flush();
@@ -155,10 +175,5 @@ public class ClientController {
               JOptionPane.ERROR_MESSAGE);
     }
     return -1;
-  }
-  
-  public void ready() {
-    //SEND TO SERVER @READY
-    sendToServer(DGNG.READY);
   }
 }

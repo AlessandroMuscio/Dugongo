@@ -87,7 +87,7 @@ public class ServerPanel extends JPanel {
   private void inizializzaPnlUsers() {
     pnlUsers.setBackground(Color.PINK);
 
-    ArrayList<String> userNames = controller.getClientsNames();
+    ArrayList<String> userNames = new ArrayList<>(controller.getClientsNames());
     GridBagConstraints constraints = new GridBagConstraints();
 
     constraints.fill = GridBagConstraints.HORIZONTAL;
@@ -110,5 +110,11 @@ public class ServerPanel extends JPanel {
   
   public MyButton getAvviaButton() {
     return avviaButton;
+  }
+  
+  @Override
+  public void repaint() {
+    super.repaint();
+    //inizializzaPnlUsers();
   }
 }

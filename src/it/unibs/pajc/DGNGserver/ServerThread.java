@@ -1,6 +1,7 @@
 package it.unibs.pajc.DGNGserver;
 
 import it.unibs.pajc.controllers.ServerController;
+import it.unibs.pajc.view.View;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;
@@ -26,12 +27,6 @@ public class ServerThread extends Thread {
       System.out.println(request);
 
       switch (request.getRequest()) {
-        case DGNG.UNISCITI:
-          String name = String.valueOf(request.getAttributes()[0]);
-
-          ServerController.getInstance().addClientName(name);
-          break;
-
         case DGNG.GIOCA:
           answer = new Answer(DGNG.REQUEST_OK, "Richiesta ricevuta", "Giocando...");
 
@@ -60,8 +55,9 @@ public class ServerThread extends Thread {
           objectWriter.flush();
           break;
           
-        case DGNG.READY:
-          System.out.println("Il client " + client.getPort() + " è pronto per giocare");
+        case DGNG.NOME:
+          ServerController.getInstance().addClientName(client.getPort(), request.getTesto());
+          View.getInstance().repaint();
           break;
 
         case DGNG.ESCI:

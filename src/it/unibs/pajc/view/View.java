@@ -25,6 +25,12 @@ public class View {
     
     return singleton;
   }
+  
+  public void repaint(){
+    frame.repaint();
+    frame.getContentPane().repaint();
+    frame.revalidate();
+  }
 
   private void setScreenSize() {
     DisplayMode dm = GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice().getDisplayMode();
