@@ -23,9 +23,9 @@ public class InfoView {
 
   private JTextPane pagina;
   private JPanel[] pnlDirezioni;
-  private MyButton indietroButton;
-  private MyButton esciButton;
-  private MyButton avantiButton;
+  private MyButton[] indietroButtons;
+  private MyButton[] esciButtons;
+  private MyButton[] avantiButtons;
 
   private InfoView() {
     inizializzaFrame();
@@ -46,7 +46,7 @@ public class InfoView {
 
     frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
     frame.setLocationRelativeTo(null);
-    frame.setSize(390, 520);
+    frame.setSize(408, 544);
     frame.setResizable(false);
     frame.setIconImage(new ImageIcon(ICON_PATH).getImage());
   }
@@ -69,15 +69,16 @@ public class InfoView {
 
     pagina.setBackground(Color.PINK);
     pagina.setForeground(Color.BLACK);
-    pagina.setFont(new Font(Font.MONOSPACED, Font.PLAIN, 14));
+    pagina.setFont(pagina.getFont().deriveFont(14f));
     pagina.setEditable(false);
   }
 
   private void inizializzaDirezioni() {
-    pnlDirezioni = new JPanel[3];
-    indietroButton = new MyButton("INDIETRO", 90, 0, false);
-    esciButton = new MyButton("ESCI", 90, 0, false);
-    avantiButton = new MyButton("AVANTI", 90, 0, false);
+    int dim = 3;
+    pnlDirezioni = new JPanel[dim];
+    indietroButtons = new MyButton[dim];
+    esciButtons = new MyButton[dim];
+    avantiButtons = new MyButton[dim];
 
     for (int i = 0; i < pnlDirezioni.length; i++) {
       pnlDirezioni[i] = new JPanel(new GridLayout(1, 2));
@@ -86,13 +87,13 @@ public class InfoView {
       pnlDirezioni[i].setBackground(Color.PINK);
 
       if (i != 0)
-        pnlDirezioni[i].add(indietroButton);
+        indietroButtons[i] = (MyButton) pnlDirezioni[i].add(new MyButton("INDIETRO", 90, 0, false));
 
       if (i == 0 || i == (pnlDirezioni.length - 1))
-        pnlDirezioni[i].add(esciButton);
+        esciButtons[i] = (MyButton) pnlDirezioni[i].add(new MyButton("ESCI", 90, 0, false));
 
       if (i != (pnlDirezioni.length - 1))
-        pnlDirezioni[i].add(avantiButton);
+        avantiButtons[i] = (MyButton) pnlDirezioni[i].add(new MyButton("AVANTI", 90, 0, false));
     }
   }
 
@@ -100,16 +101,16 @@ public class InfoView {
     return frame;
   }
 
-  public MyButton getIndietroButton() {
-    return indietroButton;
+  public MyButton[] getIndietroButtons() {
+    return indietroButtons;
   }
 
-  public MyButton getEsciButton() {
-    return esciButton;
+  public MyButton[] getEsciButtons() {
+    return esciButtons;
   }
 
-  public MyButton getAvantiButton() {
-    return avantiButton;
+  public MyButton[] getAvantiButtons() {
+    return avantiButtons;
   }
 
   public void setPagina(String text) {

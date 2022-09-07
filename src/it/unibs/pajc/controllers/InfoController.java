@@ -9,6 +9,7 @@ import javax.xml.stream.XMLStreamConstants;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamReader;
 
+import it.unibs.pajc.myComponents.MyButton;
 import it.unibs.pajc.view.InfoView;
 import it.unibs.pajc.view.View;
 
@@ -26,9 +27,18 @@ public class InfoController {
       caricaPagine();
       view.setPagina(getCurrentPage());
 
-      view.getIndietroButton().addActionListener((e) -> indietro());
-      view.getEsciButton().addActionListener((e) -> esci());
-      view.getAvantiButton().addActionListener((e) -> avanti());
+      for (MyButton indietroButton : view.getIndietroButtons()) {
+        if (indietroButton != null)
+          indietroButton.addActionListener((e) -> indietro());
+      }
+      for (MyButton esciButton : view.getEsciButtons()) {
+        if (esciButton != null)
+          esciButton.addActionListener((e) -> esci());
+      }
+      for (MyButton avantiButton : view.getAvantiButtons()) {
+        if (avantiButton != null)
+          avantiButton.addActionListener((e) -> avanti());
+      }
 
       view.getFrame().setVisible(true);
     } catch (FileNotFoundException | XMLStreamException | FactoryConfigurationError e) {
