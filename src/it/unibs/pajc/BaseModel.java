@@ -4,30 +4,29 @@ import javax.swing.event.ChangeListener;
 import javax.swing.event.EventListenerList;
 
 public class BaseModel {
+	protected EventListenerList listenerList = new EventListenerList();
 	
-	protected EventListenerList list = new EventListenerList();
-	
-	public void addChangeListener( ChangeListener l ) {
-		
-		list.add(ChangeListener.class, l);
+	public void addChangeListener(ChangeListener l) {
+		listenerList.add(ChangeListener.class, l);
 	}
 	
-	public void removeChangeListener( ChangeListener l ) {
-		
-		list.remove(ChangeListener.class, l);
+	public void removeChangeListener(ChangeListener l) {
+		listenerList.remove(ChangeListener.class, l);
 	}
 	
-	public void fireChangeListener() {
+	protected void fireValuesChange() {
+		fireValuesChange(new ChangeEvent(this));
+	}
+	
+	protected void fireValuesChange(ChangeEvent changeEvent) {
 		
-		ChangeEvent e = new ChangeEvent(this);
+		Object[] listeners = listenerList.getListenerList();
 		
-		Object[] listeners = list.getListenerList();
-		
-		for( int i = listeners.length - 2; i >= 0; i -= 2) {
+		for (int i = listeners.length - 2; i >= 0; i -=2 ) {
 			
-			if( listeners[i] == ChangeListener.class ) {
+			if (listeners[i] == ChangeListener.class) {
 				
-				( (ChangeListener) listeners[i+1] ).stateChanged(e); 
+				((ChangeListener)listeners[i+1]).stateChanged(changeEvent);
 			}
 		}
 	}

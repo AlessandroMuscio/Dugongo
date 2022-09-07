@@ -1,8 +1,6 @@
 package it.unibs.pajc.DGNGserver;
 
 import it.unibs.pajc.controllers.ServerController;
-import it.unibs.pajc.view.ServerPanel;
-import it.unibs.pajc.view.View;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;
@@ -37,7 +35,7 @@ public class ServerThread extends Thread {
 
         case DGNG.SCARTA:
           answer = new Answer(DGNG.REQUEST_OK, "Richiesta ricevuta", "Scartando...");
-
+          
           objectWriter.writeObject(answer);
           objectWriter.flush();
           break;
@@ -79,9 +77,24 @@ public class ServerThread extends Thread {
       e.printStackTrace();
     }
   }
+  
+  public boolean isClosed(){
+    return client.isClosed();
+  }
 
-  private void close() throws IOException {
+  public void close() throws IOException {
     if (!client.isClosed())
       client.close();
+  }
+  
+  public void send(int codice){
+    try {
+      ObjectOutputStream objectWriter = new ObjectOutputStream(client.getOutputStream());
+      Answer answer = new Answer(codice);
+      
+      objectWriter.writeObject(answer);
+    } catch (IOException e) {
+      throw new RuntimeException(e);
+    }
   }
 }

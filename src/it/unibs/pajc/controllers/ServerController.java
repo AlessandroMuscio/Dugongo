@@ -2,22 +2,24 @@ package it.unibs.pajc.controllers;
 
 import it.unibs.pajc.DGNGserver.DGNG;
 import it.unibs.pajc.DGNGserver.ServerThread;
+import it.unibs.pajc.DugongoModel;
 import it.unibs.pajc.view.ServerPanel;
 import it.unibs.pajc.view.View;
 
+import javax.swing.event.ChangeEvent;
 import java.io.IOException;
 import java.net.*;
 import java.util.*;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
-public class ServerController {
+public class ServerController extends Controller{
   private static ServerController singleton = null;
 
   private static final int MAX_REQUESTS = 3;
   private static final int MAX_CLIENTS = 5;
 
-  private ArrayList<Socket> connectedClients;
+  private ArrayList<ServerThread> connectedClients;
   private HashMap<Integer, String> clientsNames;
   private String IPaddress;
   private int port;
@@ -68,11 +70,27 @@ public class ServerController {
         ServerThread clientThread = new ServerThread(client);
         System.out.println("Request received");
 
-        connectedClients.add(client);
+        connectedClients.add(clientThread);
         clientThread.start();
       }
     } catch (IOException e) {
       System.out.println("ERRORE: " + e);
+    }
+  }
+  
+  public void updatedModel(ChangeEvent e){
+    sendToAllClients(DGNG.CHANGE);
+  }
+  
+  public void avvia(){
+    super.setModel(new DugongoModel());
+    super.getModel().addChangeListener(this::updatedModel);
+    sendToAllClients(DGNG.START);
+  }
+  
+  private void sendToAllClients(int code){
+    for (ServerThread temp : connectedClients){
+      temp.send(code);
     }
   }
 
@@ -92,7 +110,7 @@ public class ServerController {
   }
 
   public void closeServer() throws IOException {
-    for (Socket connectedClient : connectedClients) {
+    for (ServerThread connectedClient : connectedClients) {
       if (!connectedClient.isClosed()) {
         connectedClient.close();
       }

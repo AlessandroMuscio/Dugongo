@@ -4,6 +4,17 @@ public class DugongoModel extends BaseModel {
 
   // IMPLEMENTA I CONFRONTI, LA DISTRIBUZIONE DELLE CARTE, LA CREAZIONE DEL MAZZO,
   // DEGLI SCARTINI, E DELLE MANI
+  
+  public void confronto(){
+    //EFFETTUA I CONFRONTI
+    synchronized (this) {
+      //SALVA I DATI AGGIORNATI
+      //this.data = data;
+    
+      //"ANNUNCIA" CHE I DATI SONO CAMBIATI
+      fireValuesChange();
+    }
+  }
 
   public void play() {
 
