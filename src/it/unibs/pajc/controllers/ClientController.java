@@ -42,7 +42,6 @@ public class ClientController {
       name = textFields[2].getText().equals(textFields[2].getPlaceholder()) ? "" : textFields[2].getText();
 
       connettiAlServer();
-      executor.execute(this::listenToServer);
     }
   }
 
@@ -52,18 +51,20 @@ public class ClientController {
         client = new Socket(ipAddress, port);
         writer = new ObjectOutputStream(client.getOutputStream());
         reader = new ObjectInputStream(client.getInputStream());
+        executor.execute(this::listenToServer);
+        sendToServer(DGNG.NOME, name);
       } catch (Exception e) {
         JOptionPane.showMessageDialog(null, "ERRORE!\nImpossibile stabilire la connessione con il server",
             "Errore di Connessione", JOptionPane.ERROR_MESSAGE);
       }
     }
   }
-  
+
   public void joinGame(String ipAddress, int port) {
-    
+
     this.ipAddress = ipAddress;
     this.port = port;
-  
+
     try {
       client = new Socket(ipAddress, port);
       writer = new ObjectOutputStream(client.getOutputStream());
@@ -73,38 +74,37 @@ public class ClientController {
       View.getInstance().setPnlCorrente(new GamePanel());
     } catch (Exception e) {
       JOptionPane.showMessageDialog(null, "ERRORE!\nImpossibile stabilire la connessione con il server",
-              "Errore di Connessione", JOptionPane.ERROR_MESSAGE);
+          "Errore di Connessione", JOptionPane.ERROR_MESSAGE);
     }
   }
-  
+
   private void listenToServer() {
-    
+
     try {
-      
-      while(!client.isClosed()) {
-        
+
+      while (!client.isClosed()) {
+
         Answer tmp = (Answer) reader.readObject();
         System.out.println(tmp.getMessage());
       }
       System.out.println("Data received");
       // immettere l'oggetto nel model
-      
+
     } catch (IOException e) {
       System.out.println(e.toString());
     } catch (ClassNotFoundException e) {
       e.printStackTrace();
     }
   }
-  
-  
+
   private void sendToServer(int code, String testo) {
-    
+
     try {
       Request request = new Request(code, testo);
-      
+
       writer.writeUnshared(request);
       writer.flush();
-      
+
     } catch (IOException e) {
       e.printStackTrace();
     }
@@ -167,12 +167,12 @@ public class ClientController {
           return portNumber;
       }
     } catch (NumberFormatException e) {
-  
+
       JOptionPane.showMessageDialog(null,
-              "ATTENZIONE!!\nPorta assente o errato\nRicordati che la porta deve essere compresa tra " + MIN_PORT + " e "
-                      + MAX_PORT,
-              "Errore d'Inserimento",
-              JOptionPane.ERROR_MESSAGE);
+          "ATTENZIONE!!\nPorta assente o errato\nRicordati che la porta deve essere compresa tra " + MIN_PORT + " e "
+              + MAX_PORT,
+          "Errore d'Inserimento",
+          JOptionPane.ERROR_MESSAGE);
     }
     return -1;
   }

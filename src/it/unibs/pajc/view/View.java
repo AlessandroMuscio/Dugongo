@@ -4,7 +4,7 @@ import javax.swing.*;
 import java.awt.*;
 
 public class View {
-  
+
   private static View singleton = null;
   public JFrame frame;
   private JPanel pnlCorrente;
@@ -17,16 +17,16 @@ public class View {
 
     frame.setVisible(true);
   }
-  
-  public static View getInstance(){
-    if (singleton == null){
+
+  public static View getInstance() {
+    if (singleton == null) {
       singleton = new View();
     }
-    
+
     return singleton;
   }
-  
-  public void repaint(){
+
+  public void repaint() {
     frame.repaint();
     frame.getContentPane().repaint();
     frame.revalidate();
@@ -57,8 +57,16 @@ public class View {
     frame.repaint();
     frame.revalidate();
   }
-  
-  public void showError(String messaggio, String titolo){
+
+  public JFrame getFrame() {
+    return frame;
+  }
+
+  public JPanel getPnlCorrente() {
+    return pnlCorrente;
+  }
+
+  public void showError(String messaggio, String titolo) {
     JOptionPane.showMessageDialog(null, messaggio, titolo, JOptionPane.ERROR_MESSAGE);
   }
 }

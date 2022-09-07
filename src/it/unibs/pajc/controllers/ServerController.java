@@ -2,6 +2,8 @@ package it.unibs.pajc.controllers;
 
 import it.unibs.pajc.DGNGserver.DGNG;
 import it.unibs.pajc.DGNGserver.ServerThread;
+import it.unibs.pajc.view.ServerPanel;
+import it.unibs.pajc.view.View;
 
 import java.io.IOException;
 import java.net.*;
@@ -84,6 +86,17 @@ public class ServerController {
 
   public void addClientName(int port, String name) {
     clientsNames.put(port, name);
+
+    ServerPanel p = (ServerPanel) View.getInstance().getPnlCorrente();
+    p.aggiornaPnlUsers();
+    p.repaint();
+    p.revalidate();
+
+    View.getInstance().getFrame().getContentPane().repaint();
+    View.getInstance().getFrame().getContentPane().revalidate();
+
+    View.getInstance().getFrame().repaint();
+    View.getInstance().getFrame().revalidate();
   }
 
   public Collection<String> getClientsNames() {

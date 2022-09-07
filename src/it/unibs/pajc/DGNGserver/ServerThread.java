@@ -1,6 +1,7 @@
 package it.unibs.pajc.DGNGserver;
 
 import it.unibs.pajc.controllers.ServerController;
+import it.unibs.pajc.view.ServerPanel;
 import it.unibs.pajc.view.View;
 
 import java.io.IOException;
@@ -54,10 +55,9 @@ public class ServerThread extends Thread {
           objectWriter.writeObject(answer);
           objectWriter.flush();
           break;
-          
+
         case DGNG.NOME:
           ServerController.getInstance().addClientName(client.getPort(), request.getTesto());
-          View.getInstance().repaint();
           break;
 
         case DGNG.ESCI:

@@ -39,7 +39,7 @@ public class ServerPanel extends JPanel {
 
     pnlCenter.setBackground(Color.pink);
     inizializzaPnlServerCredentials();
-    inizializzaPnlUsers();
+    aggiornaPnlUsers();
     pnlCenter.add(pnlServerCredentials);
     pnlCenter.add(pnlUsers);
 
@@ -84,10 +84,10 @@ public class ServerPanel extends JPanel {
         new MyLabel(String.valueOf(controller.getPort()), SwingConstants.CENTER, fontScalingPercentage), constraints);
   }
 
-  private void inizializzaPnlUsers() {
+  public void aggiornaPnlUsers() {
     pnlUsers.setBackground(Color.PINK);
 
-    ArrayList<String> userNames = new ArrayList<>(controller.getClientsNames());
+    ArrayList<String> userNames = new ArrayList<String>(controller.getClientsNames());
     GridBagConstraints constraints = new GridBagConstraints();
 
     constraints.fill = GridBagConstraints.HORIZONTAL;
@@ -99,22 +99,22 @@ public class ServerPanel extends JPanel {
     constraints.gridwidth = 1;
     for (int i = 0; i < userNames.size(); i++) {
       constraints.gridx = (i % 2);
-      constraints.gridy = (i % (userNames.size() / 2)) + 1;
+      constraints.gridy = (i % (userNames.size() > 1 ? userNames.size() / 2 : userNames.size())) + 1;
       pnlUsers.add(new MyLabel(userNames.get(i), SwingConstants.CENTER, 10), constraints);
     }
   }
-  
+
   public MyButton getEsciButton() {
     return esciButton;
   }
-  
+
   public MyButton getAvviaButton() {
     return avviaButton;
   }
-  
+
   @Override
   public void repaint() {
     super.repaint();
-    //inizializzaPnlUsers();
+    //aggiornaPnlUsers();
   }
 }
