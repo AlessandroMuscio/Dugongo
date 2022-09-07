@@ -6,6 +6,8 @@ import it.unibs.pajc.view.*;
 import java.io.IOException;
 import java.net.SocketException;
 
+import javax.swing.JOptionPane;
+
 public class Controller {
 
   private View view;
@@ -15,7 +17,6 @@ public class Controller {
 
   private ServerController serverController;
   private ClientController clientController;
-  private InfoController infoController;
   private DugongoModel model;
 
   public Controller() {
@@ -39,6 +40,19 @@ public class Controller {
   }
 
   private void inizializzaPartita() throws SocketException {
+    String name;
+    boolean notValid;
+
+    do {
+      name = JOptionPane.showInputDialog(null, "Qual'è il tuo nome?", "Inserimento Nome", JOptionPane.QUESTION_MESSAGE);
+
+      notValid = name == null || name.isBlank() || name.replace(" ", "").length() < 4;
+      if (notValid)
+        JOptionPane.showMessageDialog(null,
+            "ATTENZIONE!\nNome assente o errato\nIl nome deve essere maggiore di 4 caratteri, spazi esclusi",
+            "Errore d'Inserimento", JOptionPane.ERROR_MESSAGE);
+    } while (notValid);
+
     serverController = ServerController.getInstance();
     serverPanel = new ServerPanel();
 
@@ -56,6 +70,7 @@ public class Controller {
     serverPanel.getAvviaButton().addActionListener((e) -> avviaPartita());
 
     view.setPnlCorrente(serverPanel);
+    serverController.addClientName(serverController.getPort(), name);
   }
 
   private void uniscitiAllaPartita() {
@@ -72,15 +87,15 @@ public class Controller {
   }
 
   private void visualizzaInfo() {
-    infoController = new InfoController();
-  }
-
-  private void esci() {
-    view.setPnlCorrente(menuPanel);
+    new InfoController();
   }
 
   private void chiudi() {
     System.exit(0);
+  }
+
+  private void esci() {
+    view.setPnlCorrente(menuPanel);
   }
 
   private void avviaPartita() {

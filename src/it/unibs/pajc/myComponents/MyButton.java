@@ -46,7 +46,8 @@ public class MyButton extends JButton {
     if (!parentPreviousSize.equals(parentCurrentSize)) {
       ((Graphics2D) g).setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 
-      int width, height, fontScalingFactor;
+      int width, height;
+      float fontScalingFactor;
       if (parentCurrentSize.width <= parentCurrentSize.height) {
         width = (iconScalingPercentage * parentCurrentSize.width) / 100;
         height = -1;
@@ -61,7 +62,7 @@ public class MyButton extends JButton {
       this.setIcon(new ImageIcon(scaledIcon));
 
       if (showText)
-        this.setFont(new Font("Roboto", Font.PLAIN, fontScalingFactor));
+        this.setFont(this.getFont().deriveFont(Font.PLAIN, fontScalingFactor));
 
       parentPreviousSize = parentCurrentSize;
     }

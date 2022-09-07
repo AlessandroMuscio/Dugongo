@@ -74,13 +74,13 @@ public class MyTextField extends JTextField {
     if (!parentPreviousSize.equals(parentCurrentSize)) {
       ((Graphics2D) g).setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 
-      int fontScalingFactor;
+      float fontScalingFactor;
       if (parentCurrentSize.width <= parentCurrentSize.height)
         fontScalingFactor = (fontScalingPercentage * parentCurrentSize.width) / 100;
       else
         fontScalingFactor = (fontScalingPercentage * parentCurrentSize.height) / 100;
 
-      this.setFont(new Font(Font.MONOSPACED, Font.PLAIN, fontScalingFactor));
+      this.setFont(this.getFont().deriveFont(Font.PLAIN, fontScalingFactor));
 
       parentPreviousSize = parentCurrentSize;
     }

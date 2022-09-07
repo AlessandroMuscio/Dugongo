@@ -1,6 +1,5 @@
 package it.unibs.pajc.view;
 
-import it.unibs.pajc.controllers.ServerController;
 import it.unibs.pajc.myComponents.MyButton;
 import it.unibs.pajc.myComponents.MyLabel;
 
@@ -8,9 +7,6 @@ import javax.swing.*;
 import java.awt.*;
 import java.net.SocketException;
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.Collections;
 
 public class ServerPanel extends JPanel {
   private MyLabel lblTitolo;
@@ -100,10 +96,6 @@ public class ServerPanel extends JPanel {
     constraints.gridx = 0;
     constraints.gridy = 0;
     pnlUsers.add(new MyLabel("Utenti collegati al momento:", SwingConstants.CENTER, 10), constraints);
-
-    constraints.gridwidth = 1;
-    constraints.gridy = 1;
-    pnlUsers.add(new MyLabel("You", SwingConstants.CENTER, 10), constraints);
   }
 
   public void repaintPnlUsers(ArrayList<String> userNames) {
@@ -112,7 +104,7 @@ public class ServerPanel extends JPanel {
     inizializzaPnlUsers();
 
     GridBagConstraints constraints = new GridBagConstraints();
-    int x = 1, y = 1;
+    int x = 0, y = 1;
 
     constraints.fill = GridBagConstraints.HORIZONTAL;
     for (int i = 0; i < userNames.size(); i++) {
@@ -121,10 +113,10 @@ public class ServerPanel extends JPanel {
       pnlUsers.add(new MyLabel(userNames.get(i), SwingConstants.CENTER, 10), constraints);
 
       if (i % 2 == 0) {
+        x++;
+      } else {
         x = 0;
         y++;
-      } else {
-        x++;
       }
     }
 
