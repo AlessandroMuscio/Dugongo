@@ -1,6 +1,5 @@
 package it.unibs.pajc.view;
 
-import it.unibs.pajc.controllers.ClientController;
 import it.unibs.pajc.myComponents.MyButton;
 import it.unibs.pajc.myComponents.MyLabel;
 import it.unibs.pajc.myComponents.MyTextField;
@@ -19,14 +18,11 @@ public class ClientPanel extends JPanel {
   private MyButton esciButton;
   private MyButton avviaButton;
 
-  private ClientController controller;
-
   public ClientPanel() {
     lblTitolo = new MyLabel("Unisciti ad una partita:", SwingConstants.LEFT, 8);
     pnlTextFields = new JPanel(new GridLayout(3, 1));
     textFields = new MyTextField[placeholders.length];
     pnlOpzioni = new JPanel(new GridLayout(1, 2));
-    controller = new ClientController();
     esciButton = new MyButton("ESCI", 95, 0, false);
     avviaButton = new MyButton("AVVIA", 95, 0, false);
 

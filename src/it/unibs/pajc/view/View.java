@@ -6,10 +6,10 @@ import java.awt.*;
 public class View {
   
   private static View singleton = null;
-  public static JFrame frame;
-  private static JPanel pnlCorrente;
-  public static Dimension screenSize;
-  private static final Image appIcon = new ImageIcon("src/it/unibs/pajc/assets/icon.png").getImage();
+  public JFrame frame;
+  private JPanel pnlCorrente;
+  private Dimension screenSize;
+  private final Image appIcon = new ImageIcon("src/it/unibs/pajc/assets/icon.png").getImage();
 
   private View() {
     setScreenSize();
@@ -45,8 +45,8 @@ public class View {
 
   public void setPnlCorrente(JPanel pnlCorrente) {
     frame.getContentPane().removeAll();
-    View.pnlCorrente = pnlCorrente;
-    frame.getContentPane().add(View.pnlCorrente);
+    this.pnlCorrente = pnlCorrente;
+    frame.getContentPane().add(this.pnlCorrente);
 
     frame.repaint();
     frame.revalidate();
@@ -54,9 +54,5 @@ public class View {
   
   public void showError(String messaggio, String titolo){
     JOptionPane.showMessageDialog(null, messaggio, titolo, JOptionPane.ERROR_MESSAGE);
-  }
-
-  public static Image getAppicon() {
-    return appIcon;
   }
 }

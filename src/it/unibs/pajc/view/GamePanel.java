@@ -12,42 +12,43 @@ public class GamePanel extends JPanel {
   private Image sfondo = new ImageIcon("assets/generiche/sfondo.jpeg").getImage();
 
   private Image retro = new ImageIcon("assets/icone/carte/Retro.png").getImage();
+  private Dimension screenSize;
 
   public GamePanel() {
 
+    setScreenSize();
+    
     //PORTA LA FINESTRA A SCHERMO INTERO
-    device.setFullScreenWindow(View.frame);
-    View.frame.repaint();
+    //device.setFullScreenWindow(View.frame);
+    //View.frame.repaint();
 
     //INIZIALIZZO IL PANNELLO DI STATO CONTENTE I MAZZI E LE INFORMAZIONI DI GIOCO
     JPanel pnlStato = new JPanel();
     pnlStato.setLayout(new BorderLayout());
     pnlStato.setOpaque(false);
-    pnlStato.setPreferredSize(new Dimension(View.screenSize.width, (int) (View.screenSize.height * 0.3)));
+    pnlStato.setPreferredSize(new Dimension(screenSize.width, (int) (screenSize.height * 0.3)));
 
     JPanel pnlMazzo = new JPanel();
-    pnlMazzo.setPreferredSize(new Dimension((int) (View.screenSize.width * 0.3), (int) (View.screenSize.height * 0.3)));
+    pnlMazzo.setPreferredSize(new Dimension((int) (screenSize.width * 0.3), (int) (screenSize.height * 0.3)));
     pnlMazzo.setOpaque(false);
 
     JButton buttonMazzo = new JButton();
-    buttonMazzo
-        .setPreferredSize(new Dimension((int) (View.screenSize.width * 0.1), (int) (View.screenSize.height * 0.3)));
+    buttonMazzo.setPreferredSize(new Dimension((int) (screenSize.width * 0.1), (int) (screenSize.height * 0.3)));
     pnlMazzo.add(buttonMazzo, BorderLayout.WEST);
     JButton buttonScartate = new JButton();
-    buttonScartate
-        .setPreferredSize(new Dimension((int) (View.screenSize.width * 0.1), (int) (View.screenSize.height * 0.3)));
+    buttonScartate.setPreferredSize(new Dimension((int) (screenSize.width * 0.1), (int) (screenSize.height * 0.3)));
     pnlMazzo.add(buttonScartate, BorderLayout.EAST);
 
     pnlStato.add(pnlMazzo, BorderLayout.WEST);
 
     JPanel pnlPartita = new JPanel();
-    pnlPartita.setPreferredSize(new Dimension((int) (View.screenSize.width * 0.3), (int) (View.screenSize.height * 0.3)));
+    pnlPartita.setPreferredSize(new Dimension((int) (screenSize.width * 0.3), (int) (screenSize.height * 0.3)));
     pnlPartita.setBackground(Color.yellow);
     pnlStato.add(pnlPartita, BorderLayout.EAST);
 
     //INIZIALIZZO IL PANNELLO DI GIOCO (CIOE' IL TAVOLO)
     JPanel pnlTavolo = new JPanel();
-    pnlTavolo.setPreferredSize(new Dimension(View.screenSize.width, (int) (View.screenSize.height * 0.6)));
+    pnlTavolo.setPreferredSize(new Dimension(screenSize.width, (int) (screenSize.height * 0.6)));
     pnlTavolo.setLayout(new GridLayout(2, 10, 0, 0));
     pnlTavolo.setOpaque(false);
     tavolo = new MyButton[20];
@@ -67,7 +68,7 @@ public class GamePanel extends JPanel {
 
     //INIZIALIZZO IL PANNELLO AZIONI CON LE POSSIBILI OPERAZIONI DA ESEGUIRE DURANTE LA PARTITA
     JPanel pnlAzioni = new JPanel();
-    pnlAzioni.setPreferredSize(new Dimension(View.screenSize.width, (int) (View.screenSize.height * 0.08)));
+    pnlAzioni.setPreferredSize(new Dimension(screenSize.width, (int) (screenSize.height * 0.08)));
     pnlAzioni.setLayout(new GridLayout(1, 5, 0, 0));
     pnlAzioni.setOpaque(false);
 
@@ -95,7 +96,7 @@ public class GamePanel extends JPanel {
     //APRE UN NUOVO FRAME PER VISUALIZZARE LE ISTRUZIONI DI GIOCO
     JButton buttonInfo = new JButton("INFO");
     buttonInfo.addActionListener(e -> {
-      new InfoFrameView();
+      InfoView.getInstance();
     });
     pnlAzioni.add(buttonInfo);
 
@@ -103,13 +104,18 @@ public class GamePanel extends JPanel {
     JButton buttonClose = new JButton("CLOSE");
     buttonClose.addActionListener(e -> {
       device.setFullScreenWindow(null);
-     // View.setPnlCorrente(new MenuPanel());
+     //View.setPnlCorrente(new MenuPanel());
     });
     pnlAzioni.add(buttonClose);
 
     this.add(pnlStato, BorderLayout.NORTH);
     this.add(pnlTavolo, BorderLayout.CENTER);
     this.add(pnlAzioni, BorderLayout.SOUTH);
+  }
+  
+  private void setScreenSize() {
+    DisplayMode dm = GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice().getDisplayMode();
+    screenSize = new Dimension(dm.getWidth(), dm.getHeight());
   }
 
   public void paintComponent(Graphics g) {
