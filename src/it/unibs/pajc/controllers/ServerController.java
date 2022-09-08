@@ -3,6 +3,9 @@ package it.unibs.pajc.controllers;
 import it.unibs.pajc.DGNGserver.Answer;
 import it.unibs.pajc.DGNGserver.DGNG;
 import it.unibs.pajc.DGNGserver.ServerThread;
+import it.unibs.pajc.micellaneous.Carta;
+import it.unibs.pajc.micellaneous.Mano;
+import it.unibs.pajc.micellaneous.Scartate;
 import it.unibs.pajc.model.DugongoModel;
 import it.unibs.pajc.view.ServerPanel;
 import it.unibs.pajc.view.View;
@@ -107,11 +110,21 @@ public class ServerController extends Controller {
 
   private void updateModel(ChangeEvent changeEvent) {
     int port;
+    DugongoModel model;
+    Mano mano;
+    Scartate scartata;
+    Carta[] cambiate;
 
     for (ServerThread connectedClient : connectedClients) {
       port = connectedClient.getPorta();
+      model = getModel();
+      mano = model.getMano(port);
+      scartata = model.getScartate();
+      cambiate = model.getCambiate();
 
-      sendToSingleClient(port, DGNG.CHANGE, new Object[] { getModel() });
+      sendToSingleClient(port, DGNG.CHANGE, new Object[] { mano });
+      sendToSingleClient(port, DGNG.CHANGE, new Object[] { scartata });
+      sendToSingleClient(port, DGNG.CHANGE, new Object[] { cambiate });
     }
 
     play();
