@@ -1,9 +1,10 @@
 package it.unibs.pajc.micellaneous;
 
+import java.io.Serializable;
 import java.util.Collection;
 import java.util.Stack;
 
-public class Scartate extends Carte {
+public class Scartate extends Carte implements Serializable {
 
   private Stack<Carta> scartate;
   

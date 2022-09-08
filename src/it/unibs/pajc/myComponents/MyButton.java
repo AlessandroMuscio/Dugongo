@@ -76,7 +76,24 @@ public class MyButton extends JButton {
 
     return buffer.toString();
   }
-
+  
+  public void setOriginalIcon(String text, String path) {
+    int width, height;
+    Dimension parentCurrentSize = this.getParent().getSize();
+  
+    if (parentCurrentSize.width <= parentCurrentSize.height) {
+      width = (iconScalingPercentage * parentCurrentSize.width) / 100;
+      height = -1;
+    } else {
+      width = -1;
+      height = (iconScalingPercentage * parentCurrentSize.height) / 100;
+    }
+    
+    this.originalIcon = new ImageIcon(getFilePath(text, path)).getImage();
+    Image scaledIcon = originalIcon.getScaledInstance(width, height, Image.SCALE_SMOOTH);
+    this.setIcon(new ImageIcon(scaledIcon));
+  }
+  
   @Override
   protected void paintComponent(Graphics g) {
     super.paintComponent(g);
@@ -85,7 +102,7 @@ public class MyButton extends JButton {
 
     if (!parentPreviousSize.equals(parentCurrentSize)) {
       ((Graphics2D) g).setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-
+  
       int width, height;
       float fontScalingFactor;
       if (parentCurrentSize.width <= parentCurrentSize.height) {
@@ -97,13 +114,13 @@ public class MyButton extends JButton {
         height = (iconScalingPercentage * parentCurrentSize.height) / 100;
         fontScalingFactor = (fontScalingPercentage * parentCurrentSize.height) / 100;
       }
-
+  
       Image scaledIcon = originalIcon.getScaledInstance(width, height, Image.SCALE_SMOOTH);
       this.setIcon(new ImageIcon(scaledIcon));
-
+  
       if (fontScalingPercentage != Integer.MIN_VALUE)
         this.setFont(this.getFont().deriveFont(Font.PLAIN, fontScalingFactor));
-
+  
       parentPreviousSize = parentCurrentSize;
     }
   }

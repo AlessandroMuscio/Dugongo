@@ -1,12 +1,12 @@
 package it.unibs.pajc.controllers;
 
-import it.unibs.pajc.micellaneous.Carta;
 import it.unibs.pajc.DGNGserver.Answer;
 import it.unibs.pajc.DGNGserver.DGNG;
 import it.unibs.pajc.DGNGserver.Request;
+import it.unibs.pajc.micellaneous.Carta;
 import it.unibs.pajc.micellaneous.Mano;
+import it.unibs.pajc.micellaneous.Scartate;
 import it.unibs.pajc.myComponents.MyTextField;
-import it.unibs.pajc.view.GamePanel;
 import it.unibs.pajc.view.View;
 
 import javax.swing.*;
@@ -31,9 +31,18 @@ public class ClientController extends Controller {
   private ExecutorService executor;
 
   private GameController gameController;
+  
+  private static ClientController singleton = null;
 
   public ClientController() {
     executor = Executors.newFixedThreadPool(2);
+  }
+  
+  public static ClientController getInstance() {
+    if (singleton == null)
+      singleton = new ClientController();
+    
+    return singleton;
   }
 
   public void iniziaCollegamento(MyTextField[] textFields) {
@@ -56,7 +65,8 @@ public class ClientController extends Controller {
         writer = new ObjectOutputStream(client.getOutputStream());
         reader = new ObjectInputStream(client.getInputStream());
         executor.execute(this::listenToServer);
-        sendToServer(DGNG.NOME, new Object[] { name });
+        Request request = new Request(DGNG.NOME, new Object[] { name });
+        sendToServer(request);
       } catch (Exception e) {
         JOptionPane.showMessageDialog(null, "ERRORE!\nImpossibile stabilire la connessione con il server",
             "Errore di Connessione", JOptionPane.ERROR_MESSAGE);
@@ -73,7 +83,8 @@ public class ClientController extends Controller {
       writer = new ObjectOutputStream(client.getOutputStream());
       reader = new ObjectInputStream(client.getInputStream());
       executor.execute(this::listenToServer);
-      sendToServer(DGNG.NOME, new Object[] { name });
+      Request request = new Request(DGNG.NOME, new Object[] { name });
+      sendToServer(request);
     } catch (Exception e) {
       JOptionPane.showMessageDialog(null, "ERRORE!\nImpossibile stabilire la connessione con il server",
           "Errore di Connessione", JOptionPane.ERROR_MESSAGE);
@@ -87,17 +98,38 @@ public class ClientController extends Controller {
       while (!client.isClosed()) {
 
         Answer answer = (Answer) reader.readObject();
-
+        Mano mano;
+        Scartate scartate;
+        Carta[] change;
+  
         switch (answer.getAnswer()) {
           case DGNG.START:
             gameController = new GameController();
             View.getInstance().setPnlCorrente(gameController.getGamePanel());
             break;
+  
+          case DGNG.INIZIA:
+            mano = (Mano) answer.getBody()[0];
+            scartate = (Scartate) answer.getBody()[2];
+            gameController.inizializzaPartita(mano, scartate);
+            break;
 
           case DGNG.CHANGE:
-            Mano mano = (Mano) answer.getBody()[0];
-            Carta scartata = (Carta) answer.getBody()[1];
-            gameController.getGamePanel().setData(mano, scartata);
+            mano = (Mano) answer.getBody()[0];
+            change = (Carta[]) answer.getBody()[1];
+            scartate = (Scartate) answer.getBody()[2];
+            gameController.getGamePanel().setData(mano, change, scartate);
+            break;
+  
+          case DGNG.TURNO:
+            gameController.turno();
+            break;
+  
+          case DGNG.END:
+            mano = (Mano) answer.getBody()[0];
+            change = (Carta[]) answer.getBody()[1];
+            scartate = (Scartate) answer.getBody()[2];
+            gameController.endTurno(mano, change, scartate);
             break;
         }
       }
@@ -111,14 +143,11 @@ public class ClientController extends Controller {
     }
   }
 
-  private void sendToServer(int code, Object[] attributes) {
+  public void sendToServer(Request request) {
 
     try {
-      Request request = new Request(code, attributes);
-
       writer.writeUnshared(request);
       writer.flush();
-
     } catch (IOException e) {
       e.printStackTrace();
     }

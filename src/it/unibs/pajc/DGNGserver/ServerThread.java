@@ -1,11 +1,14 @@
 package it.unibs.pajc.DGNGserver;
 
 import it.unibs.pajc.controllers.ServerController;
+import it.unibs.pajc.micellaneous.Carta;
+import it.unibs.pajc.model.DugongoModel;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
+import java.util.ArrayList;
 
 public class ServerThread extends Thread {
   private Socket client;
@@ -30,6 +33,7 @@ public class ServerThread extends Thread {
     try {
       request = (Request) objectReader.readObject();
       System.out.println(request);
+      DugongoModel model;
 
       switch (request.getRequest()) {
         case DGNG.GIOCA:
@@ -40,14 +44,21 @@ public class ServerThread extends Thread {
           break;
 
         case DGNG.SCARTA:
-          answer = new Answer(DGNG.REQUEST_OK);
+          model = ServerController.getInstance().getModel();
+          ArrayList<Carta> daScartare = (ArrayList<Carta>)request.getAttributes()[0];
+          model.confronto(daScartare, client.getPort());
+          answer = new Answer(DGNG.END, ServerController.getInstance().getModel().getData(client.getPort()));
 
           objectWriter.writeObject(answer);
           objectWriter.flush();
+          
+          ServerController.getInstance().play();
           break;
 
         case DGNG.PESCA:
-          answer = new Answer(DGNG.REQUEST_OK);
+          model = ServerController.getInstance().getModel();
+          model.pesca(client.getPort());
+          answer = new Answer(DGNG.CHANGE, model.getData(client.getPort()));
 
           objectWriter.writeObject(answer);
           objectWriter.flush();

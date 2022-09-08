@@ -21,6 +21,8 @@ public class ServerController extends Controller {
   private static final int MAX_CLIENTS = 5;
 
   private ArrayList<ServerThread> connectedClients;
+  private Queue<ServerThread> turnoCorrente;
+  private Queue<ServerThread> turnoSuccessivo;
   private HashMap<Integer, String> clientsNames;
   private String IPaddress;
   private int port;
@@ -32,6 +34,8 @@ public class ServerController extends Controller {
     IPaddress = getLocalIPaddress();
     port = new Random().nextInt(DGNG.MIN_PORT, DGNG.MAX_PORT + 1);
     executors = Executors.newCachedThreadPool();
+    turnoCorrente = new LinkedList<>();
+    turnoSuccessivo = new LinkedList<>();
 
     executors.execute(this::startServer);
   }
@@ -87,15 +91,35 @@ public class ServerController extends Controller {
       sendToSpecificClient(temp.getPorta(), answer);
     }
   }
+  
+  public void play(){
+    if(turnoCorrente.size() == 0){
+      turnoCorrente = new LinkedList<>(turnoSuccessivo);
+      turnoSuccessivo = new LinkedList<>();
+    }
+    ServerThread corrente = turnoCorrente.poll();
+    turnoSuccessivo.add(corrente);
+
+    Answer answer = new Answer(DGNG.TURNO);
+    sendToSpecificClient(corrente.getPorta(), answer);
+  }
 
   public void avvia() {
     Answer answer = new Answer(DGNG.START);
+    turnoCorrente.addAll(connectedClients);
     sendToAllClients(answer);
 
     DugongoModel model = new DugongoModel();
+    model.inizializzaPartita(clientsNames.keySet());
     super.setModel(model);
     model.addChangeListener(this::updatedModel);
-    model.inizializzaPartita(clientsNames.keySet());
+  
+    for (ServerThread temp : connectedClients) {
+      answer = new Answer(DGNG.INIZIA, super.getModel().getData(temp.getPorta()));
+      sendToSpecificClient(temp.getPorta(), answer);
+    }
+    
+    play();
   }
 
   public void sendToSpecificClient(int port, Answer answer) {

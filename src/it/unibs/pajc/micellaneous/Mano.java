@@ -40,6 +40,10 @@ public class Mano extends Carte implements Serializable {
     }
   }
   
+  public Carta[] getMano() {
+    return mano;
+  }
+  
   public String getC(){
     return mano[0].getSeme() + " " + mano[0].getValore();
   }

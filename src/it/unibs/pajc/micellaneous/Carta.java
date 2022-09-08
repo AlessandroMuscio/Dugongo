@@ -3,17 +3,12 @@ package it.unibs.pajc.micellaneous;
 import java.io.Serializable;
 
 public class Carta implements Serializable {
-  public static final String RETRO_PATH;
 
   private ValoreCarta valore;
   private Seme seme;
   private int punteggio;
   private String frontePath;
-
-  static {
-    RETRO_PATH = "src/it/unibs/pajc/assets/carte/Retro.png";
-  }
-
+  
   public Carta(ValoreCarta valore, Seme seme, String frontePath) {
     this.valore = valore;
     this.seme = seme;

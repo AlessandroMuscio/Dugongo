@@ -16,7 +16,10 @@ public class DGNG {
   public static final int SERVER_ERROR = 0;
   public static final int REQUEST_OK = 1;
   public static final int START = 2;
-  public static final int CHANGE = 3;
+  public static final int INIZIA = 3;
+  public static final int CHANGE = 4;
+  public static final int TURNO = 5;
+  public static final int END = 6;
 
   // Dimensione del buffer
   public static final int PACKAGE_DIM = 1000; // 1kB

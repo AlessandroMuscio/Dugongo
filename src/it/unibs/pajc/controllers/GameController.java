@@ -1,12 +1,17 @@
 package it.unibs.pajc.controllers;
 
+import it.unibs.pajc.DGNGserver.DGNG;
+import it.unibs.pajc.DGNGserver.Request;
+import it.unibs.pajc.micellaneous.Carta;
+import it.unibs.pajc.micellaneous.Mano;
+import it.unibs.pajc.micellaneous.Scartate;
+import it.unibs.pajc.view.GamePanel;
+
+import javax.swing.*;
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
-
-import javax.swing.JButton;
-
-import it.unibs.pajc.view.GamePanel;
+import java.util.ArrayList;
 
 public class GameController {
   private GamePanel gamePanel;
@@ -31,8 +36,26 @@ public class GameController {
       }
     }
   }
+  
+  public void inizializzaPartita(Mano mano, Scartate scartate){
+    gamePanel.setData(mano, mano.getMano(), scartate);
+    gamePanel.endTurno();
+  }
+  
+  public void turno(){
+    gamePanel.startTurno();
+  }
+  
+  public void endTurno(Mano mano, Carta[] carte, Scartate scartate){
+    gamePanel.setData(mano, carte, scartate);
+    gamePanel.endTurno();
+  }
 
   private void scarta() {
+    ArrayList<Carta> daScartare = gamePanel.getDaScartare();
+    System.out.println("PROVIAMO A SCRIVERE " + daScartare.get(0).getSeme());
+    Request request = new Request(DGNG.SCARTA, new Object[]{daScartare});
+    ClientController.getInstance().sendToServer(request);
   }
 
   private void annulla() {

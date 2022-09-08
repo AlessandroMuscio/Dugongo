@@ -1,25 +1,16 @@
 package it.unibs.pajc.view;
 
-import java.awt.BorderLayout;
-import java.awt.Color;
-import java.awt.Dimension;
-import java.awt.DisplayMode;
-import java.awt.Graphics;
-import java.awt.GraphicsDevice;
-import java.awt.GraphicsEnvironment;
-import java.awt.GridLayout;
-import java.awt.Image;
-
 import it.unibs.pajc.micellaneous.Carta;
 import it.unibs.pajc.micellaneous.Mano;
+import it.unibs.pajc.micellaneous.Scartate;
 import it.unibs.pajc.myComponents.CartaButton;
 import it.unibs.pajc.myComponents.MyButton;
 import it.unibs.pajc.myComponents.MyLabel;
 
 import javax.swing.*;
-
-import java.util.Arrays;
-import java.util.ListIterator;
+import java.awt.*;
+import java.util.Timer;
+import java.util.*;
 
 public class GamePanel extends JPanel {
   private static final Dimension SCREEN_SIZE;
@@ -46,6 +37,8 @@ public class GamePanel extends JPanel {
 
   private JPanel pnlAzioni;
   private JButton[] btnAzioni;
+  private Timer timer;
+  private ArrayList<Carta> daScartare;
 
   static {
     SCREEN_SIZE = getScreenSize();
@@ -90,6 +83,8 @@ public class GamePanel extends JPanel {
   }
 
   public GamePanel() {
+    daScartare = new ArrayList<>();
+    timer = new Timer();
     inizializzaPnlStato();
     inizializzaPnlTavolo();
     inizializzaPnlAzioni();
@@ -148,8 +143,10 @@ public class GamePanel extends JPanel {
 
     pnlMazzi.add(btnMazzo, BorderLayout.WEST);
 
-    btnScartate = new CartaButton("retro", 92, MyButton.CARTE_PATH, null);
+    btnScartate = new CartaButton("prova", 92, MyButton.CARTE_PATH, null);
     btnScartate.setPreferredSize(new Dimension(width, height));
+    btnScartate.setBorderPainted(true);
+    btnScartate.setEnabled(false);
 
     pnlMazzi.add(btnScartate, BorderLayout.EAST);
   }
@@ -182,14 +179,17 @@ public class GamePanel extends JPanel {
     pnlTavolo.setPreferredSize(new Dimension(width, height));
 
     tavolo = new CartaButton[CARD_ROWS_SHOWN * CARD_COLS_SHOWN];
+    int i = 0;
     for (CartaButton carta : tavolo) {
       carta = (CartaButton) pnlTavolo.add(new CartaButton("retro", 48, MyButton.CARTE_PATH, null));
+      tavolo[i] = carta;
+      tavolo[i++].setVisible(false);
 
       carta.addActionListener(e -> {
         CartaButton source = (CartaButton) e.getSource();
-
+        daScartare.add(source.getCarta());
         if (source.isVisible()) {
-          System.out.println("Banana!");
+          System.out.println(source.getCarta().getSeme());
         }
       });
     }
@@ -220,12 +220,80 @@ public class GamePanel extends JPanel {
   public JButton[] getBtnAzioni() {
     return btnAzioni;
   }
+  
+  public void startTurno(){
+    btnAzioni[0].setEnabled(true);
+    btnAzioni[1].setEnabled(true);
+    btnAzioni[2].setEnabled(true);
+  }
+  
+  public void endTurno(){
+    btnAzioni[0].setEnabled(false);
+    btnAzioni[1].setEnabled(false);
+    btnAzioni[2].setEnabled(false);
+  }
 
-  public void setData(Mano mano, Carta scartata) {
+  public void setData(Mano mano, Carta[] daVisualizzare, Scartate scartate) {
+    aggiornaTavolo(mano);
+    aggiornaMazzi(scartate);
     aggiornaInformazioni(mano.getC());
-
+    stampaMazzi();
+    stampaNuoveCarte(daVisualizzare);
+    
     pnlInformazioni.repaint();
     pnlInformazioni.revalidate();
+    pnlMazzi.repaint();
+    pnlMazzi.revalidate();
+  }
+  
+  private void stampaNuoveCarte(Carta[] daVisualizzare){
+  
+    for(CartaButton button : tavolo){
+      for(Carta carta : daVisualizzare){
+        if(carta != null && button.getCarta() != null && carta.equals(button.getCarta())){
+          button.stampaFronte();
+        }
+      }
+    }
+    timer.schedule(new TimerTask() {
+      @Override
+      public void run() {
+        stampaTavolo();
+      }
+    }, 7*1000);
+  }
+  
+  private void stampaTavolo(){
+    for(CartaButton button : tavolo){
+      if(button.getCarta() == null){
+        button.setVisible(false);
+      }
+      else{
+        button.stampaRetro();
+      }
+    }
+  }
+  
+  private void stampaMazzi(){
+    btnScartate.stampaFronte();
+  }
+  
+  private void aggiornaTavolo(Mano mano){
+    int i = 0;
+    for (Carta temp : mano.getMano()){
+      this.tavolo[i].setCarta(temp);
+      this.tavolo[i].setVisible(true);
+      
+      if(tavolo[i].getCarta() == null){
+        tavolo[i].setVisible(false);
+      }
+      
+      i++;
+    }
+  }
+  
+  private void aggiornaMazzi(Scartate scartate){
+    btnScartate.setCarta(scartate.seeLast());
   }
 
   private void aggiornaInformazioni(String text) {
@@ -250,7 +318,11 @@ public class GamePanel extends JPanel {
       }
     } */
   }
-
+  
+  public ArrayList<Carta> getDaScartare() {
+    return daScartare;
+  }
+  
   @Override
   protected void paintComponent(Graphics g) {
     super.paintComponent(g);
