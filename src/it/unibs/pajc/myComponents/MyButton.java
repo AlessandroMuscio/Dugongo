@@ -63,7 +63,7 @@ public class MyButton extends JButton {
         buffer.append(Character.toUpperCase(temp[i].charAt(0)));
         buffer.append(temp[i].toLowerCase().substring(1));
 
-        if (i == 0)
+        if (i == 0 && temp.length != 1)
           buffer.append('_');
       }
     }

@@ -11,7 +11,7 @@ public class GamePanel extends JPanel {
 
   private static GraphicsDevice device = GraphicsEnvironment.getLocalGraphicsEnvironment().getScreenDevices()[0];
   private MyButton[] tavolo;
-  private Image sfondo = new ImageIcon("src/it/unibs/pajc/assets/generiche/sfondo.jpeg").getImage();
+  private Image sfondo = new ImageIcon("src/it/unibs/pajc/assets/generiche/Sfondo.jpeg").getImage();
   //private Image retro = new ImageIcon("src/assets/icone/carte/retro.png").getImage();
   private Dimension screenSize;
 
