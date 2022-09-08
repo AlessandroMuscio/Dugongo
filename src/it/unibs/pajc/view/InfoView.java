@@ -86,13 +86,13 @@ public class InfoView {
       pnlDirezioni[i].setBackground(Color.PINK);
 
       if (i != 0)
-        indietroButtons[i] = (MyButton) pnlDirezioni[i].add(new MyButton("INDIETRO", 90, 0, false));
+        indietroButtons[i] = (MyButton) pnlDirezioni[i].add(new MyButton("indietro", 90, MyButton.ICONS_PATH));
 
       if (i == 0 || i == (pnlDirezioni.length - 1))
-        esciButtons[i] = (MyButton) pnlDirezioni[i].add(new MyButton("ESCI", 90, 0, false));
+        esciButtons[i] = (MyButton) pnlDirezioni[i].add(new MyButton("esci", 90, MyButton.ICONS_PATH));
 
       if (i != (pnlDirezioni.length - 1))
-        avantiButtons[i] = (MyButton) pnlDirezioni[i].add(new MyButton("AVANTI", 90, 0, false));
+        avantiButtons[i] = (MyButton) pnlDirezioni[i].add(new MyButton("avanti", 90, MyButton.ICONS_PATH));
     }
   }
 

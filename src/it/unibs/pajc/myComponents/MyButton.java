@@ -4,47 +4,35 @@ import javax.swing.*;
 import java.awt.*;
 
 public class MyButton extends JButton {
-  private static final String ICONS_PATH = "src/it/unibs/pajc/assets/icone/";
-  private static final String CARTE_PATH = "src/it/unibs/pajc/assets/carte/";
+  public static final String ICONS_PATH = "src/it/unibs/pajc/assets/icone/";
+  public static final String CARTE_PATH = "src/it/unibs/pajc/assets/carte/";
 
   private static final String ICONS_EXT = ".png";
 
   private Dimension parentPreviousSize;
 
-  private boolean showText;
   private Image originalIcon;
   private int iconScalingPercentage;
   private int fontScalingPercentage;
 
-  public MyButton(String text, int iconScalingPercentage, int fontScalingPercentage, boolean showText) {
-    super(text);
-
-    StringBuilder iconName = new StringBuilder();
-    iconName.append(Character.toUpperCase(text.charAt(0)));
-    iconName.append(text.toLowerCase().substring(1));
-
-    this.parentPreviousSize = new Dimension(-1, -1);
-    this.originalIcon = new ImageIcon(ICONS_PATH.concat(iconName.toString()).concat(ICONS_EXT)).getImage();
-    this.iconScalingPercentage = iconScalingPercentage;
-    this.fontScalingPercentage = fontScalingPercentage;
-    this.showText = showText;
-
-    if (!showText)
-      this.setText(null);
-
-    setSettings();
-  }
-
-  public MyButton(String text, int iconScalingPercentage) {
+  public MyButton(String text, int iconScalingPercentage, String path) {
     super(text);
 
     this.parentPreviousSize = new Dimension(-1, -1);
-    this.originalIcon = new ImageIcon(CARTE_PATH + text.toLowerCase() + ICONS_EXT).getImage();
+    this.originalIcon = new ImageIcon(getFilePath(text, path)).getImage();
     this.iconScalingPercentage = iconScalingPercentage;
+    this.fontScalingPercentage = Integer.MIN_VALUE;
 
     this.setText(null);
 
     setSettings();
+  }
+
+  public MyButton(String text, int iconScalingPercentage, int fontScalingPercentage, String path) {
+    this(text, iconScalingPercentage, path);
+
+    this.fontScalingPercentage = fontScalingPercentage;
+    this.setText(text);
   }
 
   private void setSettings() {
@@ -58,6 +46,31 @@ public class MyButton extends JButton {
     this.setCursor(new Cursor(Cursor.HAND_CURSOR));
     this.setVerticalTextPosition(SwingConstants.BOTTOM);
     this.setHorizontalTextPosition(SwingConstants.CENTER);
+  }
+
+  private String getFilePath(String text, String path) {
+    StringBuffer buffer = new StringBuffer(path.length() + text.length() + ICONS_EXT.length());
+
+    buffer.append(path);
+
+    if (path.equals(ICONS_PATH)) {
+      buffer.append(Character.toUpperCase(text.charAt(0)));
+      buffer.append(text.toLowerCase().substring(1));
+    } else if (path.equals(CARTE_PATH)) {
+      String[] temp = text.split("_");
+
+      for (int i = 0; i < temp.length; i++) {
+        buffer.append(Character.toUpperCase(temp[i].charAt(0)));
+        buffer.append(temp[i].toLowerCase().substring(1));
+
+        if (i == 0)
+          buffer.append('_');
+      }
+    }
+
+    buffer.append(ICONS_EXT);
+
+    return buffer.toString();
   }
 
   @Override
@@ -84,7 +97,7 @@ public class MyButton extends JButton {
       Image scaledIcon = originalIcon.getScaledInstance(width, height, Image.SCALE_SMOOTH);
       this.setIcon(new ImageIcon(scaledIcon));
 
-      if (showText)
+      if (fontScalingPercentage != Integer.MIN_VALUE)
         this.setFont(this.getFont().deriveFont(Font.PLAIN, fontScalingFactor));
 
       parentPreviousSize = parentCurrentSize;

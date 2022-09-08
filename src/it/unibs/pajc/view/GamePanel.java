@@ -18,7 +18,7 @@ public class GamePanel extends JPanel {
   public GamePanel() {
 
     setScreenSize();
-    
+
     //PORTA LA FINESTRA A SCHERMO INTERO
     device.setFullScreenWindow(View.getInstance().getFrame());
     View.getInstance().getFrame().repaint();
@@ -33,10 +33,10 @@ public class GamePanel extends JPanel {
     pnlMazzo.setPreferredSize(new Dimension((int) (screenSize.width * 0.3), (int) (screenSize.height * 0.3)));
     pnlMazzo.setOpaque(false);
 
-    MyButton buttonMazzo = new MyButton("retro", 92,0,false);
+    MyButton buttonMazzo = new MyButton("retro", 92, MyButton.CARTE_PATH);
     buttonMazzo.setPreferredSize(new Dimension((int) (screenSize.width * 0.1), (int) (screenSize.height * 0.3)));
     pnlMazzo.add(buttonMazzo, BorderLayout.WEST);
-    MyButton buttonScartate = new MyButton("retro", 92,0,false);
+    MyButton buttonScartate = new MyButton("retro", 92, MyButton.CARTE_PATH);
     buttonScartate.setPreferredSize(new Dimension((int) (screenSize.width * 0.1), (int) (screenSize.height * 0.3)));
     pnlMazzo.add(buttonScartate, BorderLayout.EAST);
 
@@ -55,7 +55,7 @@ public class GamePanel extends JPanel {
     tavolo = new MyButton[20];
 
     for (MyButton b : tavolo) {
-      b = new MyButton("retro", 48,0,false);
+      b = new MyButton("retro", 48, MyButton.CARTE_PATH);
       pnlTavolo.add(b);
 
       MyButton finalB = b;
@@ -104,13 +104,13 @@ public class GamePanel extends JPanel {
     JButton buttonClose = new JButton("CLOSE");
     buttonClose.addActionListener(e -> {
       device.setFullScreenWindow(null);
-    
+
       try {
         ServerController.getInstance().closeServer();
       } catch (IOException ex) {
         throw new RuntimeException(ex);
       }
-  
+
       View.getInstance().setPnlCorrente(new MenuPanel());
     });
     pnlAzioni.add(buttonClose);
@@ -119,7 +119,7 @@ public class GamePanel extends JPanel {
     this.add(pnlTavolo, BorderLayout.CENTER);
     this.add(pnlAzioni, BorderLayout.SOUTH);
   }
-  
+
   private void setScreenSize() {
     DisplayMode dm = GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice().getDisplayMode();
     screenSize = new Dimension(dm.getWidth(), dm.getHeight());

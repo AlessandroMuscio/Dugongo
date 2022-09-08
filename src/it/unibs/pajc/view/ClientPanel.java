@@ -23,8 +23,8 @@ public class ClientPanel extends JPanel {
     pnlTextFields = new JPanel(new GridLayout(3, 1));
     textFields = new MyTextField[placeholders.length];
     pnlOpzioni = new JPanel(new GridLayout(1, 2));
-    esciButton = new MyButton("ESCI", 95, 0, false);
-    avviaButton = new MyButton("AVVIA", 95, 0, false);
+    esciButton = new MyButton("esci", 95, MyButton.ICONS_PATH);
+    avviaButton = new MyButton("avvia", 95, MyButton.ICONS_PATH);
 
     inizializza();
   }
@@ -39,7 +39,7 @@ public class ClientPanel extends JPanel {
 
       pnlTextFields.add(textFields[i]);
     }
-    
+
     pnlOpzioni.setBackground(Color.PINK);
     pnlOpzioni.add(esciButton);
     pnlOpzioni.add(avviaButton);
@@ -48,15 +48,15 @@ public class ClientPanel extends JPanel {
     this.add(pnlTextFields, BorderLayout.CENTER);
     this.add(pnlOpzioni, BorderLayout.PAGE_END);
   }
-  
+
   public MyTextField[] getTextFields() {
     return textFields;
   }
-  
+
   public MyButton getEsciButton() {
     return esciButton;
   }
-  
+
   public MyButton getAvviaButton() {
     return avviaButton;
   }

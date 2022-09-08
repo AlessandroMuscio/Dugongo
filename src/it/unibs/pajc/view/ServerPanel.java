@@ -29,8 +29,8 @@ public class ServerPanel extends JPanel {
     lblPort = new MyLabel("", SwingConstants.CENTER, 10);
     pnlUsers = new JPanel(new GridBagLayout());
     pnlOpzioni = new JPanel(new GridLayout(1, 2));
-    esciButton = new MyButton("ESCI", 95, 0, false);
-    avviaButton = new MyButton("AVVIA", 95, 0, false);
+    esciButton = new MyButton("esci", 95, MyButton.ICONS_PATH);
+    avviaButton = new MyButton("avvia", 95, MyButton.ICONS_PATH);
 
     inizializza();
   }

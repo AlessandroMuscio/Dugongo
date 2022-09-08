@@ -11,7 +11,7 @@ public class MenuPanel extends JPanel {
   private JPanel pnlPrincipale;
   private JPanel pnlBottoniPartita;
   private JPanel pnlBottoniOpzioni;
-  
+
   private MyButton avviaButton;
   private MyButton uniscitiButton;
   private MyButton chiudiButton;
@@ -24,14 +24,14 @@ public class MenuPanel extends JPanel {
     pnlBottoniPartita = new JPanel();
     pnlBottoniOpzioni = new JPanel();
     dimPrecedente = -1;
-    avviaButton = new MyButton("AVVIA", 50, 10, true);
-    uniscitiButton = new MyButton("UNISCITI", 50, 10, true);
-    chiudiButton = new MyButton("CHIUDI", 30, 8, true);
-    infoButton = new MyButton("INFO", 30, 8, true);
-    
+    avviaButton = new MyButton("AVVIA", 50, 10, MyButton.ICONS_PATH);
+    uniscitiButton = new MyButton("UNISCITI", 50, 10, MyButton.ICONS_PATH);
+    chiudiButton = new MyButton("CHIUDI", 30, 8, MyButton.ICONS_PATH);
+    infoButton = new MyButton("INFO", 30, 8, MyButton.ICONS_PATH);
+
     inizializza();
   }
- 
+
   private void inizializza() {
     this.setLayout(new BorderLayout());
     this.setBackground(Color.PINK);
@@ -64,19 +64,19 @@ public class MenuPanel extends JPanel {
       dimPrecedente = dim;
     }
   }
-  
+
   public MyButton getAvviaButton() {
     return avviaButton;
   }
-  
+
   public MyButton getUniscitiButton() {
     return uniscitiButton;
   }
-  
+
   public MyButton getChiudiButton() {
     return chiudiButton;
   }
-  
+
   public MyButton getInfoButton() {
     return infoButton;
   }
