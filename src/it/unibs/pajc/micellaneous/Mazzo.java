@@ -1,9 +1,8 @@
 package it.unibs.pajc.micellaneous;
 
-import javax.swing.*;
-import java.awt.*;
 import java.io.File;
 import java.io.FileFilter;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Stack;
@@ -11,11 +10,13 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class Mazzo extends Carte {
-  private final File folder = new File("src/it/unibs/pajc/assets/carte");
+  private static final File FOLDER = new File("src/it/unibs/pajc/assets/carte");
+
   private Stack<Carta> mazzo;
 
   public Mazzo() {
     this.mazzo = new Stack<>();
+
     inizializza();
     mescola();
   }
@@ -38,11 +39,10 @@ public class Mazzo extends Carte {
     String fileName;
     Seme seme;
     ValoreCarta valore;
-    Image fronte;
     String[] tmp;
     Carta carta;
 
-    for (File file : folder.listFiles(filter)) {
+    for (File file : FOLDER.listFiles(filter)) {
       matcher = pattern.matcher(file.toString());
 
       if (matcher.find()) {
@@ -51,25 +51,24 @@ public class Mazzo extends Carte {
 
         seme = Seme.valueOf(tmp[0].toUpperCase());
         valore = ValoreCarta.valueOf(tmp[1].toUpperCase());
-        fronte = new ImageIcon(file.toString()).getImage();
 
         carta = new Carta(valore, seme, fileName);
         mazzo.add(carta);
       }
     }
   }
-  
-  public ArrayList<Carta> getPrimaMano(){
+
+  public ArrayList<Carta> getPrimaMano() {
     ArrayList<Carta> primaMano = new ArrayList<>();
-    
-    for (int i = 0; i < 5; i++){
+
+    for (int i = 0; i < 5; i++) {
       primaMano.add(mazzo.pop());
     }
-    
+
     return primaMano;
   }
-  
-  public Carta pescaCarta(){
+
+  public Carta pescaCarta() {
     return mazzo.pop();
   }
 }

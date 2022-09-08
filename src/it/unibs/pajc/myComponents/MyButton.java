@@ -48,6 +48,10 @@ public class MyButton extends JButton {
     this.setHorizontalTextPosition(SwingConstants.CENTER);
   }
 
+  public void setIconScalingPercentage(int iconScalingPercentage) {
+    this.iconScalingPercentage = iconScalingPercentage;
+  }
+
   private String getFilePath(String text, String path) {
     StringBuffer buffer = new StringBuffer(path.length() + text.length() + ICONS_EXT.length());
 

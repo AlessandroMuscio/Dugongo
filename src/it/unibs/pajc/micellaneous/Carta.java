@@ -1,18 +1,17 @@
 package it.unibs.pajc.micellaneous;
 
-import it.unibs.pajc.myComponents.MyButton;
-
 import java.io.Serializable;
 
 public class Carta implements Serializable {
+  public static final String RETRO_PATH;
+
   private ValoreCarta valore;
   private Seme seme;
   private int punteggio;
   private String frontePath;
-  private static String retroPath;
 
   static {
-    retroPath = MyButton.CARTE_PATH.concat("Retro.png");
+    RETRO_PATH = "src/it/unibs/pajc/assets/carte/Retro.png";
   }
 
   public Carta(ValoreCarta valore, Seme seme, String frontePath) {
@@ -45,5 +44,13 @@ public class Carta implements Serializable {
 
   public void setPunteggio(int punteggio) {
     this.punteggio = punteggio;
+  }
+
+  public String getFrontePath() {
+    return frontePath;
+  }
+
+  public void setFrontePath(String frontePath) {
+    this.frontePath = frontePath;
   }
 }
