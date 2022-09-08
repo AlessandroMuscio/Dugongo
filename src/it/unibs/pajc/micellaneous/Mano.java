@@ -2,6 +2,7 @@ package it.unibs.pajc.micellaneous;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Arrays;
 
 public class Mano extends Carte implements Serializable {
 
@@ -38,5 +39,10 @@ public class Mano extends Carte implements Serializable {
 
   public Carta[] getCarte() {
     return carte;
+  }
+
+  @Override
+  public String toString() {
+    return "Mano [carte=" + Arrays.toString(carte) + "]";
   }
 }

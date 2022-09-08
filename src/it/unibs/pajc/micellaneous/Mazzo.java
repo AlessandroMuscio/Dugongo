@@ -2,14 +2,14 @@ package it.unibs.pajc.micellaneous;
 
 import java.io.File;
 import java.io.FileFilter;
-
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Stack;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public class Mazzo extends Carte {
+public class Mazzo extends Carte implements Serializable {
   private static final File FOLDER;
   private static final int NUM_CARTE_PRIMA_MANO;
 
@@ -66,7 +66,6 @@ public class Mazzo extends Carte {
 
     for (int i = 0; i < NUM_CARTE_PRIMA_MANO; i++) {
       primaMano.add(mazzo.pop());
-      System.out.println(primaMano.get(i));
     }
 
     return primaMano;

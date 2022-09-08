@@ -5,11 +5,12 @@ import it.unibs.pajc.micellaneous.Mano;
 import it.unibs.pajc.micellaneous.Mazzo;
 import it.unibs.pajc.micellaneous.Scartate;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Set;
 
-public class DugongoModel extends BaseModel {
+public class DugongoModel extends BaseModel implements Serializable {
   private Mazzo mazzo;
   private HashMap<Integer, Mano> maniClients;
   private Scartate scartate;
@@ -31,27 +32,25 @@ public class DugongoModel extends BaseModel {
   public void confronto(ArrayList<Carta> daScartare, Integer key) {
     int i = 0;
 
-    synchronized (this) {
-      if (scartate.getSize() != 0) {
-        for (Carta temp : daScartare) {
-          if (!temp.getValore().equals(scartate.seeLast().getValore())) {
-            Mano mano = maniClients.get(key);
-            cambiate[i++] = scartate.seeLast();
-            mano.aggiungi(scartate.getLast());
-            break;
-          }
+    if (scartate.getSize() != 0) {
+      for (Carta temp : daScartare) {
+        if (!temp.getValore().equals(scartate.seeLast().getValore())) {
+          Mano mano = maniClients.get(key);
+          cambiate[i++] = scartate.seeLast();
+          mano.aggiungi(scartate.getLast());
+          break;
         }
       }
+    }
 
-      for (Carta temp : daScartare) {
-        cambiate[i++] = temp;
-      }
+    for (Carta temp : daScartare) {
+      cambiate[i++] = temp;
+    }
 
-      if (daScartare.size() == i) {
-        Mano mano = maniClients.get(key);
-        mano.scarta(daScartare);
-        scartate.aggiungi(daScartare);
-      }
+    if (daScartare.size() == i) {
+      Mano mano = maniClients.get(key);
+      mano.scarta(daScartare);
+      scartate.aggiungi(daScartare);
     }
 
     fireValuesChange();
@@ -66,7 +65,24 @@ public class DugongoModel extends BaseModel {
     cambiate[i] = carta;
   }
 
-  public Object[] getData(int porta) {
-    return new Object[] { maniClients.get(porta), cambiate, scartate };
+  public Mazzo getMazzo() {
+    return mazzo;
   }
+
+  public HashMap<Integer, Mano> getManiClients() {
+    return maniClients;
+  }
+
+  public Mano getMano(int port) {
+    return maniClients.get(port);
+  }
+
+  public Scartate getScartate() {
+    return scartate;
+  }
+
+  public Carta[] getCambiate() {
+    return cambiate;
+  }
+
 }

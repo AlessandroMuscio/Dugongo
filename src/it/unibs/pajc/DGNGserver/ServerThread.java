@@ -44,16 +44,16 @@ public class ServerThread extends Thread {
             model = ServerController.getInstance().getModel();
             ArrayList<Carta> daScartare = (ArrayList<Carta>) request.getAttributes()[0];
             model.confronto(daScartare, client.getPort());
-            /* answer = new Answer(DGNG.END, ServerController.getInstance().getModel().getData(client.getPort()));
-            
+            answer = new Answer(DGNG.CHANGE, new Object[] { model, client.getPort() });
+
             objectWriter.writeObject(answer);
-            objectWriter.flush(); */
+            objectWriter.flush();
             break;
 
           case DGNG.PESCA:
             model = ServerController.getInstance().getModel();
             model.pesca(client.getPort());
-            answer = new Answer(DGNG.CHANGE, model.getData(client.getPort()));
+            //answer = new Answer(DGNG.CHANGE, model.getData(client.getPort()));
 
             objectWriter.writeObject(answer);
             objectWriter.flush();

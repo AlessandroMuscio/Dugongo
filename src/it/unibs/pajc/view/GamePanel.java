@@ -187,10 +187,8 @@ public class GamePanel extends JPanel {
 
       carta.addActionListener(e -> {
         CartaButton source = (CartaButton) e.getSource();
+
         daScartare.add(source.getCarta());
-        if (source.isVisible()) {
-          System.out.println(source.getCarta().getSeme());
-        }
       });
     }
   }

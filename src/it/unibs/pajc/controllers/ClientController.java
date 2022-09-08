@@ -6,6 +6,7 @@ import it.unibs.pajc.DGNGserver.Request;
 import it.unibs.pajc.micellaneous.Carta;
 import it.unibs.pajc.micellaneous.Mano;
 import it.unibs.pajc.micellaneous.Scartate;
+import it.unibs.pajc.model.DugongoModel;
 import it.unibs.pajc.myComponents.MyTextField;
 import it.unibs.pajc.view.View;
 
@@ -93,9 +94,8 @@ public class ClientController extends Controller {
 
   private void listenToServer() {
     Answer answer;
-    Mano mano;
-    Scartate scartate;
-    Carta[] change;
+    DugongoModel model;
+    int tmpPort;
 
     try {
 
@@ -109,16 +109,18 @@ public class ClientController extends Controller {
             break;
 
           case DGNG.INIZIA:
-            mano = (Mano) answer.getBody()[0];
-            scartate = (Scartate) answer.getBody()[2];
-            gameController.inizializzaPartita(mano, scartate);
+            model = (DugongoModel) answer.getBody()[0];
+            tmpPort = (int) answer.getBody()[1];
+
+            gameController.inizializzaPartita(model.getMano(port), model.getScartate());
             break;
 
           case DGNG.CHANGE:
-            mano = (Mano) answer.getBody()[0];
-            change = (Carta[]) answer.getBody()[1];
-            scartate = (Scartate) answer.getBody()[2];
-            gameController.endTurno(mano, change, scartate);
+            model = (DugongoModel) answer.getBody()[0];
+            tmpPort = (int) answer.getBody()[1];
+            System.out.println(model.getMano(port));
+
+            gameController.endTurno(model.getMano(port), model.getCambiate(), model.getScartate());
             break;
 
           case DGNG.TURNO:
@@ -127,7 +129,7 @@ public class ClientController extends Controller {
         }
 
         if (answer != null)
-          System.out.println("Data received");
+          System.out.println(answer);
       }
 
     } catch (IOException e) {
@@ -138,7 +140,6 @@ public class ClientController extends Controller {
   }
 
   public void sendToServer(Request request) {
-
     try {
       writer.writeUnshared(request);
       writer.flush();
