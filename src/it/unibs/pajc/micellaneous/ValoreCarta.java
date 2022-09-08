@@ -1,67 +1,37 @@
 package it.unibs.pajc.micellaneous;
 
 public enum ValoreCarta {
-  ASSO("ASSO", 1),
-  DUE("DUE", 2),
-  TRE("TRE", 3),
-  QUATTRO("QUATTRO", 4),
-  CINQUE("CINQUE", 5),
-  SEI("SEI", 6),
-  SETTE("SETTE", 7),
-  OTTO("OTTO", 8),
-  NOVE("NOVE", 9),
-  DIECI("DIECI", 10),
-  FANTE("FANTE", 10),
-  CAVALLO("CAVALLO", 10),
-  RE("RE", 10);
+  ASSO(1),
+  DUE(2),
+  TRE(3),
+  QUATTRO(4),
+  CINQUE(5),
+  SEI(6),
+  SETTE(7),
+  OTTO(8),
+  NOVE(9),
+  DIECI(10),
+  FANTE(10),
+  CAVALLO(10),
+  RE(10);
 
-  private String nome;
   private int valore;
 
-  ValoreCarta(String nome, int valore) {
-    this.nome = nome;
+  private ValoreCarta(int valore) {
     this.valore = valore;
-  }
-
-  public String getNome() {
-    return nome;
   }
 
   public int getValore() {
     return valore;
   }
 
-  public static ValoreCarta getValoreCarta(String nome) {
+  @Override
+  public String toString() {
+    String name = name();
+    StringBuilder builder = new StringBuilder(String.valueOf(name.charAt(0)));
 
-    switch (nome.toUpperCase()) {
-      case "ASSO":
-        return ASSO;
-      case "DUE":
-        return DUE;
-      case "TRE":
-        return TRE;
-      case "QUATTRO":
-        return QUATTRO;
-      case "CINQUE":
-        return CINQUE;
-      case "SEI":
-        return SEI;
-      case "SETTE":
-        return SETTE;
-      case "OTTO":
-        return OTTO;
-      case "NOVE":
-        return NOVE;
-      case "DIECI":
-        return DIECI;
-      case "FANTE":
-        return FANTE;
-      case "CAVALLO":
-        return CAVALLO;
-      case "RE":
-        return RE;
-    }
+    builder.append(name.substring(1).toLowerCase());
 
-    return null;
+    return builder.toString();
   }
 }

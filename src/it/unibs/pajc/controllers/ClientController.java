@@ -31,17 +31,17 @@ public class ClientController extends Controller {
   private ExecutorService executor;
 
   private GameController gameController;
-  
+
   private static ClientController singleton = null;
 
-  public ClientController() {
+  private ClientController() {
     executor = Executors.newFixedThreadPool(2);
   }
-  
+
   public static ClientController getInstance() {
     if (singleton == null)
       singleton = new ClientController();
-    
+
     return singleton;
   }
 
@@ -92,22 +92,22 @@ public class ClientController extends Controller {
   }
 
   private void listenToServer() {
+    Answer answer;
+    Mano mano;
+    Scartate scartate;
+    Carta[] change;
 
     try {
 
       while (!client.isClosed()) {
+        answer = (Answer) reader.readObject();
 
-        Answer answer = (Answer) reader.readObject();
-        Mano mano;
-        Scartate scartate;
-        Carta[] change;
-  
-        switch (answer.getAnswer()) {
+        switch (answer.getCode()) {
           case DGNG.START:
             gameController = new GameController();
             View.getInstance().setPnlCorrente(gameController.getGamePanel());
             break;
-  
+
           case DGNG.INIZIA:
             mano = (Mano) answer.getBody()[0];
             scartate = (Scartate) answer.getBody()[2];
@@ -118,23 +118,17 @@ public class ClientController extends Controller {
             mano = (Mano) answer.getBody()[0];
             change = (Carta[]) answer.getBody()[1];
             scartate = (Scartate) answer.getBody()[2];
-            gameController.getGamePanel().setData(mano, change, scartate);
+            gameController.endTurno(mano, change, scartate);
             break;
-  
+
           case DGNG.TURNO:
             gameController.turno();
             break;
-  
-          case DGNG.END:
-            mano = (Mano) answer.getBody()[0];
-            change = (Carta[]) answer.getBody()[1];
-            scartate = (Scartate) answer.getBody()[2];
-            gameController.endTurno(mano, change, scartate);
-            break;
         }
+
+        if (answer != null)
+          System.out.println("Data received");
       }
-      System.out.println("Data received");
-      // immettere l'oggetto nel model
 
     } catch (IOException e) {
       System.out.println(e.toString());

@@ -61,7 +61,7 @@ public class Controller {
     if (name != null) {
       serverController = ServerController.getInstance();
 
-      clientController = new ClientController();
+      clientController = ClientController.getInstance();
       clientController.setName(name);
 
       serverPanel = new ServerPanel();
@@ -86,7 +86,7 @@ public class Controller {
   }
 
   private void uniscitiAllaPartita() {
-    clientController = new ClientController();
+    clientController = ClientController.getInstance();
     clientPanel = new ClientPanel();
 
     clientPanel.getEsciButton().addActionListener((e) -> esci());

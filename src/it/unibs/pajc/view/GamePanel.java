@@ -220,14 +220,14 @@ public class GamePanel extends JPanel {
   public JButton[] getBtnAzioni() {
     return btnAzioni;
   }
-  
-  public void startTurno(){
+
+  public void startTurno() {
     btnAzioni[0].setEnabled(true);
     btnAzioni[1].setEnabled(true);
     btnAzioni[2].setEnabled(true);
   }
-  
-  public void endTurno(){
+
+  public void endTurno() {
     btnAzioni[0].setEnabled(false);
     btnAzioni[1].setEnabled(false);
     btnAzioni[2].setEnabled(false);
@@ -236,21 +236,21 @@ public class GamePanel extends JPanel {
   public void setData(Mano mano, Carta[] daVisualizzare, Scartate scartate) {
     aggiornaTavolo(mano);
     aggiornaMazzi(scartate);
-    aggiornaInformazioni(mano.getC());
+    aggiornaInformazioni("");
     stampaMazzi();
     stampaNuoveCarte(daVisualizzare);
-    
+
     pnlInformazioni.repaint();
     pnlInformazioni.revalidate();
     pnlMazzi.repaint();
     pnlMazzi.revalidate();
   }
-  
-  private void stampaNuoveCarte(Carta[] daVisualizzare){
-  
-    for(CartaButton button : tavolo){
-      for(Carta carta : daVisualizzare){
-        if(carta != null && button.getCarta() != null && carta.equals(button.getCarta())){
+
+  private void stampaNuoveCarte(Carta[] daVisualizzare) {
+
+    for (CartaButton button : tavolo) {
+      for (Carta carta : daVisualizzare) {
+        if (carta != null && button.getCarta() != null && carta.equals(button.getCarta())) {
           button.stampaFronte();
         }
       }
@@ -260,39 +260,38 @@ public class GamePanel extends JPanel {
       public void run() {
         stampaTavolo();
       }
-    }, 7*1000);
+    }, 7 * 1000);
   }
-  
-  private void stampaTavolo(){
-    for(CartaButton button : tavolo){
-      if(button.getCarta() == null){
+
+  private void stampaTavolo() {
+    for (CartaButton button : tavolo) {
+      if (button.getCarta() == null) {
         button.setVisible(false);
-      }
-      else{
+      } else {
         button.stampaRetro();
       }
     }
   }
-  
-  private void stampaMazzi(){
+
+  private void stampaMazzi() {
     btnScartate.stampaFronte();
   }
-  
-  private void aggiornaTavolo(Mano mano){
+
+  private void aggiornaTavolo(Mano mano) {
     int i = 0;
-    for (Carta temp : mano.getMano()){
+    for (Carta temp : mano.getCarte()) {
       this.tavolo[i].setCarta(temp);
       this.tavolo[i].setVisible(true);
-      
-      if(tavolo[i].getCarta() == null){
+
+      if (tavolo[i].getCarta() == null) {
         tavolo[i].setVisible(false);
       }
-      
+
       i++;
     }
   }
-  
-  private void aggiornaMazzi(Scartate scartate){
+
+  private void aggiornaMazzi(Scartate scartate) {
     btnScartate.setCarta(scartate.seeLast());
   }
 
@@ -318,11 +317,11 @@ public class GamePanel extends JPanel {
       }
     } */
   }
-  
+
   public ArrayList<Carta> getDaScartare() {
     return daScartare;
   }
-  
+
   @Override
   protected void paintComponent(Graphics g) {
     super.paintComponent(g);

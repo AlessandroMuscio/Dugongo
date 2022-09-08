@@ -7,34 +7,33 @@ import java.util.Stack;
 public class Scartate extends Carte implements Serializable {
 
   private Stack<Carta> scartate;
-  
-  public Scartate(){
+
+  public Scartate() {
     this.scartate = new Stack<>();
   }
-  
-  public void aggiungi(Collection<Carta> carte) {
 
+  public void aggiungi(Collection<Carta> carte) {
+    scartate.addAll(carte);
   }
 
   public Collection<Carta> errore(Carta carta) {
     return null;
   }
-  
-  public Carta seeLast(){
-    
-    if (scartate.isEmpty()){
+
+  public Carta seeLast() {
+
+    if (scartate.isEmpty()) {
       return null;
-    }
-    else{
+    } else {
       return scartate.peek();
     }
   }
-  
-  public Carta getLast(){
+
+  public Carta getLast() {
     return scartate.pop();
   }
-  
-  public int getSize(){
+
+  public int getSize() {
     return this.scartate.size();
   }
 }

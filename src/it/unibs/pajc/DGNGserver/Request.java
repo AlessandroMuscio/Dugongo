@@ -7,6 +7,11 @@ public class Request implements Serializable {
   private int request;
   private Object[] attributes;
 
+  public Request(int request) {
+    this.request = request;
+    this.attributes = new Object[] {};
+  }
+
   public Request(int request, Object[] attributes) {
     this.request = request;
     this.attributes = attributes;

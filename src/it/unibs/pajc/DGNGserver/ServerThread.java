@@ -29,65 +29,61 @@ public class ServerThread extends Thread {
 
   public void run() {
     // byte[] buffer = new byte[DGNG.PACKAGE_DIM];
+    while (!client.isClosed()) {
+      try {
+        request = (Request) objectReader.readObject();
+        System.out.println(request);
+        DugongoModel model;
 
-    try {
-      request = (Request) objectReader.readObject();
-      System.out.println(request);
-      DugongoModel model;
+        switch (request.getRequest()) {
+          case DGNG.GIOCA:
+            ServerController.getInstance().play();
+            break;
 
-      switch (request.getRequest()) {
-        case DGNG.GIOCA:
-          answer = new Answer(DGNG.REQUEST_OK);
+          case DGNG.SCARTA:
+            model = ServerController.getInstance().getModel();
+            ArrayList<Carta> daScartare = (ArrayList<Carta>) request.getAttributes()[0];
+            model.confronto(daScartare, client.getPort());
+            /* answer = new Answer(DGNG.END, ServerController.getInstance().getModel().getData(client.getPort()));
+            
+            objectWriter.writeObject(answer);
+            objectWriter.flush(); */
+            break;
 
-          objectWriter.writeObject(answer);
-          objectWriter.flush();
-          break;
+          case DGNG.PESCA:
+            model = ServerController.getInstance().getModel();
+            model.pesca(client.getPort());
+            answer = new Answer(DGNG.CHANGE, model.getData(client.getPort()));
 
-        case DGNG.SCARTA:
-          model = ServerController.getInstance().getModel();
-          ArrayList<Carta> daScartare = (ArrayList<Carta>)request.getAttributes()[0];
-          model.confronto(daScartare, client.getPort());
-          answer = new Answer(DGNG.END, ServerController.getInstance().getModel().getData(client.getPort()));
+            objectWriter.writeObject(answer);
+            objectWriter.flush();
+            break;
 
-          objectWriter.writeObject(answer);
-          objectWriter.flush();
-          
-          ServerController.getInstance().play();
-          break;
+          case DGNG.DUGONGO:
+            answer = new Answer(DGNG.REQUEST_OK);
 
-        case DGNG.PESCA:
-          model = ServerController.getInstance().getModel();
-          model.pesca(client.getPort());
-          answer = new Answer(DGNG.CHANGE, model.getData(client.getPort()));
+            objectWriter.writeObject(answer);
+            objectWriter.flush();
+            break;
 
-          objectWriter.writeObject(answer);
-          objectWriter.flush();
-          break;
+          case DGNG.NOME:
+            ServerController.getInstance().addClientName(client.getPort(), String.valueOf(request.getAttributes()[0]));
+            break;
 
-        case DGNG.DUGONGO:
-          answer = new Answer(DGNG.REQUEST_OK);
+          case DGNG.ESCI:
+            answer = new Answer(DGNG.REQUEST_OK);
 
-          objectWriter.writeObject(answer);
-          objectWriter.flush();
-          break;
+            objectWriter.writeObject(answer);
+            objectWriter.flush();
 
-        case DGNG.NOME:
-          ServerController.getInstance().addClientName(client.getPort(), String.valueOf(request.getAttributes()[0]));
-          break;
-
-        case DGNG.ESCI:
-          answer = new Answer(DGNG.REQUEST_OK);
-
-          objectWriter.writeObject(answer);
-          objectWriter.flush();
-
-          objectReader.close();
-          objectWriter.close();
-          close();
-          break;
+            objectReader.close();
+            objectWriter.close();
+            close();
+            break;
+        }
+      } catch (Exception e) {
+        e.printStackTrace();
       }
-    } catch (Exception e) {
-      e.printStackTrace();
     }
   }
 
@@ -108,8 +104,8 @@ public class ServerThread extends Thread {
       throw new RuntimeException(e);
     }
   }
-  
-  public int getPorta(){
+
+  public int getPorta() {
     return client.getPort();
   }
 }

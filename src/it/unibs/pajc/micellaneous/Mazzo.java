@@ -10,20 +10,21 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class Mazzo extends Carte {
-  private static final File FOLDER = new File("src/it/unibs/pajc/assets/carte");
+  private static final File FOLDER;
+  private static final int NUM_CARTE_PRIMA_MANO;
 
   private Stack<Carta> mazzo;
+
+  static {
+    FOLDER = new File("src/it/unibs/pajc/assets/carte");
+    NUM_CARTE_PRIMA_MANO = 5;
+  }
 
   public Mazzo() {
     this.mazzo = new Stack<>();
 
     inizializza();
     mescola();
-  }
-
-  // Metodo generico per randomizzare un elenco in Java usando Fisher–Yates shuffle
-  public void mescola() {
-    Collections.shuffle(mazzo);
   }
 
   private void inizializza() {
@@ -40,7 +41,6 @@ public class Mazzo extends Carte {
     Seme seme;
     ValoreCarta valore;
     String[] tmp;
-    Carta carta;
 
     for (File file : FOLDER.listFiles(filter)) {
       matcher = pattern.matcher(file.toString());
@@ -52,23 +52,27 @@ public class Mazzo extends Carte {
         seme = Seme.valueOf(tmp[0].toUpperCase());
         valore = ValoreCarta.valueOf(tmp[1].toUpperCase());
 
-        carta = new Carta(valore, seme, fileName);
-        mazzo.add(carta);
+        mazzo.add(new Carta(valore, seme, fileName));
       }
     }
   }
 
-  public ArrayList<Carta> getPrimaMano() {
-    ArrayList<Carta> primaMano = new ArrayList<>();
+  public void mescola() {
+    Collections.shuffle(mazzo);
+  }
 
-    for (int i = 0; i < 5; i++) {
+  public ArrayList<Carta> getPrimaMano() {
+    ArrayList<Carta> primaMano = new ArrayList<>(NUM_CARTE_PRIMA_MANO);
+
+    for (int i = 0; i < NUM_CARTE_PRIMA_MANO; i++) {
       primaMano.add(mazzo.pop());
+      System.out.println(primaMano.get(i));
     }
 
     return primaMano;
   }
 
-  public Carta pescaCarta() {
+  public Carta pesca() {
     return mazzo.pop();
   }
 }

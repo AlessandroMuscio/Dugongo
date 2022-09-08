@@ -6,19 +6,13 @@ public enum Seme {
   BASTONI,
   DENARI;
 
-  public static Seme getSeme(String input) {
+  @Override
+  public String toString() {
+    String name = name();
+    StringBuilder builder = new StringBuilder(String.valueOf(name.charAt(0)));
 
-    switch (input.toUpperCase()) {
-      case "SPADE":
-        return SPADE;
-      case "COPPE":
-        return COPPE;
-      case "DENARI":
-        return DENARI;
-      case "BASTONI":
-        return BASTONI;
-    }
+    builder.append(name.substring(1).toLowerCase());
 
-    return null;
+    return builder.toString();
   }
 }

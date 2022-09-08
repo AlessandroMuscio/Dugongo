@@ -83,56 +83,62 @@ public class ServerController extends Controller {
     }
   }
 
-  public void updatedModel(ChangeEvent e) {
-    Answer answer;
-
-    for (ServerThread temp : connectedClients) {
-      answer = new Answer(DGNG.CHANGE, super.getModel().getData(temp.getPorta()));
-      sendToSpecificClient(temp.getPorta(), answer);
-    }
-  }
-  
-  public void play(){
-    if(turnoCorrente.size() == 0){
-      turnoCorrente = new LinkedList<>(turnoSuccessivo);
-      turnoSuccessivo = new LinkedList<>();
-    }
-    ServerThread corrente = turnoCorrente.poll();
-    turnoSuccessivo.add(corrente);
-
-    Answer answer = new Answer(DGNG.TURNO);
-    sendToSpecificClient(corrente.getPorta(), answer);
-  }
-
   public void avvia() {
-    Answer answer = new Answer(DGNG.START);
-    turnoCorrente.addAll(connectedClients);
-    sendToAllClients(answer);
+    DugongoModel model;
+    int port;
 
-    DugongoModel model = new DugongoModel();
+    turnoCorrente.addAll(connectedClients);
+    sendToAllClients(DGNG.START, new Object[] {});
+
+    model = new DugongoModel();
     model.inizializzaPartita(clientsNames.keySet());
-    super.setModel(model);
-    model.addChangeListener(this::updatedModel);
-  
-    for (ServerThread temp : connectedClients) {
-      answer = new Answer(DGNG.INIZIA, super.getModel().getData(temp.getPorta()));
-      sendToSpecificClient(temp.getPorta(), answer);
+    model.addChangeListener(this::updateModel);
+
+    setModel(model);
+
+    for (ServerThread connectedClient : connectedClients) {
+      port = connectedClient.getPorta();
+
+      sendToSingleClient(port, DGNG.INIZIA, getModel().getData(port));
     }
-    
+
     play();
   }
 
-  public void sendToSpecificClient(int port, Answer answer) {
-    for (ServerThread temp : connectedClients) {
-      if (temp.getPorta() == port) {
-        temp.send(answer);
-      }
+  private void updateModel(ChangeEvent changeEvent) {
+    int port;
+
+    for (ServerThread connectedClient : connectedClients) {
+      port = connectedClient.getPorta();
+
+      sendToSingleClient(port, DGNG.CHANGE, getModel().getData(port));
     }
   }
 
-  private void sendToAllClients(Answer answer) {
+  public void play() {
+    ServerThread corrente;
+
+    if (turnoCorrente.isEmpty()) {
+      turnoCorrente = new LinkedList<>(turnoSuccessivo);
+      turnoSuccessivo = new LinkedList<>();
+    }
+
+    corrente = turnoCorrente.poll();
+    turnoSuccessivo.add(corrente);
+
+    sendToSingleClient(corrente.getPorta(), DGNG.TURNO, new Object[] {});
+  }
+
+  private void sendToAllClients(int code, Object[] body) {
     for (ServerThread connectedClient : connectedClients) {
-      connectedClient.send(answer);
+      connectedClient.send(new Answer(code, body));
+    }
+  }
+
+  private void sendToSingleClient(int port, int code, Object[] body) {
+    for (ServerThread connectedClient : connectedClients) {
+      if (connectedClient.getPorta() == port)
+        connectedClient.send(new Answer(code, body));
     }
   }
 

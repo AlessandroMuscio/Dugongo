@@ -36,40 +36,44 @@ public class GameController {
       }
     }
   }
-  
-  public void inizializzaPartita(Mano mano, Scartate scartate){
-    gamePanel.setData(mano, mano.getMano(), scartate);
-    gamePanel.endTurno();
-  }
-  
-  public void turno(){
-    gamePanel.startTurno();
-  }
-  
-  public void endTurno(Mano mano, Carta[] carte, Scartate scartate){
-    gamePanel.setData(mano, carte, scartate);
+
+  public void inizializzaPartita(Mano mano, Scartate scartate) {
+    gamePanel.setData(mano, mano.getCarte(), scartate);
     gamePanel.endTurno();
   }
 
-  private void scarta() {
-    ArrayList<Carta> daScartare = gamePanel.getDaScartare();
-    System.out.println("PROVIAMO A SCRIVERE " + daScartare.get(0).getSeme());
-    Request request = new Request(DGNG.SCARTA, new Object[]{daScartare});
+  public void turno() {
+    gamePanel.startTurno();
+  }
+
+  public void endTurno(Mano mano, Carta[] carte, Scartate scartate) {
+    Request request = new Request(DGNG.GIOCA);
+
+    gamePanel.setData(mano, carte, scartate);
+    gamePanel.endTurno();
+
     ClientController.getInstance().sendToServer(request);
   }
 
-  private void annulla() {
+  public void scarta() {
+    ArrayList<Carta> daScartare = gamePanel.getDaScartare();
+    System.out.println("PROVIAMO A SCRIVERE " + daScartare.get(0).getSeme());
+    Request request = new Request(DGNG.SCARTA, new Object[] { daScartare });
+    ClientController.getInstance().sendToServer(request);
   }
 
-  private void dugongo() {
+  public void annulla() {
+  }
+
+  public void dugongo() {
 
   }
 
-  private void info() {
+  public void info() {
     new InfoController();
   }
 
-  private void esci() {
+  public void esci() {
     try {
       gamePanel.setFullScreen(false);
       ServerController.getInstance().closeServer();
