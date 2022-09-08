@@ -1,4 +1,4 @@
-package it.unibs.pajc;
+package it.unibs.pajc.model;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 import javax.swing.event.EventListenerList;

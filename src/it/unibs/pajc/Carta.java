@@ -1,31 +1,26 @@
 package it.unibs.pajc;
 
-import javax.imageio.ImageIO;
-import java.awt.Image;
-import java.io.File;
-import java.io.IOException;
+import it.unibs.pajc.myComponents.MyButton;
 
-public class Carta {
+import java.io.Serializable;
+
+public class Carta implements Serializable {
   private ValoreCarta valore;
   private Seme seme;
   private int punteggio;
-  private Image fronte;
-  private static Image retro;
+  private String frontePath;
+  private static String retroPath;
 
   static {
-    try {
-      retro = ImageIO.read(new File("assets/carte/Retro.svg"));
-    } catch (IOException e) {
-      throw new RuntimeException(e);
-    }
+    retroPath = MyButton.CARTE_PATH.concat("Retro.png");
   }
 
-  public Carta(ValoreCarta valore, Seme seme, Image fronte) {
+  public Carta(ValoreCarta valore, Seme seme, String frontePath) {
     this.valore = valore;
     this.seme = seme;
     this.punteggio = (valore.equals(ValoreCarta.RE) && (seme.equals(Seme.BASTONI) || seme.equals(Seme.SPADE))) ? 0
         : valore.getValore();
-    this.fronte = fronte;
+    this.frontePath = frontePath;
   }
 
   public ValoreCarta getValore() {
@@ -50,21 +45,5 @@ public class Carta {
 
   public void setPunteggio(int punteggio) {
     this.punteggio = punteggio;
-  }
-
-  public Image getFronte() {
-    return fronte;
-  }
-
-  public void setFronte(Image fronte) {
-    this.fronte = fronte;
-  }
-
-  public static Image getRetro() {
-    return retro;
-  }
-
-  public static void setRetro(Image retro) {
-    Carta.retro = retro;
   }
 }

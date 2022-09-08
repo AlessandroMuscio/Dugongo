@@ -1,4 +1,6 @@
-package it.unibs.pajc.controllers;
+package it.unibs.pajc;
+
+import it.unibs.pajc.controllers.Controller;
 
 import java.awt.EventQueue;
 

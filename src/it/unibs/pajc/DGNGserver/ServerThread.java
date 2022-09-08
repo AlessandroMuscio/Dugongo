@@ -33,28 +33,28 @@ public class ServerThread extends Thread {
 
       switch (request.getRequest()) {
         case DGNG.GIOCA:
-          answer = new Answer(DGNG.REQUEST_OK, "Richiesta ricevuta", "Giocando...");
+          answer = new Answer(DGNG.REQUEST_OK);
 
           objectWriter.writeObject(answer);
           objectWriter.flush();
           break;
 
         case DGNG.SCARTA:
-          answer = new Answer(DGNG.REQUEST_OK, "Richiesta ricevuta", "Scartando...");
+          answer = new Answer(DGNG.REQUEST_OK);
 
           objectWriter.writeObject(answer);
           objectWriter.flush();
           break;
 
         case DGNG.PESCA:
-          answer = new Answer(DGNG.REQUEST_OK, "Richiesta ricevuta", "Pescando...");
+          answer = new Answer(DGNG.REQUEST_OK);
 
           objectWriter.writeObject(answer);
           objectWriter.flush();
           break;
 
         case DGNG.DUGONGO:
-          answer = new Answer(DGNG.REQUEST_OK, "Richiesta ricevuta", "Dugongo!!!");
+          answer = new Answer(DGNG.REQUEST_OK);
 
           objectWriter.writeObject(answer);
           objectWriter.flush();
@@ -65,7 +65,7 @@ public class ServerThread extends Thread {
           break;
 
         case DGNG.ESCI:
-          answer = new Answer(DGNG.REQUEST_OK, "Richiesta ricevuta", "Uscendo...");
+          answer = new Answer(DGNG.REQUEST_OK);
 
           objectWriter.writeObject(answer);
           objectWriter.flush();
@@ -89,14 +89,16 @@ public class ServerThread extends Thread {
       client.close();
   }
 
-  public void send(int codice) {
+  public void send(Answer answer) {
     try {
-      Answer answer = new Answer(codice);
-
       objectWriter.writeObject(answer);
       objectWriter.flush();
     } catch (IOException e) {
       throw new RuntimeException(e);
     }
+  }
+  
+  public int getPorta(){
+    return client.getPort();
   }
 }

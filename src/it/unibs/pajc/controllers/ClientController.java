@@ -1,8 +1,10 @@
 package it.unibs.pajc.controllers;
 
+import it.unibs.pajc.Carta;
 import it.unibs.pajc.DGNGserver.Answer;
 import it.unibs.pajc.DGNGserver.DGNG;
 import it.unibs.pajc.DGNGserver.Request;
+import it.unibs.pajc.Mano;
 import it.unibs.pajc.myComponents.MyTextField;
 import it.unibs.pajc.view.GamePanel;
 import it.unibs.pajc.view.View;
@@ -93,7 +95,9 @@ public class ClientController extends Controller {
             break;
 
           case DGNG.CHANGE:
-            //gamePanel.setData(super.getModel().getData());
+            Mano mano = (Mano) answer.getBody()[0];
+            Carta scartata = (Carta) answer.getBody()[1];
+            gamePanel.setData(mano, scartata);
             break;
         }
       }

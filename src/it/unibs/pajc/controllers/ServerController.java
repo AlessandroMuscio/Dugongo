@@ -1,8 +1,9 @@
 package it.unibs.pajc.controllers;
 
+import it.unibs.pajc.DGNGserver.Answer;
 import it.unibs.pajc.DGNGserver.DGNG;
 import it.unibs.pajc.DGNGserver.ServerThread;
-import it.unibs.pajc.DugongoModel;
+import it.unibs.pajc.model.DugongoModel;
 import it.unibs.pajc.view.ServerPanel;
 import it.unibs.pajc.view.View;
 
@@ -79,18 +80,35 @@ public class ServerController extends Controller {
   }
 
   public void updatedModel(ChangeEvent e) {
-    sendToAllClients(DGNG.CHANGE);
+    Answer answer;
+    
+    for (ServerThread temp : connectedClients){
+      answer = new Answer(DGNG.CHANGE, super.getModel().getData(temp.getPorta()));
+      sendToSpecificClient(temp.getPorta(), answer);
+    }
   }
 
   public void avvia() {
-    super.setModel(new DugongoModel());
-    super.getModel().addChangeListener(this::updatedModel);
-    sendToAllClients(DGNG.START);
+    Answer answer = new Answer(DGNG.START);
+    sendToAllClients(answer);
+    
+    DugongoModel model = new DugongoModel();
+    super.setModel(model);
+    model.addChangeListener(this::updatedModel);
+    model.inizializzaPartita(clientsNames.keySet());
+  }
+  
+  public void sendToSpecificClient(int port, Answer answer){
+    for (ServerThread temp : connectedClients){
+      if (temp.getPorta()==port){
+        temp.send(answer);
+      }
+    }
   }
 
-  private void sendToAllClients(int code) {
+  private void sendToAllClients(Answer answer) {
     for (ServerThread connectedClient : connectedClients) {
-      connectedClient.send(code);
+      connectedClient.send(answer);
     }
   }
 

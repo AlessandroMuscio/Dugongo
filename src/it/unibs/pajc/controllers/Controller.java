@@ -1,6 +1,6 @@
 package it.unibs.pajc.controllers;
 
-import it.unibs.pajc.DugongoModel;
+import it.unibs.pajc.model.DugongoModel;
 import it.unibs.pajc.view.*;
 
 import java.io.IOException;

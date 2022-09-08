@@ -1,5 +1,7 @@
 package it.unibs.pajc.view;
 
+import it.unibs.pajc.Carta;
+import it.unibs.pajc.Mano;
 import it.unibs.pajc.controllers.ServerController;
 import it.unibs.pajc.myComponents.MyButton;
 
@@ -14,6 +16,7 @@ public class GamePanel extends JPanel {
   private Image sfondo = new ImageIcon("src/it/unibs/pajc/assets/generiche/Sfondo.jpeg").getImage();
   //private Image retro = new ImageIcon("src/assets/icone/carte/retro.png").getImage();
   private Dimension screenSize;
+  private JPanel pnlPartita;
 
   public GamePanel() {
 
@@ -42,7 +45,7 @@ public class GamePanel extends JPanel {
 
     pnlStato.add(pnlMazzo, BorderLayout.WEST);
 
-    JPanel pnlPartita = new JPanel();
+    pnlPartita = new JPanel();
     pnlPartita.setPreferredSize(new Dimension((int) (screenSize.width * 0.3), (int) (screenSize.height * 0.3)));
     pnlPartita.setBackground(Color.yellow);
     pnlStato.add(pnlPartita, BorderLayout.EAST);
@@ -118,6 +121,13 @@ public class GamePanel extends JPanel {
     this.add(pnlStato, BorderLayout.NORTH);
     this.add(pnlTavolo, BorderLayout.CENTER);
     this.add(pnlAzioni, BorderLayout.SOUTH);
+  }
+  
+  public void setData(Mano mano, Carta scartata){
+    pnlPartita.add(new JLabel(mano.getC(), SwingConstants.CENTER));
+    pnlPartita.repaint();
+    pnlPartita.revalidate();
+    //this.repaint();
   }
 
   private void setScreenSize() {

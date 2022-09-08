@@ -4,6 +4,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.io.File;
 import java.io.FileFilter;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Stack;
 import java.util.regex.Matcher;
@@ -19,10 +20,6 @@ public class Mazzo extends Carte {
     mescola();
   }
 
-  public Carta scarta() {
-    return null;
-  }
-
   // Metodo generico per randomizzare un elenco in Java usando Fisher–Yates shuffle
   public void mescola() {
     Collections.shuffle(mazzo);
@@ -31,11 +28,9 @@ public class Mazzo extends Carte {
   private void inizializza() {
     FileFilter filter = (filePath) -> {
       if (filePath.isFile()) {
-        String fileName = filePath.toString().split("/")[2];
-
-        return fileName.contains("_") && fileName.contains("svg");
+        String fileName = filePath.toString().split("/")[6];
+        return fileName.contains("_") && fileName.contains("png");
       }
-
       return false;
     };
     Pattern pattern = Pattern.compile("([A-Z])\\w+");
@@ -58,15 +53,23 @@ public class Mazzo extends Carte {
         valore = ValoreCarta.valueOf(tmp[1].toUpperCase());
         fronte = new ImageIcon(file.toString()).getImage();
 
-        carta = new Carta(valore, seme, fronte);
+        carta = new Carta(valore, seme, fileName);
         mazzo.add(carta);
       }
     }
   }
-
-  /* private void stampa() {
-    for (Carta c : mazzo) {
-      System.out.println(c.getSeme());
+  
+  public ArrayList<Carta> getPrimaMano(){
+    ArrayList<Carta> primaMano = new ArrayList<>();
+    
+    for (int i = 0; i < 5; i++){
+      primaMano.add(mazzo.pop());
     }
-  } */
+    
+    return primaMano;
+  }
+  
+  public Carta pescaCarta(){
+    return mazzo.pop();
+  }
 }
