@@ -1,10 +1,10 @@
 package it.unibs.pajc.controllers;
 
-import it.unibs.pajc.Carta;
+import it.unibs.pajc.micellaneous.Carta;
 import it.unibs.pajc.DGNGserver.Answer;
 import it.unibs.pajc.DGNGserver.DGNG;
 import it.unibs.pajc.DGNGserver.Request;
-import it.unibs.pajc.Mano;
+import it.unibs.pajc.micellaneous.Mano;
 import it.unibs.pajc.myComponents.MyTextField;
 import it.unibs.pajc.view.GamePanel;
 import it.unibs.pajc.view.View;

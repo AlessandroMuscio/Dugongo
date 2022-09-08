@@ -1,4 +1,4 @@
-package it.unibs.pajc;
+package it.unibs.pajc.micellaneous;
 
 import it.unibs.pajc.myComponents.MyButton;
 

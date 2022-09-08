@@ -1,4 +1,4 @@
-package it.unibs.pajc;
+package it.unibs.pajc.micellaneous;
 import java.util.Collection;
 
 public abstract class Carte {

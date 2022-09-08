@@ -1,7 +1,7 @@
 package it.unibs.pajc.view;
 
-import it.unibs.pajc.Carta;
-import it.unibs.pajc.Mano;
+import it.unibs.pajc.micellaneous.Carta;
+import it.unibs.pajc.micellaneous.Mano;
 import it.unibs.pajc.controllers.ServerController;
 import it.unibs.pajc.myComponents.MyButton;
 

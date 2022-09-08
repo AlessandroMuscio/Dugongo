@@ -1,4 +1,4 @@
-package it.unibs.pajc;
+package it.unibs.pajc.micellaneous;
 
 import javax.swing.*;
 import java.awt.*;

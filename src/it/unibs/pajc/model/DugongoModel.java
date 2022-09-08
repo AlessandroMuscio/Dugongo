@@ -1,9 +1,9 @@
 package it.unibs.pajc.model;
 
-import it.unibs.pajc.Carta;
-import it.unibs.pajc.Mano;
-import it.unibs.pajc.Mazzo;
-import it.unibs.pajc.Scartate;
+import it.unibs.pajc.micellaneous.Carta;
+import it.unibs.pajc.micellaneous.Mano;
+import it.unibs.pajc.micellaneous.Mazzo;
+import it.unibs.pajc.micellaneous.Scartate;
 
 import java.util.ArrayList;
 import java.util.HashMap;
