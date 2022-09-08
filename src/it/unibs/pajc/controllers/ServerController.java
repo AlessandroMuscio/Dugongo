@@ -99,7 +99,7 @@ public class ServerController extends Controller {
     for (ServerThread connectedClient : connectedClients) {
       port = connectedClient.getPorta();
 
-      sendToSingleClient(port, DGNG.INIZIA, new Object[] { getModel(), port });
+      sendToSingleClient(port, DGNG.INIZIA, new Object[] { getModel() });
     }
 
     play();

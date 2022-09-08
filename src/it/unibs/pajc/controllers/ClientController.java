@@ -110,14 +110,13 @@ public class ClientController extends Controller {
 
           case DGNG.INIZIA:
             model = (DugongoModel) answer.getBody()[0];
-            tmpPort = (int) answer.getBody()[1];
 
             gameController.inizializzaPartita(model.getMano(client.getLocalPort()), model.getScartate());
             break;
 
           case DGNG.CHANGE:
             model = (DugongoModel) answer.getBody()[0];
-            System.out.println(model.getMano(client.getLocalPort()));
+            //System.out.println(model.getMano(client.getLocalPort()));
 
             gameController.endTurno(model.getMano(client.getLocalPort()), model.getCambiate(), model.getScartate());
             break;

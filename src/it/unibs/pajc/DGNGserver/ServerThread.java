@@ -13,7 +13,7 @@ import java.util.ArrayList;
 public class ServerThread extends Thread {
   private Socket client;
   private Request request;
-  
+
   private Answer answer;
   private ObjectInputStream objectReader;
   private ObjectOutputStream objectWriter;
@@ -38,7 +38,7 @@ public class ServerThread extends Thread {
 
         switch (request.getRequest()) {
           case DGNG.GIOCA:
-            ServerController.getInstance().play();
+            //ServerController.getInstance().play();
             break;
 
           case DGNG.SCARTA:
