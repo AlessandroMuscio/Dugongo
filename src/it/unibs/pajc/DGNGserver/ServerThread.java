@@ -51,10 +51,10 @@ public class ServerThread extends Thread {
             });
 
             timer.start();
-            answer = new Answer(DGNG.CHANGE, new Object[] { model, client.getPort() });
-
+            /* answer = new Answer(DGNG.CHANGE, new Object[] { model, client.getPort() });
+            
             objectWriter.writeObject(answer);
-            objectWriter.flush();
+            objectWriter.flush(); */
             break;
 
           case DGNG.PESCA:
