@@ -11,11 +11,11 @@ import javax.swing.JTextPane;
 
 import it.unibs.pajc.myComponents.MyButton;
 
-public class InfoView {
+public class InfoFrame {
   private static final String FRAME_TITLE = "Regole di Gioco";
   private static final String ICON_PATH = "src/it/unibs/pajc/assets/icon.png";
 
-  private static InfoView singleton = null;
+  private static InfoFrame singleton = null;
 
   private JFrame frame;
   private JPanel pnlPrincipale;
@@ -26,16 +26,16 @@ public class InfoView {
   private MyButton[] esciButtons;
   private MyButton[] avantiButtons;
 
-  private InfoView() {
+  private InfoFrame() {
     inizializzaFrame();
     inizializzaPnlPrincipale();
 
     frame.getContentPane().add(pnlPrincipale);
   }
 
-  public static InfoView getInstance() {
+  public static InfoFrame getInstance() {
     if (singleton == null)
-      singleton = new InfoView();
+      singleton = new InfoFrame();
 
     return singleton;
   }
