@@ -10,6 +10,8 @@ import java.io.ObjectOutputStream;
 import java.net.Socket;
 import java.util.ArrayList;
 
+import javax.swing.Timer;
+
 public class ServerThread extends Thread {
   private Socket client;
   private Request request;
@@ -44,7 +46,11 @@ public class ServerThread extends Thread {
           case DGNG.SCARTA:
             model = ServerController.getInstance().getModel();
             ArrayList<Carta> daScartare = (ArrayList<Carta>) request.getAttributes()[0];
-            model.confronto(daScartare, client.getPort());
+            Timer timer = new Timer(1000, (e) -> {
+              model.confronto(daScartare, client.getPort());
+            });
+
+            timer.start();
             answer = new Answer(DGNG.CHANGE, new Object[] { model, client.getPort() });
 
             objectWriter.writeObject(answer);
