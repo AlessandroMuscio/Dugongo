@@ -4,8 +4,10 @@ import javax.swing.*;
 import java.awt.*;
 
 public class MyButton extends JButton {
-  private static final String iconsPath = "src/it/unibs/pajc/assets/icone/";
-  private static final String iconsExt = ".png";
+  private static final String ICONS_PATH = "src/it/unibs/pajc/assets/icone/";
+  private static final String CARTE_PATH = "src/it/unibs/pajc/assets/carte/";
+
+  private static final String ICONS_EXT = ".png";
 
   private Dimension parentPreviousSize;
 
@@ -15,10 +17,14 @@ public class MyButton extends JButton {
   private int fontScalingPercentage;
 
   public MyButton(String text, int iconScalingPercentage, int fontScalingPercentage, boolean showText) {
-    super(text, new ImageIcon(iconsPath + text.toLowerCase() + iconsExt));
+    super(text);
+
+    StringBuilder iconName = new StringBuilder();
+    iconName.append(Character.toUpperCase(text.charAt(0)));
+    iconName.append(text.toLowerCase().substring(1));
 
     this.parentPreviousSize = new Dimension(-1, -1);
-    this.originalIcon = new ImageIcon(iconsPath + text.toLowerCase() + iconsExt).getImage();
+    this.originalIcon = new ImageIcon(ICONS_PATH.concat(iconName.toString()).concat(ICONS_EXT)).getImage();
     this.iconScalingPercentage = iconScalingPercentage;
     this.fontScalingPercentage = fontScalingPercentage;
     this.showText = showText;
@@ -26,6 +32,23 @@ public class MyButton extends JButton {
     if (!showText)
       this.setText(null);
 
+    setSettings();
+  }
+
+  public MyButton(String text, int iconScalingPercentage) {
+    super(text);
+
+    this.parentPreviousSize = new Dimension(-1, -1);
+    this.originalIcon = new ImageIcon(CARTE_PATH + text.toLowerCase() + ICONS_EXT).getImage();
+    this.iconScalingPercentage = iconScalingPercentage;
+
+    this.setText(null);
+
+    setSettings();
+  }
+
+  private void setSettings() {
+    this.setIcon(new ImageIcon(originalIcon));
     this.setBorderPainted(false);
     this.setContentAreaFilled(false);
     this.setOpaque(false);
