@@ -164,7 +164,9 @@ public class GamePanel extends JPanel {
 
     //APRE UN NUOVO FRAME PER VISUALIZZARE LE ISTRUZIONI DI GIOCO
     JButton buttonInfo = new JButton("INFO");
-    buttonInfo.addActionListener((e) -> InfoView.getInstance());
+    buttonInfo.addActionListener(e -> {
+      InfoFrame.getInstance();
+    });
     pnlAzioni.add(buttonInfo);
 
     //CHIUDE O ABBANDONA LA PARTITA

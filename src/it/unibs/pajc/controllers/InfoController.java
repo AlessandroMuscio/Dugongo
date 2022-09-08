@@ -10,20 +10,20 @@ import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamReader;
 
 import it.unibs.pajc.myComponents.MyButton;
-import it.unibs.pajc.view.InfoView;
+import it.unibs.pajc.view.InfoFrame;
 import it.unibs.pajc.view.View;
 
 public class InfoController {
   private static final String RULES_PATH = "src/it/unibs/pajc/assets/regole.xml";
 
-  private InfoView view;
+  private InfoFrame view;
 
   private String[] pagine;
   private int index;
 
   public InfoController() {
     try {
-      view = InfoView.getInstance();
+      view = InfoFrame.getInstance();
       caricaPagine();
       view.setPagina(getCurrentPage());
 
