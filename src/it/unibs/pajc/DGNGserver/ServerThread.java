@@ -13,6 +13,7 @@ import java.util.ArrayList;
 public class ServerThread extends Thread {
   private Socket client;
   private Request request;
+  
   private Answer answer;
   private ObjectInputStream objectReader;
   private ObjectOutputStream objectWriter;
