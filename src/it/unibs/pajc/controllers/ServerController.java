@@ -81,8 +81,8 @@ public class ServerController extends Controller {
 
   public void updatedModel(ChangeEvent e) {
     Answer answer;
-    
-    for (ServerThread temp : connectedClients){
+
+    for (ServerThread temp : connectedClients) {
       answer = new Answer(DGNG.CHANGE, super.getModel().getData(temp.getPorta()));
       sendToSpecificClient(temp.getPorta(), answer);
     }
@@ -91,16 +91,16 @@ public class ServerController extends Controller {
   public void avvia() {
     Answer answer = new Answer(DGNG.START);
     sendToAllClients(answer);
-    
+
     DugongoModel model = new DugongoModel();
     super.setModel(model);
     model.addChangeListener(this::updatedModel);
     model.inizializzaPartita(clientsNames.keySet());
   }
-  
-  public void sendToSpecificClient(int port, Answer answer){
-    for (ServerThread temp : connectedClients){
-      if (temp.getPorta()==port){
+
+  public void sendToSpecificClient(int port, Answer answer) {
+    for (ServerThread temp : connectedClients) {
+      if (temp.getPorta() == port) {
         temp.send(answer);
       }
     }
@@ -135,6 +135,7 @@ public class ServerController extends Controller {
     for (ServerThread connectedClient : connectedClients) {
       if (!connectedClient.isClosed()) {
         connectedClient.close();
+        connectedClient.interrupt();
       }
     }
     singleton = null;

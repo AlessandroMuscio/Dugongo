@@ -15,8 +15,6 @@ public class InfoFrame {
   private static final String FRAME_TITLE = "Regole di Gioco";
   private static final String ICON_PATH = "src/it/unibs/pajc/assets/icon.png";
 
-  private static InfoFrame singleton = null;
-
   private JFrame frame;
   private JPanel pnlPrincipale;
 
@@ -26,18 +24,11 @@ public class InfoFrame {
   private MyButton[] esciButtons;
   private MyButton[] avantiButtons;
 
-  private InfoFrame() {
+  public InfoFrame() {
     inizializzaFrame();
     inizializzaPnlPrincipale();
 
-    frame.getContentPane().add(pnlPrincipale);
-  }
-
-  public static InfoFrame getInstance() {
-    if (singleton == null)
-      singleton = new InfoFrame();
-
-    return singleton;
+    frame.setVisible(true);
   }
 
   private void inizializzaFrame() {
@@ -61,6 +52,8 @@ public class InfoFrame {
 
     pnlPrincipale.add(pagina, BorderLayout.CENTER);
     pnlPrincipale.add(pnlDirezioni[0], BorderLayout.PAGE_END);
+
+    frame.getContentPane().add(pnlPrincipale);
   }
 
   private void inizializzaPagina() {

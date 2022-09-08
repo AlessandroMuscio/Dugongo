@@ -11,7 +11,11 @@ import java.awt.GraphicsEnvironment;
 import java.awt.GridLayout;
 import java.awt.Image;
 import java.awt.Insets;
+import java.io.IOException;
 
+import it.unibs.pajc.controllers.Controller;
+import it.unibs.pajc.controllers.InfoController;
+import it.unibs.pajc.controllers.ServerController;
 import it.unibs.pajc.micellaneous.Carta;
 import it.unibs.pajc.micellaneous.Mano;
 import it.unibs.pajc.myComponents.CartaButton;
@@ -92,10 +96,6 @@ public class GamePanel extends JPanel {
   }
 
   public GamePanel() {
-    //PORTA LA FINESTRA A SCHERMO INTERO
-    setFullScreen();
-
-    //INIZIALIZZO IL PANNELLO DI STATO CONTENTE I MAZZI E LE INFORMAZIONI DI GIOCO
     pnlStato = new JPanel();
     pnlStato.setLayout(new BorderLayout());
     pnlStato.setOpaque(false);
@@ -119,7 +119,6 @@ public class GamePanel extends JPanel {
     pnlInformazioni.setBackground(Color.yellow);
     pnlStato.add(pnlInformazioni, BorderLayout.EAST);
 
-    //INIZIALIZZO IL PANNELLO DI GIOCO (CIOE' IL TAVOLO)
     pnlTavolo = new JPanel();
     pnlTavolo.setPreferredSize(new Dimension(SCREEN_SIZE.width, (int) (SCREEN_SIZE.height * 0.6)));
     pnlTavolo.setLayout(new GridLayout(2, 10, 0, 0));
@@ -138,7 +137,6 @@ public class GamePanel extends JPanel {
       });
     }
 
-    //INIZIALIZZO IL PANNELLO AZIONI CON LE POSSIBILI OPERAZIONI DA ESEGUIRE DURANTE LA PARTITA
     pnlAzioni = new JPanel();
     pnlAzioni.setPreferredSize(new Dimension(SCREEN_SIZE.width, (int) (SCREEN_SIZE.height * 0.08)));
     pnlAzioni.setLayout(new GridLayout(1, 5, 0, 0));
@@ -162,15 +160,21 @@ public class GamePanel extends JPanel {
     });
     pnlAzioni.add(buttonDugongo);
 
-    //APRE UN NUOVO FRAME PER VISUALIZZARE LE ISTRUZIONI DI GIOCO
     JButton buttonInfo = new JButton("INFO");
-    buttonInfo.addActionListener(e -> {
-      InfoFrame.getInstance();
-    });
+    buttonInfo.addActionListener(e -> new InfoController());
     pnlAzioni.add(buttonInfo);
 
     //CHIUDE O ABBANDONA LA PARTITA
     JButton buttonClose = new JButton("CLOSE");
+    buttonClose.addActionListener((e) -> {
+      try {
+        setFullScreen(false);
+        ServerController.getInstance().closeServer();
+        new Controller();
+      } catch (IOException e1) {
+        e1.printStackTrace();
+      }
+    });
     /* buttonClose.addActionListener(e -> {
       device.setFullScreenWindow(null);
     
@@ -187,13 +191,20 @@ public class GamePanel extends JPanel {
     this.add(pnlStato, BorderLayout.NORTH);
     this.add(pnlTavolo, BorderLayout.CENTER);
     this.add(pnlAzioni, BorderLayout.SOUTH);
+
+    setFullScreen(true);
   }
 
-  private void setFullScreen() {
+  private void setFullScreen(boolean fullScreen) {
     GraphicsDevice device = GraphicsEnvironment.getLocalGraphicsEnvironment().getScreenDevices()[0];
     JFrame frame = View.getInstance().getFrame();
 
-    device.setFullScreenWindow(frame);
+    if (fullScreen) {
+      device.setFullScreenWindow(frame);
+    } else {
+      device.setFullScreenWindow(null);
+    }
+
     frame.repaint();
   }
 
@@ -319,6 +330,6 @@ public class GamePanel extends JPanel {
   protected void paintComponent(Graphics g) {
     super.paintComponent(g);
 
-    g.drawImage(SFONDO, 0, 0, null);
+    g.drawImage(SFONDO, 0, 0, this);
   }
 }

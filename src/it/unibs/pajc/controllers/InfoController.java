@@ -23,7 +23,7 @@ public class InfoController {
 
   public InfoController() {
     try {
-      view = InfoFrame.getInstance();
+      view = new InfoFrame();
       caricaPagine();
       view.setPagina(getCurrentPage());
 
@@ -39,8 +39,6 @@ public class InfoController {
         if (avantiButton != null)
           avantiButton.addActionListener((e) -> avanti());
       }
-
-      view.getFrame().setVisible(true);
     } catch (FileNotFoundException | XMLStreamException | FactoryConfigurationError e) {
       View.getInstance().showError("ERRORE!\nC'è stato un problema nel caricamento delle regole", "Errore Interno");
     }
