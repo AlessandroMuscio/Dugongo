@@ -113,6 +113,8 @@ public class ServerController extends Controller {
 
       sendToSingleClient(port, DGNG.CHANGE, new Object[] { getModel() });
     }
+
+    play();
   }
 
   public void play() {
