@@ -2,7 +2,6 @@ package it.unibs.pajc.view;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
-import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.DisplayMode;
 import java.awt.Graphics;
@@ -10,12 +9,7 @@ import java.awt.GraphicsDevice;
 import java.awt.GraphicsEnvironment;
 import java.awt.GridLayout;
 import java.awt.Image;
-import java.awt.Insets;
-import java.io.IOException;
 
-import it.unibs.pajc.controllers.Controller;
-import it.unibs.pajc.controllers.InfoController;
-import it.unibs.pajc.controllers.ServerController;
 import it.unibs.pajc.micellaneous.Carta;
 import it.unibs.pajc.micellaneous.Mano;
 import it.unibs.pajc.myComponents.CartaButton;
@@ -23,7 +17,6 @@ import it.unibs.pajc.myComponents.MyButton;
 import it.unibs.pajc.myComponents.MyLabel;
 
 import javax.swing.*;
-import javax.swing.border.Border;
 
 import java.util.Arrays;
 import java.util.ListIterator;
@@ -45,6 +38,7 @@ public class GamePanel extends JPanel {
   private CartaButton btnMazzo;
   private CartaButton btnScartate;
   private JPanel pnlInformazioni;
+  private String[] informazioni;
   private MyLabel[] lblInformazioni;
 
   private JPanel pnlTavolo;
@@ -96,97 +90,9 @@ public class GamePanel extends JPanel {
   }
 
   public GamePanel() {
-    pnlStato = new JPanel();
-    pnlStato.setLayout(new BorderLayout());
-    pnlStato.setOpaque(false);
-    pnlStato.setPreferredSize(new Dimension(SCREEN_SIZE.width, (int) (SCREEN_SIZE.height * 0.3)));
-
-    pnlMazzi = new JPanel();
-    pnlMazzi.setPreferredSize(new Dimension((int) (SCREEN_SIZE.width * 0.3), (int) (SCREEN_SIZE.height * 0.3)));
-    pnlMazzi.setOpaque(false);
-
-    btnMazzo = new CartaButton("retro", 92, MyButton.CARTE_PATH, null);
-    btnMazzo.setPreferredSize(new Dimension((int) (SCREEN_SIZE.width * 0.1), (int) (SCREEN_SIZE.height * 0.3)));
-    pnlMazzi.add(btnMazzo, BorderLayout.WEST);
-    btnScartate = new CartaButton("retro", 92, MyButton.CARTE_PATH, null);
-    btnScartate.setPreferredSize(new Dimension((int) (SCREEN_SIZE.width * 0.1), (int) (SCREEN_SIZE.height * 0.3)));
-    pnlMazzi.add(btnScartate, BorderLayout.EAST);
-
-    pnlStato.add(pnlMazzi, BorderLayout.WEST);
-
-    pnlInformazioni = new JPanel();
-    pnlInformazioni.setPreferredSize(new Dimension((int) (SCREEN_SIZE.width * 0.3), (int) (SCREEN_SIZE.height * 0.3)));
-    pnlInformazioni.setBackground(Color.yellow);
-    pnlStato.add(pnlInformazioni, BorderLayout.EAST);
-
-    pnlTavolo = new JPanel();
-    pnlTavolo.setPreferredSize(new Dimension(SCREEN_SIZE.width, (int) (SCREEN_SIZE.height * 0.6)));
-    pnlTavolo.setLayout(new GridLayout(2, 10, 0, 0));
-    pnlTavolo.setOpaque(false);
-    tavolo = new CartaButton[20];
-
-    for (CartaButton b : tavolo) {
-      b = new CartaButton("retro", 48, MyButton.CARTE_PATH, null);
-      pnlTavolo.add(b);
-
-      CartaButton finalB = b;
-      b.addActionListener(e -> {
-        if (finalB.isVisible()) {
-          //AGGIUNGI ALL'ELENCO DELLE CARTE DA SCARTARE
-        }
-      });
-    }
-
-    pnlAzioni = new JPanel();
-    pnlAzioni.setPreferredSize(new Dimension(SCREEN_SIZE.width, (int) (SCREEN_SIZE.height * 0.08)));
-    pnlAzioni.setLayout(new GridLayout(1, 5, 0, 0));
-    pnlAzioni.setOpaque(false);
-
-    //INVIA AL SERVER LA LISTA DA SCARTARE
-    JButton buttonScarta = new JButton("SCARTA");
-    buttonScarta.addActionListener((e) -> {
-    });
-    pnlAzioni.add(buttonScarta);
-
-    //SVUOTA LISTA DA SCARTARE
-    JButton buttonAnnulla = new JButton("ANNULLA");
-    buttonAnnulla.addActionListener((e) -> {
-    });
-    pnlAzioni.add(buttonAnnulla);
-
-    //INVIA AL SERVER DUGONGO
-    JButton buttonDugongo = new JButton("DUGONGO");
-    buttonDugongo.addActionListener((e) -> {
-    });
-    pnlAzioni.add(buttonDugongo);
-
-    JButton buttonInfo = new JButton("INFO");
-    buttonInfo.addActionListener(e -> new InfoController());
-    pnlAzioni.add(buttonInfo);
-
-    //CHIUDE O ABBANDONA LA PARTITA
-    JButton buttonClose = new JButton("CLOSE");
-    buttonClose.addActionListener((e) -> {
-      try {
-        setFullScreen(false);
-        ServerController.getInstance().closeServer();
-        new Controller();
-      } catch (IOException e1) {
-        e1.printStackTrace();
-      }
-    });
-    /* buttonClose.addActionListener(e -> {
-      device.setFullScreenWindow(null);
-    
-      try {
-        ServerController.getInstance().closeServer();
-      } catch (IOException ex) {
-        throw new RuntimeException(ex);
-      }
-    
-      View.getInstance().setPnlCorrente(new MenuPanel());
-    }); */
-    pnlAzioni.add(buttonClose);
+    inizializzaPnlStato();
+    inizializzaPnlTavolo();
+    inizializzaPnlAzioni();
 
     this.add(pnlStato, BorderLayout.NORTH);
     this.add(pnlTavolo, BorderLayout.CENTER);
@@ -195,7 +101,7 @@ public class GamePanel extends JPanel {
     setFullScreen(true);
   }
 
-  private void setFullScreen(boolean fullScreen) {
+  public void setFullScreen(boolean fullScreen) {
     GraphicsDevice device = GraphicsEnvironment.getLocalGraphicsEnvironment().getScreenDevices()[0];
     JFrame frame = View.getInstance().getFrame();
 
@@ -209,7 +115,6 @@ public class GamePanel extends JPanel {
   }
 
   private void inizializzaPnlStato() {
-    Dimension preferredSize;
     int width, height;
 
     pnlStato = new JPanel(new BorderLayout());
@@ -217,8 +122,7 @@ public class GamePanel extends JPanel {
 
     width = SCREEN_SIZE.width;
     height = (int) (SCREEN_SIZE.height * 0.3);
-    preferredSize = new Dimension(width, height);
-    pnlStato.setPreferredSize(preferredSize);
+    pnlStato.setPreferredSize(new Dimension(width, height));
 
     inizializzaPnlMazzi();
     pnlStato.add(pnlMazzi, BorderLayout.WEST);
@@ -228,7 +132,6 @@ public class GamePanel extends JPanel {
   }
 
   private void inizializzaPnlMazzi() {
-    Dimension preferredSize;
     int width, height;
 
     pnlMazzi = new JPanel();
@@ -236,94 +139,116 @@ public class GamePanel extends JPanel {
 
     width = (int) (SCREEN_SIZE.width * 0.3);
     height = (int) (SCREEN_SIZE.height * 0.3);
-    preferredSize = new Dimension(width, height);
-    pnlMazzi.setPreferredSize(preferredSize);
+    pnlMazzi.setPreferredSize(new Dimension(width, height));
 
-    btnMazzo = new CartaButton("retro", 92, CartaButton.CARTE_PATH, null);
+    btnMazzo = new CartaButton("retro", 92, MyButton.CARTE_PATH, null);
 
     width = (int) (SCREEN_SIZE.width * 0.1);
-    preferredSize = new Dimension(width, height);
-    btnMazzo.setPreferredSize(preferredSize);
+    btnMazzo.setPreferredSize(new Dimension(width, height));
+
     pnlMazzi.add(btnMazzo, BorderLayout.WEST);
 
-    btnScartate = new CartaButton("retro", 92, CartaButton.CARTE_PATH, null);
-    btnScartate.setPreferredSize(preferredSize);
+    btnScartate = new CartaButton("retro", 92, MyButton.CARTE_PATH, null);
+    btnScartate.setPreferredSize(new Dimension(width, height));
+
     pnlMazzi.add(btnScartate, BorderLayout.EAST);
   }
 
   private void inizializzaPnlInformazioni() {
-    Dimension preferredSize;
     int width, height;
 
     pnlInformazioni = new JPanel(new GridLayout(MAX_INFORMATION_SHOWN, 1));
-    pnlInformazioni.setBackground(Color.YELLOW);
+    pnlInformazioni.setBackground(Color.yellow);
 
     width = (int) (SCREEN_SIZE.width * 0.3);
-    height = (int) (SCREEN_SIZE.height * 0.3);
-    preferredSize = new Dimension(width, height);
-    pnlInformazioni.setPreferredSize(preferredSize);
+    height = (int) (SCREEN_SIZE.width * 0.3);
+    pnlInformazioni.setPreferredSize(new Dimension(width, height));
 
+    informazioni = new String[MAX_INFORMATION_SHOWN];
     lblInformazioni = new MyLabel[MAX_INFORMATION_SHOWN];
     for (int i = 0; i < lblInformazioni.length; i++) {
-      lblInformazioni[i] = new MyLabel("", SwingConstants.CENTER, 6);
-      pnlInformazioni.add(lblInformazioni[i]);
+      lblInformazioni[i] = (MyLabel) pnlInformazioni.add(new MyLabel("", SwingConstants.CENTER, 6));
     }
   }
 
   private void inizializzaPnlTavolo() {
-    Dimension preferredSize;
     int width, height;
 
-    pnlTavolo = new JPanel(new GridLayout(CARD_ROWS_SHOWN, CARD_COLS_SHOWN));
+    pnlTavolo = new JPanel(new GridLayout(CARD_ROWS_SHOWN, CARD_COLS_SHOWN, 0, 0));
     pnlTavolo.setOpaque(false);
 
     width = SCREEN_SIZE.width;
-    height = (int) (SCREEN_SIZE.height * .6);
-    preferredSize = new Dimension(width, height);
-    pnlTavolo.setPreferredSize(preferredSize);
+    height = (int) (SCREEN_SIZE.height * 0.6);
+    pnlTavolo.setPreferredSize(new Dimension(width, height));
 
     tavolo = new CartaButton[CARD_ROWS_SHOWN * CARD_COLS_SHOWN];
-    for (int i = 0; i < tavolo.length; i++) {
-      tavolo[i] = new CartaButton("retro", 48, CartaButton.CARTE_PATH, null);
-      pnlTavolo.add(tavolo[i]);
+    for (CartaButton carta : tavolo) {
+      carta = (CartaButton) pnlTavolo.add(new CartaButton("retro", 48, MyButton.CARTE_PATH, null));
 
-      /* tavolo[i].addActionListener((e) -> {
-        CartaButton clickedButton = (CartaButton) e.getSource();
-        // DO SHIT
-      }); */
+      carta.addActionListener(e -> {
+        CartaButton source = (CartaButton) e.getSource();
+
+        if (source.isVisible()) {
+          System.out.println("Banana!");
+        }
+      });
     }
   }
 
   private void inizializzaPnlAzioni() {
-    Dimension preferredSize;
-    int width, height, i;
     ListIterator<String> azioniIterator;
     String text;
+    int width, height, i;
 
-    pnlAzioni = new JPanel(new GridLayout(1, AZIONI.length));
-    //pnlAzioni.setOpaque(false);
+    pnlAzioni = new JPanel(new GridLayout(1, AZIONI.length, 0, 0));
+    pnlAzioni.setOpaque(false);
 
     width = SCREEN_SIZE.width;
-    height = (int) (SCREEN_SIZE.height * 0.3);
-    preferredSize = new Dimension(width, height);
-    pnlMazzi.setPreferredSize(preferredSize);
+    height = (int) (SCREEN_SIZE.height * 0.08);
+    pnlAzioni.setPreferredSize(new Dimension(width, height));
 
     btnAzioni = new JButton[AZIONI.length];
     azioniIterator = Arrays.asList(AZIONI).listIterator();
-
     while (azioniIterator.hasNext()) {
       text = azioniIterator.next();
       i = azioniIterator.previousIndex();
 
-      btnAzioni[i] = new JButton(text);
-      pnlAzioni.add(btnAzioni[i]);
+      btnAzioni[i] = (JButton) pnlAzioni.add(new JButton(text));
     }
   }
 
+  public JButton[] getBtnAzioni() {
+    return btnAzioni;
+  }
+
   public void setData(Mano mano, Carta scartata) {
-    /* pnlInformazioni.add(new JLabel(mano.getC(), SwingConstants.CENTER));
+    aggiornaInformazioni(mano.getC());
+
     pnlInformazioni.repaint();
-    pnlInformazioni.revalidate(); */
+    pnlInformazioni.revalidate();
+  }
+
+  private void aggiornaInformazioni(String text) {
+    if (informazioni[MAX_INFORMATION_SHOWN - 1] == null) {
+      for (int i = 0; i < informazioni.length; i++) {
+        if (informazioni[i] != null)
+          informazioni[i] = text;
+      }
+    } else {
+      informazioni[MAX_INFORMATION_SHOWN - 1] = null;
+
+      for (int i = MAX_INFORMATION_SHOWN - 2; i >= 0; i--) {
+        informazioni[i + 1] = informazioni[i];
+      }
+
+      informazioni[0] = text;
+    }
+
+    /* aggiornaLblInformazioni() {
+      for (int i=0;i<MAX_INFORMATION_SHOWN;i++) {
+        lblInformazione.setText(informazioni!=);
+      }
+    } */
   }
 
   @Override

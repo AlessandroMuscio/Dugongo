@@ -17,6 +17,7 @@ public class Controller {
 
   private ServerController serverController;
   private ClientController clientController;
+
   private DugongoModel model;
 
   public Controller() {

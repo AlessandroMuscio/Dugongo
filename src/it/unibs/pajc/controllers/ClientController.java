@@ -30,7 +30,7 @@ public class ClientController extends Controller {
   private ObjectOutputStream writer;
   private ExecutorService executor;
 
-  private GamePanel gamePanel;
+  private GameController gameController;
 
   public ClientController() {
     executor = Executors.newFixedThreadPool(2);
@@ -90,14 +90,14 @@ public class ClientController extends Controller {
 
         switch (answer.getAnswer()) {
           case DGNG.START:
-            gamePanel = new GamePanel();
-            View.getInstance().setPnlCorrente(gamePanel);
+            gameController = new GameController();
+            View.getInstance().setPnlCorrente(gameController.getGamePanel());
             break;
 
           case DGNG.CHANGE:
             Mano mano = (Mano) answer.getBody()[0];
             Carta scartata = (Carta) answer.getBody()[1];
-            gamePanel.setData(mano, scartata);
+            gameController.getGamePanel().setData(mano, scartata);
             break;
         }
       }
