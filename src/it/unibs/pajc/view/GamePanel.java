@@ -244,7 +244,7 @@ public class GamePanel extends JPanel {
     pnlMazzi.revalidate();
   }
 
-  public void stampaNuoveCarte(Carta[] daVisualizzare) {
+  private void stampaNuoveCarte(Carta[] daVisualizzare) {
 
     for (CartaButton button : tavolo) {
       for (Carta carta : daVisualizzare) {
@@ -253,7 +253,6 @@ public class GamePanel extends JPanel {
         }
       }
     }
-
     timer.schedule(new TimerTask() {
       @Override
       public void run() {
@@ -276,7 +275,7 @@ public class GamePanel extends JPanel {
     btnScartate.stampaFronte();
   }
 
-  public void aggiornaTavolo(Mano mano) {
+  private void aggiornaTavolo(Mano mano) {
     int i = 0;
     for (Carta temp : mano.getCarte()) {
       this.tavolo[i].setCarta(temp);
@@ -288,19 +287,13 @@ public class GamePanel extends JPanel {
 
       i++;
     }
-
-    pnlTavolo.repaint();
-    pnlTavolo.revalidate();
   }
 
-  public void aggiornaMazzi(Scartate scartate) {
+  private void aggiornaMazzi(Scartate scartate) {
     btnScartate.setCarta(scartate.seeLast());
-
-    btnScartate.repaint();
-    btnScartate.revalidate();
   }
 
-  public void aggiornaInformazioni(String text) {
+  private void aggiornaInformazioni(String text) {
     if (informazioni[MAX_INFORMATION_SHOWN - 1] == null) {
       for (int i = 0; i < informazioni.length; i++) {
         if (informazioni[i] != null)

@@ -46,11 +46,9 @@ public class ServerThread extends Thread {
           case DGNG.SCARTA:
             model = ServerController.getInstance().getModel();
             ArrayList<Carta> daScartare = (ArrayList<Carta>) request.getAttributes()[0];
-            Thread.sleep(500);
             //Timer timer = new Timer(1000, (e) -> {
             model.confronto(daScartare, client.getPort());
             //});
-            Thread.sleep(500);
 
             //timer.start();
             /* answer = new Answer(DGNG.CHANGE, new Object[] { model, client.getPort() });

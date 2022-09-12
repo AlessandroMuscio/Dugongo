@@ -115,16 +115,11 @@ public class ClientController extends Controller {
             break;
 
           case DGNG.CHANGE:
-            Object body = answer.getBody()[0];
-            if (body instanceof Mano) {
-              gameController.getGamePanel().aggiornaTavolo((Mano) body);
-            } else if (body instanceof Scartate) {
-              gameController.getGamePanel().aggiornaMazzi((Scartate) body);
-            } else {
-              gameController.getGamePanel().stampaNuoveCarte((Carta[]) body);
-            }
+            model = (DugongoModel) answer.getBody()[0];
+            System.out.println("\n" + model.getMano(client.getLocalPort()) + "\n");
 
-            //System.out.println("\n" + model.getMano(client.getLocalPort()) + "\n");
+            gameController.getGamePanel().setData(model.getMano(client.getLocalPort()), model.getCambiate(),
+                model.getScartate());
             break;
 
           case DGNG.TURNO:
