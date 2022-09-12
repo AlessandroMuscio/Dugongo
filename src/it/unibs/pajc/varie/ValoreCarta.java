@@ -1,4 +1,4 @@
-package it.unibs.pajc.micellaneous;
+package it.unibs.pajc.varie;
 
 public enum ValoreCarta {
   ASSO(1),

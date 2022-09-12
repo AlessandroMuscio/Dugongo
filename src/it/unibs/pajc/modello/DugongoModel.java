@@ -1,13 +1,11 @@
-package it.unibs.pajc.model;
+package it.unibs.pajc.modello;
 
-import it.unibs.pajc.micellaneous.Carta;
-import it.unibs.pajc.micellaneous.Mano;
-import it.unibs.pajc.micellaneous.Mazzo;
-import it.unibs.pajc.micellaneous.Scartate;
+import it.unibs.pajc.varie.Carta;
+import it.unibs.pajc.varie.Mano;
+import it.unibs.pajc.varie.Mazzo;
+import it.unibs.pajc.varie.Scartate;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Set;
+import java.util.*;
 
 public class DugongoModel extends BaseModel {
   private Mazzo mazzo;
@@ -30,43 +28,48 @@ public class DugongoModel extends BaseModel {
 
   public void confronto(ArrayList<Carta> daScartare, Integer key) {
     int i = 0;
-
-    synchronized (this) {
-      if (scartate.getSize() != 0) {
-        for (Carta temp : daScartare) {
-          if (!temp.getValore().equals(scartate.seeLast().getValore())) {
-            Mano mano = maniClients.get(key);
-            cambiate[i++] = scartate.seeLast();
-            mano.aggiungi(scartate.getLast());
-            break;
-          }
-        }
-      }
-
+    cambiate = new Carta[20];
+    
+    if (scartate.getSize() != 0) {
+      Carta primaCarta = daScartare.get(0);
       for (Carta temp : daScartare) {
-        cambiate[i++] = temp;
-      }
-
-      if (daScartare.size() == i) {
-        Mano mano = maniClients.get(key);
-        mano.scarta(daScartare);
-        scartate.aggiungi(daScartare);
+        if (!primaCarta.getValore().equals(temp.getValore())) {
+          Mano mano = maniClients.get(key);
+          cambiate[i++] = scartate.seeLast();
+          mano.aggiungi(scartate.getLast());
+          break;
+        }
       }
     }
 
+    for (Carta temp : daScartare) {
+      cambiate[i++] = temp;
+    }
+
+      if (daScartare.size() == i) {
+      Mano mano = maniClients.get(key);
+      mano.scarta(daScartare);
+      scartate.aggiungi(daScartare);
+      }
+  
     fireValuesChange();
   }
 
   public void pesca(Integer key) {
     int i = 0;
+    cambiate = new Carta[20];
 
     Mano mano = maniClients.get(key);
     Carta carta = mazzo.pesca();
     mano.aggiungi(carta);
     cambiate[i] = carta;
+    
+    //pescaChange();
   }
 
   public Object[] getData(int porta) {
-    return new Object[] { maniClients.get(porta), cambiate, scartate };
+   
+      return new Object[]{maniClients.get(porta), cambiate, scartate};
+    
   }
 }

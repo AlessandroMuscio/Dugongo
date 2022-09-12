@@ -3,9 +3,9 @@ package it.unibs.pajc.controllers;
 import it.unibs.pajc.DGNGserver.Answer;
 import it.unibs.pajc.DGNGserver.DGNG;
 import it.unibs.pajc.DGNGserver.Request;
-import it.unibs.pajc.micellaneous.Carta;
-import it.unibs.pajc.micellaneous.Mano;
-import it.unibs.pajc.micellaneous.Scartate;
+import it.unibs.pajc.varie.Carta;
+import it.unibs.pajc.varie.Mano;
+import it.unibs.pajc.varie.Scartate;
 import it.unibs.pajc.myComponents.MyTextField;
 import it.unibs.pajc.view.View;
 
@@ -100,7 +100,9 @@ public class ClientController extends Controller {
     try {
 
       while (!client.isClosed()) {
+        
         answer = (Answer) reader.readObject();
+        System.out.println(answer);
 
         switch (answer.getCode()) {
           case DGNG.START:
@@ -118,7 +120,18 @@ public class ClientController extends Controller {
             mano = (Mano) answer.getBody()[0];
             change = (Carta[]) answer.getBody()[1];
             scartate = (Scartate) answer.getBody()[2];
-            gameController.endTurno(mano, change, scartate);
+            System.out.println("CLIENT: " + mano.toString());
+            gameController.aggiorna(mano, change, scartate);
+            gameController.end();
+            break;
+  
+          case DGNG.LOCAL_CHANGE:
+            mano = (Mano) answer.getBody()[0];
+            change = (Carta[]) answer.getBody()[1];
+            scartate = (Scartate) answer.getBody()[2];
+            gameController.aggiorna(mano, change, scartate);
+            System.out.println("CLIENT: " + mano.toString());
+            gameController.mossa();
             break;
 
           case DGNG.TURNO:

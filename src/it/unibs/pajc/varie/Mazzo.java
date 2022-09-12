@@ -1,4 +1,4 @@
-package it.unibs.pajc.micellaneous;
+package it.unibs.pajc.varie;
 
 import java.io.File;
 import java.io.FileFilter;

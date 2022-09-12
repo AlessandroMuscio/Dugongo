@@ -1,6 +1,6 @@
 package it.unibs.pajc.myComponents;
 
-import it.unibs.pajc.micellaneous.Carta;
+import it.unibs.pajc.varie.Carta;
 
 public class CartaButton extends MyButton {
   //public static final CartaButton RETRO_BUTTON = new CartaButton("retro", 100, CARTE_PATH, null);

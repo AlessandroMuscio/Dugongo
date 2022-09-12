@@ -1,12 +1,11 @@
 package it.unibs.pajc.controllers;
 
-import it.unibs.pajc.model.DugongoModel;
+import it.unibs.pajc.modello.DugongoModel;
 import it.unibs.pajc.view.*;
 
+import javax.swing.*;
 import java.io.IOException;
 import java.net.SocketException;
-
-import javax.swing.JOptionPane;
 
 public class Controller {
 

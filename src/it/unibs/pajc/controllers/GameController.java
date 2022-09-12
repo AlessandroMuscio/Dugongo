@@ -2,15 +2,16 @@ package it.unibs.pajc.controllers;
 
 import it.unibs.pajc.DGNGserver.DGNG;
 import it.unibs.pajc.DGNGserver.Request;
-import it.unibs.pajc.micellaneous.Carta;
-import it.unibs.pajc.micellaneous.Mano;
-import it.unibs.pajc.micellaneous.Scartate;
+import it.unibs.pajc.varie.Carta;
+import it.unibs.pajc.varie.Mano;
+import it.unibs.pajc.varie.Scartate;
 import it.unibs.pajc.view.GamePanel;
 
 import javax.swing.*;
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.net.SocketException;
 import java.util.ArrayList;
 
 public class GameController {
@@ -35,6 +36,8 @@ public class GameController {
         e1.printStackTrace();
       }
     }
+    
+    gamePanel.getBtnMazzo().addActionListener((e) -> pesca());
   }
 
   public void inizializzaPartita(Mano mano, Scartate scartate) {
@@ -46,12 +49,25 @@ public class GameController {
     gamePanel.startTurno();
   }
 
-  public void endTurno(Mano mano, Carta[] carte, Scartate scartate) {
-    Request request = new Request(DGNG.GIOCA);
-
-    gamePanel.setData(mano, carte, scartate);
-    gamePanel.endTurno();
-
+  public void aggiorna(Mano mano, Carta[] change, Scartate scartate) {
+    gamePanel.setData(mano, change, scartate);
+  }
+  
+  public void mossa(){
+    gamePanel.scarta();
+  }
+  
+  public void end(){
+    try {
+      gamePanel.endTurno();
+      ServerController.getInstance().play();
+    } catch (SocketException e) {
+      throw new RuntimeException(e);
+    }
+  }
+  
+  public void pesca(){
+    Request request = new Request(DGNG.PESCA);
     ClientController.getInstance().sendToServer(request);
   }
 

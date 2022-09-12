@@ -1,14 +1,15 @@
 package it.unibs.pajc.DGNGserver;
 
 import it.unibs.pajc.controllers.ServerController;
-import it.unibs.pajc.micellaneous.Carta;
-import it.unibs.pajc.model.DugongoModel;
+import it.unibs.pajc.varie.Carta;
+import it.unibs.pajc.modello.DugongoModel;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
 import java.util.ArrayList;
+import java.util.Timer;
 
 public class ServerThread extends Thread {
   private Socket client;
@@ -29,7 +30,8 @@ public class ServerThread extends Thread {
   }
 
   public void run() {
-    // byte[] buffer = new byte[DGNG.PACKAGE_DIM];
+    Timer timer = new Timer();
+    
     while (!client.isClosed()) {
       try {
         request = (Request) objectReader.readObject();
@@ -45,19 +47,16 @@ public class ServerThread extends Thread {
             model = ServerController.getInstance().getModel();
             ArrayList<Carta> daScartare = (ArrayList<Carta>) request.getAttributes()[0];
             model.confronto(daScartare, client.getPort());
-            /* answer = new Answer(DGNG.END, ServerController.getInstance().getModel().getData(client.getPort()));
-            
-            objectWriter.writeObject(answer);
-            objectWriter.flush(); */
             break;
 
           case DGNG.PESCA:
             model = ServerController.getInstance().getModel();
             model.pesca(client.getPort());
-            answer = new Answer(DGNG.CHANGE, model.getData(client.getPort()));
-
+            
+            answer = new Answer(DGNG.LOCAL_CHANGE, model.getData(client.getPort()));
             objectWriter.writeObject(answer);
             objectWriter.flush();
+            objectWriter.reset();
             break;
 
           case DGNG.DUGONGO:
@@ -65,6 +64,7 @@ public class ServerThread extends Thread {
 
             objectWriter.writeObject(answer);
             objectWriter.flush();
+            objectWriter.reset();
             break;
 
           case DGNG.NOME:
@@ -76,6 +76,7 @@ public class ServerThread extends Thread {
 
             objectWriter.writeObject(answer);
             objectWriter.flush();
+            objectWriter.reset();
 
             objectReader.close();
             objectWriter.close();
@@ -100,7 +101,9 @@ public class ServerThread extends Thread {
   public void send(Answer answer) {
     try {
       objectWriter.writeObject(answer);
+      objectWriter.reset();
       objectWriter.flush();
+      objectWriter.reset();
     } catch (IOException e) {
       throw new RuntimeException(e);
     }

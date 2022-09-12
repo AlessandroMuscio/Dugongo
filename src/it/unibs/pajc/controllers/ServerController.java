@@ -3,7 +3,7 @@ package it.unibs.pajc.controllers;
 import it.unibs.pajc.DGNGserver.Answer;
 import it.unibs.pajc.DGNGserver.DGNG;
 import it.unibs.pajc.DGNGserver.ServerThread;
-import it.unibs.pajc.model.DugongoModel;
+import it.unibs.pajc.modello.DugongoModel;
 import it.unibs.pajc.view.ServerPanel;
 import it.unibs.pajc.view.View;
 
@@ -27,12 +27,13 @@ public class ServerController extends Controller {
   private String IPaddress;
   private int port;
   private ExecutorService executors;
+  private ServerThread corrente;
 
   private ServerController() throws SocketException {
     connectedClients = new ArrayList<>();
     clientsNames = new HashMap<>();
     IPaddress = getLocalIPaddress();
-    port = new Random().nextInt(DGNG.MIN_PORT, DGNG.MAX_PORT + 1);
+    port = 51234;//new Random().nextInt(DGNG.MIN_PORT, DGNG.MAX_PORT + 1);
     executors = Executors.newCachedThreadPool();
     turnoCorrente = new LinkedList<>();
     turnoSuccessivo = new LinkedList<>();
@@ -93,6 +94,7 @@ public class ServerController extends Controller {
     model = new DugongoModel();
     model.inizializzaPartita(clientsNames.keySet());
     model.addChangeListener(this::updateModel);
+    model.addPescListener(this::pescato);
 
     setModel(model);
 
@@ -107,16 +109,20 @@ public class ServerController extends Controller {
 
   private void updateModel(ChangeEvent changeEvent) {
     int port;
-
+    
     for (ServerThread connectedClient : connectedClients) {
       port = connectedClient.getPorta();
-
+      
       sendToSingleClient(port, DGNG.CHANGE, getModel().getData(port));
     }
   }
+  
+  private void pescato(ChangeEvent changeEvent){
+    int port = corrente.getPorta();
+    sendToSingleClient(port, DGNG.LOCAL_CHANGE, getModel().getData(port));
+  }
 
   public void play() {
-    ServerThread corrente;
 
     if (turnoCorrente.isEmpty()) {
       turnoCorrente = new LinkedList<>(turnoSuccessivo);

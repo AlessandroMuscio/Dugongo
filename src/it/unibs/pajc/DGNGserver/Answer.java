@@ -1,6 +1,7 @@
 package it.unibs.pajc.DGNGserver;
 
 import java.io.Serializable;
+import java.util.Arrays;
 
 public class Answer implements Serializable {
   private int code;
@@ -30,5 +31,13 @@ public class Answer implements Serializable {
 
   public void setBody(Object[] body) {
     this.body = body;
+  }
+  
+  @Override
+  public String toString() {
+    return "Answer{" +
+            "code=" + code +
+            ", body=" + Arrays.toString(body) +
+            '}';
   }
 }

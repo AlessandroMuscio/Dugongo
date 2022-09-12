@@ -1,4 +1,4 @@
-package it.unibs.pajc.micellaneous;
+package it.unibs.pajc.varie;
 
 import java.io.Serializable;
 import java.util.Collection;

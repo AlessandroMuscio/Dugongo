@@ -1,8 +1,8 @@
 package it.unibs.pajc.view;
 
-import it.unibs.pajc.micellaneous.Carta;
-import it.unibs.pajc.micellaneous.Mano;
-import it.unibs.pajc.micellaneous.Scartate;
+import it.unibs.pajc.varie.Carta;
+import it.unibs.pajc.varie.Mano;
+import it.unibs.pajc.varie.Scartate;
 import it.unibs.pajc.myComponents.CartaButton;
 import it.unibs.pajc.myComponents.MyButton;
 import it.unibs.pajc.myComponents.MyLabel;
@@ -187,9 +187,8 @@ public class GamePanel extends JPanel {
 
       carta.addActionListener(e -> {
         CartaButton source = (CartaButton) e.getSource();
-        daScartare.add(source.getCarta());
-        if (source.isVisible()) {
-          System.out.println(source.getCarta().getSeme());
+        if (source.isEnabled()) {
+          daScartare.add(source.getCarta());
         }
       });
     }
@@ -222,8 +221,6 @@ public class GamePanel extends JPanel {
   }
 
   public void startTurno() {
-    btnAzioni[0].setEnabled(true);
-    btnAzioni[1].setEnabled(true);
     btnAzioni[2].setEnabled(true);
   }
 
@@ -231,6 +228,12 @@ public class GamePanel extends JPanel {
     btnAzioni[0].setEnabled(false);
     btnAzioni[1].setEnabled(false);
     btnAzioni[2].setEnabled(false);
+  
+    for (CartaButton carta : tavolo){
+      if(carta.getCarta() != null){
+        carta.setEnabled(false);
+      }
+    }
   }
 
   public void setData(Mano mano, Carta[] daVisualizzare, Scartate scartate) {
@@ -240,13 +243,15 @@ public class GamePanel extends JPanel {
     stampaMazzi();
     stampaNuoveCarte(daVisualizzare);
 
+    pnlTavolo.repaint();
+    pnlTavolo.revalidate();
     pnlInformazioni.repaint();
     pnlInformazioni.revalidate();
-    pnlMazzi.repaint();
-    pnlMazzi.revalidate();
   }
-
+  
   private void stampaNuoveCarte(Carta[] daVisualizzare) {
+    
+    timer = new Timer();
 
     for (CartaButton button : tavolo) {
       for (Carta carta : daVisualizzare) {
@@ -293,6 +298,8 @@ public class GamePanel extends JPanel {
 
   private void aggiornaMazzi(Scartate scartate) {
     btnScartate.setCarta(scartate.seeLast());
+    pnlMazzi.repaint();
+    pnlMazzi.revalidate();
   }
 
   private void aggiornaInformazioni(String text) {
@@ -321,11 +328,28 @@ public class GamePanel extends JPanel {
   public ArrayList<Carta> getDaScartare() {
     return daScartare;
   }
-
+  
+  public CartaButton getBtnMazzo() {
+    return btnMazzo;
+  }
+  
   @Override
   protected void paintComponent(Graphics g) {
     super.paintComponent(g);
 
     g.drawImage(SFONDO, 0, 0, this);
+  }
+  
+  public void scarta() {
+    daScartare = new ArrayList<>();
+  
+    for (CartaButton carta : tavolo){
+      if(carta.getCarta() != null){
+        carta.setEnabled(true);
+      }
+    }
+    
+    btnAzioni[0].setEnabled(true);
+    btnAzioni[1].setEnabled(true);
   }
 }
