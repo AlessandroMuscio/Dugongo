@@ -14,7 +14,7 @@ import java.util.Timer;
 public class ServerThread extends Thread {
   private Socket client;
   private Request request;
-  
+
   private Answer answer;
   private ObjectInputStream objectReader;
   private ObjectOutputStream objectWriter;
@@ -40,12 +40,13 @@ public class ServerThread extends Thread {
 
         switch (request.getRequest()) {
           case DGNG.GIOCA:
-            ServerController.getInstance().play();
+            //ServerController.getInstance().play();
             break;
 
           case DGNG.SCARTA:
             model = ServerController.getInstance().getModel();
             ArrayList<Carta> daScartare = (ArrayList<Carta>) request.getAttributes()[0];
+            //Timer timer = new Timer(1000, (e) -> {
             model.confronto(daScartare, client.getPort());
             break;
 

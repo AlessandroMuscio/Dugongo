@@ -102,7 +102,7 @@ public class ServerController extends Controller {
     for (ServerThread connectedClient : connectedClients) {
       port = connectedClient.getPorta();
 
-      sendToSingleClient(port, DGNG.INIZIA, getModel().getData(port));
+      sendToSingleClient(port, DGNG.INIZIA, new Object[] { getModel() });
     }
 
     play();
@@ -116,6 +116,8 @@ public class ServerController extends Controller {
       
       sendToSingleClient(port, DGNG.CHANGE, getModel().getData(port));
     }
+
+    play();
   }
   
   private void pescato(ChangeEvent changeEvent){

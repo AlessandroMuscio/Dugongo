@@ -3,7 +3,7 @@
 Progetto di Programmazione Avanzata di Java e C, sviluppatori:
 
 - Alessandro Muscio
-- Gianluca Brignoli
+- Gianluca Bignoli
 
 ## UML
 

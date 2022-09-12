@@ -3,6 +3,7 @@ package it.unibs.pajc.controllers;
 import it.unibs.pajc.DGNGserver.Answer;
 import it.unibs.pajc.DGNGserver.DGNG;
 import it.unibs.pajc.DGNGserver.Request;
+import it.unibs.pajc.modello.DugongoModel;
 import it.unibs.pajc.varie.Carta;
 import it.unibs.pajc.varie.Mano;
 import it.unibs.pajc.varie.Scartate;
@@ -93,9 +94,11 @@ public class ClientController extends Controller {
 
   private void listenToServer() {
     Answer answer;
+    DugongoModel model;
+    int tmpPort;
     Mano mano;
-    Scartate scartate;
     Carta[] change;
+    Scartate scartate;
 
     try {
 
@@ -111,9 +114,9 @@ public class ClientController extends Controller {
             break;
 
           case DGNG.INIZIA:
-            mano = (Mano) answer.getBody()[0];
-            scartate = (Scartate) answer.getBody()[2];
-            gameController.inizializzaPartita(mano, scartate);
+            model = (DugongoModel) answer.getBody()[0];
+
+            gameController.inizializzaPartita(model.getMano(client.getLocalPort()), model.getScartate());
             break;
 
           case DGNG.CHANGE:
@@ -140,7 +143,7 @@ public class ClientController extends Controller {
         }
 
         if (answer != null)
-          System.out.println("Data received");
+          System.out.println(answer);
       }
 
     } catch (IOException e) {
@@ -151,7 +154,6 @@ public class ClientController extends Controller {
   }
 
   public void sendToServer(Request request) {
-
     try {
       writer.writeUnshared(request);
       writer.flush();

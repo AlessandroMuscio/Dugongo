@@ -73,7 +73,9 @@ public class GameController {
 
   public void scarta() {
     ArrayList<Carta> daScartare = gamePanel.getDaScartare();
-    System.out.println("PROVIAMO A SCRIVERE " + daScartare.get(0).getSeme());
+
+    //System.out.println(daScartare.get(0));
+
     Request request = new Request(DGNG.SCARTA, new Object[] { daScartare });
     ClientController.getInstance().sendToServer(request);
   }

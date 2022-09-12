@@ -5,9 +5,10 @@ import it.unibs.pajc.varie.Mano;
 import it.unibs.pajc.varie.Mazzo;
 import it.unibs.pajc.varie.Scartate;
 
+import java.io.Serializable;
 import java.util.*;
 
-public class DugongoModel extends BaseModel {
+public class DugongoModel extends BaseModel implements Serializable {
   private Mazzo mazzo;
   private HashMap<Integer, Mano> maniClients;
   private Scartate scartate;
@@ -72,4 +73,17 @@ public class DugongoModel extends BaseModel {
       return new Object[]{maniClients.get(porta), cambiate, scartate};
     
   }
+
+  public Mano getMano(int port) {
+    return maniClients.get(port);
+  }
+
+  public Scartate getScartate() {
+    return scartate;
+  }
+
+  public Carta[] getCambiate() {
+    return cambiate;
+  }
+
 }
