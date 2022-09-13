@@ -105,7 +105,6 @@ public class ClientController extends Controller {
       while (!client.isClosed()) {
         
         answer = (Answer) reader.readObject();
-        System.out.println(answer);
 
         switch (answer.getCode()) {
           case DGNG.START:

@@ -34,7 +34,7 @@ public class ServerController extends Controller {
     connectedClients = new ArrayList<>();
     clientsNames = new HashMap<>();
     IPaddress = getLocalIPaddress();
-    port = 51234;//new Random().nextInt(DGNG.MIN_PORT, DGNG.MAX_PORT + 1);
+    port = new Random().nextInt(DGNG.MIN_PORT, DGNG.MAX_PORT + 1);
     executors = Executors.newCachedThreadPool();
     turnoCorrente = new LinkedList<>();
     turnoSuccessivo = new LinkedList<>();

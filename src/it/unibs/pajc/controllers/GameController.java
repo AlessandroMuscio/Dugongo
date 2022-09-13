@@ -11,7 +11,6 @@ import javax.swing.*;
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
-import java.net.SocketException;
 import java.util.ArrayList;
 
 public class GameController {
@@ -58,12 +57,12 @@ public class GameController {
   }
   
   public void end(){
-    try {
+    //try {
       gamePanel.endTurno();
-      ServerController.getInstance().play();
-    } catch (SocketException e) {
-      throw new RuntimeException(e);
-    }
+      //ServerController.getInstance().play();
+    //} catch (SocketException e) {
+      //throw new RuntimeException(e);
+    //}
   }
   
   public void pesca(){
