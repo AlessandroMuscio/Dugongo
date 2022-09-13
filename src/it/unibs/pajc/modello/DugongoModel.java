@@ -46,7 +46,7 @@ public class DugongoModel extends BaseModel implements Serializable {
     }
 
     for (Carta temp : daScartare) {
-      if(!temp.equals(cartaBase)){
+      if(!temp.equalsValore(cartaBase)){
         flag = false;
       }
       cambiate[i++] = temp;
@@ -70,7 +70,6 @@ public class DugongoModel extends BaseModel implements Serializable {
     mano.aggiungi(carta);
     cambiate[i] = carta;
     
-    //pescaChange();
   }
 
   public Object[] getData(int porta) {
