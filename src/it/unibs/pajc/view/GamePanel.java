@@ -140,6 +140,7 @@ public class GamePanel extends JPanel {
 
     width = (int) (SCREEN_SIZE.width * 0.1);
     btnMazzo.setPreferredSize(new Dimension(width, height));
+    btnMazzo.setEnabled(false);
 
     pnlMazzi.add(btnMazzo, BorderLayout.WEST);
 
@@ -221,6 +222,7 @@ public class GamePanel extends JPanel {
   }
 
   public void startTurno() {
+    btnMazzo.setEnabled(true);
     btnAzioni[2].setEnabled(true);
   }
 
@@ -228,6 +230,7 @@ public class GamePanel extends JPanel {
     btnAzioni[0].setEnabled(false);
     btnAzioni[1].setEnabled(false);
     btnAzioni[2].setEnabled(false);
+    btnMazzo.setEnabled(false);
   
     for (CartaButton carta : tavolo){
       if(carta.getCarta() != null){
@@ -351,5 +354,6 @@ public class GamePanel extends JPanel {
     
     btnAzioni[0].setEnabled(true);
     btnAzioni[1].setEnabled(true);
+    btnMazzo.setEnabled(false);
   }
 }
