@@ -35,7 +35,7 @@ public class DugongoModel extends BaseModel implements Serializable {
     cambiate = new Carta[20];
     boolean flag = true;
     Carta cartaBase = daScartare.get(0);
-    
+
     if (scartate.getSize() != 0) {
       Carta primaCarta = daScartare.get(0);
       for (Carta temp : daScartare) {
@@ -49,20 +49,20 @@ public class DugongoModel extends BaseModel implements Serializable {
     }
 
     for (Carta temp : daScartare) {
-      if(!temp.equalsValore(cartaBase)){
+      if (!temp.equalsValore(cartaBase)) {
         flag = false;
       }
       cambiate[i++] = temp;
     }
 
     if (daScartare.size() == i && flag) {
-    Mano mano = maniClients.get(key);
-    mano.scarta(daScartare);
-    scartate.aggiungi(daScartare);
+      Mano mano = maniClients.get(key);
+      mano.scarta(daScartare);
+      scartate.aggiungi(daScartare);
     }
-  
+
     fireValuesChange();
-    
+
     nostraScartata = scartate.seeLast();
   }
 
@@ -74,13 +74,13 @@ public class DugongoModel extends BaseModel implements Serializable {
     Carta carta = mazzo.pesca();
     mano.aggiungi(carta);
     cambiate[i] = carta;
-    
+
   }
 
   public Object[] getData(int porta) {
-   
-      return new Object[]{maniClients.get(porta), cambiate, scartate};
-    
+
+    return new Object[] { maniClients.get(porta), cambiate, scartate };
+
   }
 
   public Mano getMano(int port) {
@@ -94,52 +94,46 @@ public class DugongoModel extends BaseModel implements Serializable {
   public Carta[] getCambiate() {
     return cambiate;
   }
-  
+
   public void nostroConfronto(ArrayList<Carta> daScartare, int key) {
     int i = 0;
     cambiate = new Carta[20];
     boolean flag = true;
     Carta cartaBase = daScartare.get(0);
-  
+
     if (scartate.getSize() != 0) {
 
       for (Carta temp : daScartare) {
-        
+
         if (!nostraScartata.equalsValore(temp)) {
           Mano mano = maniClients.get(key);
-          
-          if(scartate.seeLast().equalsValore(nostraScartata)){
+
+          if (scartate.seeLast().equalsValore(nostraScartata)) {
             cambiate[i++] = scartate.seeLast();
             mano.aggiungi(scartate.getLast());
           } else {
             cambiate[i] = mazzo.pesca();
             mano.aggiungi(cambiate[i++]);
           }
-          
+
           break;
         }
       }
     }
-  
+
     for (Carta temp : daScartare) {
-      if(!temp.equalsValore(cartaBase)){
+      if (!temp.equalsValore(cartaBase)) {
         flag = false;
       }
       cambiate[i++] = temp;
     }
-  
+
     if (daScartare.size() == i && flag) {
       Mano mano = maniClients.get(key);
       mano.scarta(daScartare);
       scartate.aggiungi(daScartare);
     }
-  
+
     fireValuesChange();
-  
-    try {
-      ServerController.getInstance().play();
-    } catch (SocketException e) {
-      throw new RuntimeException(e);
-    }
   }
 }

@@ -124,7 +124,6 @@ public class ClientController extends Controller {
             scartate = (Scartate) answer.getBody()[2];
             gameController.aggiorna(mano, change, scartate);
             gameController.nostroTurno();
-            gameController.end();
             break;
 
           case DGNG.LOCAL_CHANGE:

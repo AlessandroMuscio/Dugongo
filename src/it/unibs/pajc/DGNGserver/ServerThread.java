@@ -31,12 +31,12 @@ public class ServerThread extends Thread {
   public void run() {
     ArrayList<Carta> daScartare;
     DugongoModel model;
-    
+
     while (!client.isClosed()) {
       try {
         request = (Request) objectReader.readObject();
         System.out.println(request);
-        
+
         switch (request.getRequest()) {
           case DGNG.GIOCA:
             break;
@@ -50,7 +50,7 @@ public class ServerThread extends Thread {
           case DGNG.PESCA:
             model = ServerController.getInstance().getModel();
             model.pesca(client.getPort());
-            
+
             answer = new Answer(DGNG.LOCAL_CHANGE, model.getData(client.getPort()));
             objectWriter.writeObject(answer);
             objectWriter.flush();
@@ -64,16 +64,18 @@ public class ServerThread extends Thread {
             objectWriter.flush();
             objectWriter.reset();
             break;
-  
+
           case DGNG.NOSTRO_SCARTA:
             model = ServerController.getInstance().getModel();
             daScartare = (ArrayList<Carta>) request.getAttributes()[0];
             model.nostroConfronto(daScartare, client.getPort());
-  
-            answer = new Answer(DGNG.CHANGE, model.getData(client.getPort()));
-            objectWriter.writeObject(answer);
-            objectWriter.flush();
-            objectWriter.reset();
+
+            /*
+             * answer = new Answer(DGNG.CHANGE, model.getData(client.getPort()));
+             * objectWriter.writeObject(answer);
+             * objectWriter.flush();
+             * objectWriter.reset();
+             */
             break;
 
           case DGNG.NOME:
