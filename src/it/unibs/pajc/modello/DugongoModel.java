@@ -1,14 +1,14 @@
 package it.unibs.pajc.modello;
 
-import it.unibs.pajc.controllers.ServerController;
 import it.unibs.pajc.varie.Carta;
 import it.unibs.pajc.varie.Mano;
 import it.unibs.pajc.varie.Mazzo;
 import it.unibs.pajc.varie.Scartate;
 
 import java.io.Serializable;
-import java.net.SocketException;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Set;
 
 public class DugongoModel extends BaseModel implements Serializable {
   private Mazzo mazzo;
@@ -133,7 +133,5 @@ public class DugongoModel extends BaseModel implements Serializable {
       mano.scarta(daScartare);
       scartate.aggiungi(daScartare);
     }
-
-    fireValuesChange();
   }
 }

@@ -70,12 +70,11 @@ public class ServerThread extends Thread {
             daScartare = (ArrayList<Carta>) request.getAttributes()[0];
             model.nostroConfronto(daScartare, client.getPort());
 
-            /*
-             * answer = new Answer(DGNG.CHANGE, model.getData(client.getPort()));
-             * objectWriter.writeObject(answer);
-             * objectWriter.flush();
-             * objectWriter.reset();
-             */
+            
+             answer = new Answer(DGNG.CHANGE, model.getData(client.getPort()));
+             objectWriter.writeObject(answer);
+             objectWriter.flush();
+             objectWriter.reset();
             break;
 
           case DGNG.NOME:
