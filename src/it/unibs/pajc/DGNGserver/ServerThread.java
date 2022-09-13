@@ -1,15 +1,14 @@
 package it.unibs.pajc.DGNGserver;
 
 import it.unibs.pajc.controllers.ServerController;
-import it.unibs.pajc.varie.Carta;
 import it.unibs.pajc.modello.DugongoModel;
+import it.unibs.pajc.varie.Carta;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
 import java.util.ArrayList;
-import java.util.Timer;
 
 public class ServerThread extends Thread {
   private Socket client;
@@ -30,23 +29,21 @@ public class ServerThread extends Thread {
   }
 
   public void run() {
-    Timer timer = new Timer();
+    ArrayList<Carta> daScartare;
+    DugongoModel model;
     
     while (!client.isClosed()) {
       try {
         request = (Request) objectReader.readObject();
         System.out.println(request);
-        DugongoModel model;
-
+        
         switch (request.getRequest()) {
           case DGNG.GIOCA:
-            //ServerController.getInstance().play();
             break;
 
           case DGNG.SCARTA:
             model = ServerController.getInstance().getModel();
-            ArrayList<Carta> daScartare = (ArrayList<Carta>) request.getAttributes()[0];
-            //Timer timer = new Timer(1000, (e) -> {
+            daScartare = (ArrayList<Carta>) request.getAttributes()[0];
             model.confronto(daScartare, client.getPort());
             break;
 
@@ -63,6 +60,17 @@ public class ServerThread extends Thread {
           case DGNG.DUGONGO:
             answer = new Answer(DGNG.REQUEST_OK);
 
+            objectWriter.writeObject(answer);
+            objectWriter.flush();
+            objectWriter.reset();
+            break;
+  
+          case DGNG.NOSTRO_SCARTA:
+            model = ServerController.getInstance().getModel();
+            daScartare = (ArrayList<Carta>) request.getAttributes()[0];
+            model.nostroConfronto(daScartare, client.getPort());
+  
+            answer = new Answer(DGNG.CHANGE, model.getData(client.getPort()));
             objectWriter.writeObject(answer);
             objectWriter.flush();
             objectWriter.reset();

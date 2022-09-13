@@ -1,11 +1,13 @@
 package it.unibs.pajc.modello;
 
+import it.unibs.pajc.controllers.ServerController;
 import it.unibs.pajc.varie.Carta;
 import it.unibs.pajc.varie.Mano;
 import it.unibs.pajc.varie.Mazzo;
 import it.unibs.pajc.varie.Scartate;
 
 import java.io.Serializable;
+import java.net.SocketException;
 import java.util.*;
 
 public class DugongoModel extends BaseModel implements Serializable {
@@ -13,6 +15,7 @@ public class DugongoModel extends BaseModel implements Serializable {
   private HashMap<Integer, Mano> maniClients;
   private Scartate scartate;
   private Carta[] cambiate;
+  private Carta nostraScartata;
 
   public DugongoModel() {
     this.mazzo = new Mazzo();
@@ -52,13 +55,15 @@ public class DugongoModel extends BaseModel implements Serializable {
       cambiate[i++] = temp;
     }
 
-      if (daScartare.size() == i && flag) {
-      Mano mano = maniClients.get(key);
-      mano.scarta(daScartare);
-      scartate.aggiungi(daScartare);
-      }
+    if (daScartare.size() == i && flag) {
+    Mano mano = maniClients.get(key);
+    mano.scarta(daScartare);
+    scartate.aggiungi(daScartare);
+    }
   
     fireValuesChange();
+    
+    nostraScartata = scartate.seeLast();
   }
 
   public void pesca(Integer key) {
@@ -89,5 +94,52 @@ public class DugongoModel extends BaseModel implements Serializable {
   public Carta[] getCambiate() {
     return cambiate;
   }
+  
+  public void nostroConfronto(ArrayList<Carta> daScartare, int key) {
+    int i = 0;
+    cambiate = new Carta[20];
+    boolean flag = true;
+    Carta cartaBase = daScartare.get(0);
+  
+    if (scartate.getSize() != 0) {
 
+      for (Carta temp : daScartare) {
+        
+        if (!nostraScartata.equalsValore(temp)) {
+          Mano mano = maniClients.get(key);
+          
+          if(scartate.seeLast().equalsValore(nostraScartata)){
+            cambiate[i++] = scartate.seeLast();
+            mano.aggiungi(scartate.getLast());
+          } else {
+            cambiate[i] = mazzo.pesca();
+            mano.aggiungi(cambiate[i++]);
+          }
+          
+          break;
+        }
+      }
+    }
+  
+    for (Carta temp : daScartare) {
+      if(!temp.equalsValore(cartaBase)){
+        flag = false;
+      }
+      cambiate[i++] = temp;
+    }
+  
+    if (daScartare.size() == i && flag) {
+      Mano mano = maniClients.get(key);
+      mano.scarta(daScartare);
+      scartate.aggiungi(daScartare);
+    }
+  
+    fireValuesChange();
+  
+    try {
+      ServerController.getInstance().play();
+    } catch (SocketException e) {
+      throw new RuntimeException(e);
+    }
+  }
 }

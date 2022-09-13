@@ -356,4 +356,17 @@ public class GamePanel extends JPanel {
     btnAzioni[1].setEnabled(true);
     btnMazzo.setEnabled(false);
   }
+  
+  public void setTimer(int time) {
+  
+    timer = new Timer();
+    
+    timer.schedule(new TimerTask() {
+      @Override
+      public void run() {
+        endTurno();
+      }
+    }, time * 1000);
+    
+  }
 }

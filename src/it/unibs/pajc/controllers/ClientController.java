@@ -123,6 +123,7 @@ public class ClientController extends Controller {
             change = (Carta[]) answer.getBody()[1];
             scartate = (Scartate) answer.getBody()[2];
             gameController.aggiorna(mano, change, scartate);
+            gameController.nostroTurno();
             gameController.end();
             break;
 

@@ -5,6 +5,7 @@ public class DGNG {
   public static final int SCARTA = 2;
   public static final int PESCA = 3;
   public static final int DUGONGO = 4;
+  public static final int NOSTRO_SCARTA = 5;
   public static final int ESCI = -1;
   public static final int NOME = -2;
   
@@ -20,7 +21,6 @@ public class DGNG {
   public static final int CHANGE = 4;
   public static final int LOCAL_CHANGE = 5;
   public static final int TURNO = 6;
-  public static final int END = 7;
 
   // Dimensione del buffer
   public static final int PACKAGE_DIM = 1000; // 1kB

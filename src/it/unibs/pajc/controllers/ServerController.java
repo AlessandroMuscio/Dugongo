@@ -114,8 +114,6 @@ public class ServerController extends Controller {
 
       sendToSingleClient(port, DGNG.CHANGE, getModel().getData(port));
     }
-
-    play();
   }
 
   private void pescato(ChangeEvent changeEvent) {

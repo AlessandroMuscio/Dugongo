@@ -15,6 +15,7 @@ import java.util.ArrayList;
 
 public class GameController {
   private GamePanel gamePanel;
+  private boolean nostroScarta = false;
 
   public GameController() {
     gamePanel = new GamePanel();
@@ -53,16 +54,12 @@ public class GameController {
   }
   
   public void mossa(){
+    nostroScarta = false;
     gamePanel.scarta();
   }
   
   public void end(){
-    //try {
       gamePanel.endTurno();
-      //ServerController.getInstance().play();
-    //} catch (SocketException e) {
-      //throw new RuntimeException(e);
-    //}
   }
   
   public void pesca(){
@@ -72,10 +69,13 @@ public class GameController {
 
   public void scarta() {
     ArrayList<Carta> daScartare = gamePanel.getDaScartare();
-
-    //System.out.println(daScartare.get(0));
-
-    Request request = new Request(DGNG.SCARTA, new Object[] { daScartare });
+    Request request;
+  
+    if(nostroScarta){
+      request = new Request(DGNG.NOSTRO_SCARTA, new Object[] { daScartare });
+    } else{
+      request = new Request(DGNG.SCARTA, new Object[] { daScartare });
+    }
     ClientController.getInstance().sendToServer(request);
   }
 
@@ -102,5 +102,11 @@ public class GameController {
 
   public GamePanel getGamePanel() {
     return gamePanel;
+  }
+  
+  public void nostroTurno() {
+    nostroScarta = true;
+    gamePanel.scarta();
+    gamePanel.setTimer(10);
   }
 }
