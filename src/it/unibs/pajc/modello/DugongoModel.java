@@ -30,6 +30,7 @@ public class DugongoModel extends BaseModel implements Serializable {
   public void confronto(ArrayList<Carta> daScartare, Integer key) {
     int i = 0;
     cambiate = new Carta[20];
+    boolean flag = true;
     Carta cartaBase = daScartare.get(0);
     
     if (scartate.getSize() != 0) {
@@ -45,13 +46,13 @@ public class DugongoModel extends BaseModel implements Serializable {
     }
 
     for (Carta temp : daScartare) {
-      cambiate[i++] = temp;
       if(!temp.equals(cartaBase)){
-        break;
+        flag = false;
       }
+      cambiate[i++] = temp;
     }
 
-      if (daScartare.size() == i) {
+      if (daScartare.size() == i && flag) {
       Mano mano = maniClients.get(key);
       mano.scarta(daScartare);
       scartate.aggiungi(daScartare);
