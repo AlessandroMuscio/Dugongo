@@ -114,6 +114,13 @@ public class ServerController extends Controller {
 
       sendToSingleClient(port, DGNG.CHANGE, getModel().getData(port));
     }
+
+    new Timer().schedule(new TimerTask() {
+      @Override
+      public void run() {
+        play();
+      }
+    }, 12 * 1000);
   }
 
   private void pescato(ChangeEvent changeEvent) {

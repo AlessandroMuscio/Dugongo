@@ -10,13 +10,16 @@ import it.unibs.pajc.varie.Scartate;
 import it.unibs.pajc.myComponents.MyTextField;
 import it.unibs.pajc.view.View;
 
-import javax.swing.*;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+
+import javax.swing.JOptionPane;
+
+import java.util.Timer;
 
 public class ClientController extends Controller {
   private static final int MIN_PORT = 49152;
@@ -99,6 +102,7 @@ public class ClientController extends Controller {
     Mano mano;
     Carta[] change;
     Scartate scartate;
+    Timer timer = new Timer();
 
     try {
 
@@ -132,6 +136,7 @@ public class ClientController extends Controller {
             scartate = (Scartate) answer.getBody()[2];
             gameController.aggiorna(mano, change, scartate);
             gameController.mossa();
+
             break;
 
           case DGNG.TURNO:
