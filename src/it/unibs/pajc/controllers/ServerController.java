@@ -14,7 +14,6 @@ import java.util.*;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
-
 public class ServerController extends Controller {
   private static ServerController singleton = null;
 
@@ -75,7 +74,6 @@ public class ServerController extends Controller {
       while (connectedClients.size() < MAX_CLIENTS) {
         Socket client = server.accept();
         ServerThread clientThread = new ServerThread(client);
-        System.out.println("Request received");
 
         connectedClients.add(clientThread);
         clientThread.start();
@@ -110,17 +108,17 @@ public class ServerController extends Controller {
 
   private void updateModel(ChangeEvent changeEvent) {
     int port;
-    
+
     for (ServerThread connectedClient : connectedClients) {
       port = connectedClient.getPorta();
-      
+
       sendToSingleClient(port, DGNG.CHANGE, getModel().getData(port));
     }
 
     play();
   }
-  
-  private void pescato(ChangeEvent changeEvent){
+
+  private void pescato(ChangeEvent changeEvent) {
     int port = corrente.getPorta();
     sendToSingleClient(port, DGNG.LOCAL_CHANGE, getModel().getData(port));
   }

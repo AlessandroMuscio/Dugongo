@@ -103,7 +103,7 @@ public class ClientController extends Controller {
     try {
 
       while (!client.isClosed()) {
-        
+
         answer = (Answer) reader.readObject();
 
         switch (answer.getCode()) {
@@ -122,17 +122,15 @@ public class ClientController extends Controller {
             mano = (Mano) answer.getBody()[0];
             change = (Carta[]) answer.getBody()[1];
             scartate = (Scartate) answer.getBody()[2];
-            System.out.println("CLIENT: " + mano.toString());
             gameController.aggiorna(mano, change, scartate);
             gameController.end();
             break;
-  
+
           case DGNG.LOCAL_CHANGE:
             mano = (Mano) answer.getBody()[0];
             change = (Carta[]) answer.getBody()[1];
             scartate = (Scartate) answer.getBody()[2];
             gameController.aggiorna(mano, change, scartate);
-            System.out.println("CLIENT: " + mano.toString());
             gameController.mossa();
             break;
 
