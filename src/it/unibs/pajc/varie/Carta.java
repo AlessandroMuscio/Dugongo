@@ -57,7 +57,7 @@ public class Carta implements Serializable {
       if (obj != null && obj instanceof Carta) {
         Carta other = (Carta) obj;
 
-        return valore.equals(other.valore) && seme.equals(other.seme);
+        return valore.equals(other.valore);
       }
     }
 
