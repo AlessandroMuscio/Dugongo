@@ -9,19 +9,19 @@ import it.unibs.pajc.varie.Carta;
 import it.unibs.pajc.varie.Mano;
 import it.unibs.pajc.varie.Scartate;
 import it.unibs.pajc.view.View;
-import it.unibs.pajc.view.WaitingPanel;
 
 import javax.swing.*;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
-import java.util.HashMap;
+import java.util.Timer;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
-import java.util.function.Consumer;
 
-public class ClientController extends Controller {
+public class VecchioClientController extends Controller {
+  private static final int MIN_PORT = 49152;
+  private static final int MAX_PORT = 65536;
 
   private String ipAddress;
   private int port;
@@ -31,67 +31,18 @@ public class ClientController extends Controller {
   private ObjectInputStream reader;
   private ObjectOutputStream writer;
   private ExecutorService executor;
-  private static HashMap<Integer, Consumer<Answer>> azioni;
+
   private GameController gameController;
-  
-  static {
-    azioni = new HashMap<>();
-  }
-  
 
-  private static ClientController singleton = null;
+  private static VecchioClientController singleton = null;
 
-  private ClientController() {
-    if (azioni.isEmpty()){
-      inizializzaAzioni();
-    }
-    executor = Executors.newCachedThreadPool();
-  }
-  
-  private void inizializzaAzioni(){
-    azioni.put(DGNG.ATTESA, (answer) ->
-      View.getInstance().setPnlCorrente(new WaitingPanel())
-    );
-    
-    azioni.put(DGNG.INIZIA, (answer) -> {
-      gameController = new GameController();
-      View.getInstance().setPnlCorrente(gameController.getGamePanel());
-      DugongoModel model = (DugongoModel) answer.getBody()[0];
-      gameController.inizializzaPartita(model.getMano(client.getLocalPort()), model.getScartate());
-    });
-    
-    azioni.put(DGNG.GETTONE, (answer) ->
-      gameController.turno()
-    );
-    
-    azioni.put(DGNG.MANO, (answer) -> {
-      Mano mano = (Mano) answer.getBody()[0];
-      Carta[] change = (Carta[]) answer.getBody()[1];
-      Scartate scartate = (Scartate) answer.getBody()[2];
-      gameController.aggiorna(mano, change, scartate);
-      //gameController.nostroTurno();
-    });
-    
-    azioni.put(DGNG.AGGIORNA, (answer) -> {
-      Mano mano = (Mano) answer.getBody()[0];
-      Carta[] change = (Carta[]) answer.getBody()[1];
-      Scartate scartate = (Scartate) answer.getBody()[2];
-      gameController.aggiorna(mano, change, scartate);
-      //gameController.nostroTurno();
-    });
-  
-    azioni.put(DGNG.AGGIORNA, (answer) -> {
-      Mano mano = (Mano) answer.getBody()[0];
-      Carta[] change = (Carta[]) answer.getBody()[1];
-      Scartate scartate = (Scartate) answer.getBody()[2];
-      gameController.aggiorna(mano, change, scartate);
-      //gameController.nostroTurno();
-    });
+  private VecchioClientController() {
+    executor = Executors.newFixedThreadPool(2);
   }
 
-  public static ClientController getInstance() {
+  public static VecchioClientController getInstance() {
     if (singleton == null)
-      singleton = new ClientController();
+      singleton = new VecchioClientController();
 
     return singleton;
   }
@@ -111,45 +62,94 @@ public class ClientController extends Controller {
 
   private void connettiAlServer() {
     if (areInputsValid()) {
-      connessione();
-      
+      try {
+        client = new Socket(ipAddress, port);
+        writer = new ObjectOutputStream(client.getOutputStream());
+        reader = new ObjectInputStream(client.getInputStream());
+        executor.execute(this::listenToServer);
+        Request request = new Request(DGNG.NOME, new Object[] { name });
+        sendToServer(request);
+      } catch (Exception e) {
+        JOptionPane.showMessageDialog(null, "ERRORE!\nImpossibile stabilire la connessione con il server",
+            "Errore di Connessione", JOptionPane.ERROR_MESSAGE);
+      }
     }
   }
 
   public void joinGame(String ipAddress, int port) {
     this.ipAddress = ipAddress;
     this.port = port;
-    connessione();
-  }
-  
-  private void connessione(){
+
     try {
       client = new Socket(ipAddress, port);
       writer = new ObjectOutputStream(client.getOutputStream());
       reader = new ObjectInputStream(client.getInputStream());
       executor.execute(this::listenToServer);
-      Request request = new Request(DGNG.COLLEGAMENTO, new Object[] { name });
+      Request request = new Request(DGNG.NOME, new Object[] { name });
       sendToServer(request);
     } catch (Exception e) {
       JOptionPane.showMessageDialog(null, "ERRORE!\nImpossibile stabilire la connessione con il server",
-              "Errore di Connessione", JOptionPane.ERROR_MESSAGE);
+          "Errore di Connessione", JOptionPane.ERROR_MESSAGE);
     }
   }
 
   private void listenToServer() {
     Answer answer;
     DugongoModel model;
+    int tmpPort;
     Mano mano;
     Carta[] change;
     Scartate scartate;
-    
-    while(!client.isClosed()){
-      try {
+    Timer timer = new Timer();
+
+    try {
+
+      while (!client.isClosed()) {
+
         answer = (Answer) reader.readObject();
-        azioni.get(answer.getCode()).accept(answer);
-      } catch (IOException | ClassNotFoundException e) {
-        throw new RuntimeException(e);
+
+        switch (answer.getCode()) {
+          case DGNG.START:
+            gameController = new GameController();
+            View.getInstance().setPnlCorrente(gameController.getGamePanel());
+            break;
+
+          case DGNG.INIZIA:
+            model = (DugongoModel) answer.getBody()[0];
+
+            gameController.inizializzaPartita(model.getMano(client.getLocalPort()), model.getScartate());
+            break;
+
+          case DGNG.CHANGE:
+            mano = (Mano) answer.getBody()[0];
+            change = (Carta[]) answer.getBody()[1];
+            scartate = (Scartate) answer.getBody()[2];
+            gameController.aggiorna(mano, change, scartate);
+            gameController.nostroTurno();
+            break;
+
+          case DGNG.LOCAL_CHANGE:
+            mano = (Mano) answer.getBody()[0];
+            change = (Carta[]) answer.getBody()[1];
+            scartate = (Scartate) answer.getBody()[2];
+            gameController.aggiorna(mano, change, scartate);
+            gameController.mossa();
+
+            break;
+
+          case DGNG.TURNO:
+            gameController.turno();
+            break;
+        }
+
+        if (answer != null)
+          System.out.println(answer);
       }
+
+    } catch (IOException e) {
+      System.out.println(e.toString());
+    } catch (ClassNotFoundException e) {
+      e.printStackTrace();
     }
   }
 
@@ -215,14 +215,14 @@ public class ClientController extends Controller {
       if (portString != null && !portString.isBlank()) {
         portNumber = Integer.parseInt(portString);
 
-        if (portNumber >= DGNG.MIN_PORT && portNumber <= DGNG.MAX_PORT)
+        if (portNumber >= MIN_PORT && portNumber <= MAX_PORT)
           return portNumber;
       }
     } catch (NumberFormatException e) {
 
       JOptionPane.showMessageDialog(null,
-          "ATTENZIONE!!\nPorta assente o errato\nRicordati che la porta deve essere compresa tra " + DGNG.MIN_PORT + " e "
-              + DGNG.MAX_PORT,
+          "ATTENZIONE!!\nPorta assente o errato\nRicordati che la porta deve essere compresa tra " + MIN_PORT + " e "
+              + MAX_PORT,
           "Errore d'Inserimento",
           JOptionPane.ERROR_MESSAGE);
     }

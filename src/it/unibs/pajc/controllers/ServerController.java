@@ -29,19 +29,23 @@ public class ServerController extends Controller {
   private ExecutorService executors;
   private ServerThread corrente;
 
-  private ServerController() throws SocketException {
-    connectedClients = new ArrayList<>();
-    clientsNames = new HashMap<>();
-    IPaddress = getLocalIPaddress();
-    port = new Random().nextInt(DGNG.MIN_PORT, DGNG.MAX_PORT + 1);
-    executors = Executors.newCachedThreadPool();
-    turnoCorrente = new LinkedList<>();
-    turnoSuccessivo = new LinkedList<>();
-
-    executors.execute(this::startServer);
+  private ServerController() {
+    try {
+      connectedClients = new ArrayList<>();
+      clientsNames = new HashMap<>();
+      IPaddress = getLocalIPaddress();
+      port = new Random().nextInt(DGNG.MIN_PORT, DGNG.MAX_PORT + 1);
+      executors = Executors.newCachedThreadPool();
+      turnoCorrente = new LinkedList<>();
+      turnoSuccessivo = new LinkedList<>();
+  
+      executors.execute(this::startServer);
+    } catch (SocketException e) {
+      throw new RuntimeException(e);
+    }
   }
 
-  public static ServerController getInstance() throws SocketException {
+  public static ServerController getInstance() {
     if (singleton == null)
       singleton = new ServerController();
 
@@ -88,12 +92,10 @@ public class ServerController extends Controller {
     int port;
 
     turnoCorrente.addAll(connectedClients);
-    sendToAllClients(DGNG.START, new Object[] {});
 
     model = new DugongoModel();
     model.inizializzaPartita(clientsNames.keySet());
     model.addChangeListener(this::updateModel);
-    model.addPescListener(this::pescato);
 
     setModel(model);
 
@@ -112,20 +114,8 @@ public class ServerController extends Controller {
     for (ServerThread connectedClient : connectedClients) {
       port = connectedClient.getPorta();
 
-      sendToSingleClient(port, DGNG.CHANGE, getModel().getData(port));
+      sendToSingleClient(port, DGNG.AGGIORNA, getModel().getData(port));
     }
-
-    new Timer().schedule(new TimerTask() {
-      @Override
-      public void run() {
-        play();
-      }
-    }, 12 * 1000);
-  }
-
-  private void pescato(ChangeEvent changeEvent) {
-    int port = corrente.getPorta();
-    sendToSingleClient(port, DGNG.LOCAL_CHANGE, getModel().getData(port));
   }
 
   public void play() {
@@ -138,12 +128,12 @@ public class ServerController extends Controller {
     corrente = turnoCorrente.poll();
     turnoSuccessivo.add(corrente);
 
-    sendToSingleClient(corrente.getPorta(), DGNG.TURNO, new Object[] {});
+    sendToSingleClient(corrente.getPorta(), DGNG.GETTONE, new Object[] {});
   }
 
-  private void sendToAllClients(int code, Object[] body) {
+  public void sendToAllClients(Answer answer) {
     for (ServerThread connectedClient : connectedClients) {
-      connectedClient.send(new Answer(code, body));
+      connectedClient.send(answer);
     }
   }
 
@@ -152,10 +142,6 @@ public class ServerController extends Controller {
       if (connectedClient.getPorta() == port)
         connectedClient.send(new Answer(code, body));
     }
-  }
-
-  public HashMap<Integer, String> getClientsNames() {
-    return clientsNames;
   }
 
   public String getIPaddress() {
@@ -176,7 +162,7 @@ public class ServerController extends Controller {
   public void closeServer() throws IOException {
     for (ServerThread connectedClient : connectedClients) {
       if (!connectedClient.isClosed()) {
-        connectedClient.close();
+        connectedClient.esci();
         connectedClient.interrupt();
       }
     }

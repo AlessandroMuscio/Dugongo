@@ -91,7 +91,6 @@ public class Controller {
     clientPanel.getEsciButton().addActionListener((e) -> esci());
     clientPanel.getAvviaButton().addActionListener((e) -> {
       clientController.iniziaCollegamento(clientPanel.getTextFields());
-      view.setPnlCorrente(new WaitingPanel()); //SERVER UN PANEL ATTESA IN CUI SI ASPETTA CHE IL SERVER AVVII LA PARTITA
     });
 
     view.setPnlCorrente(clientPanel);

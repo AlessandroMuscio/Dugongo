@@ -71,11 +71,7 @@ public class GameController {
     ArrayList<Carta> daScartare = gamePanel.getDaScartare();
     Request request;
   
-    if(nostroScarta){
-      request = new Request(DGNG.NOSTRO_SCARTA, new Object[] { daScartare });
-    } else{
-      request = new Request(DGNG.SCARTA, new Object[] { daScartare });
-    }
+    request = new Request(DGNG.SCARTA, new Object[] { daScartare, nostroScarta });
     ClientController.getInstance().sendToServer(request);
   }
 
@@ -83,7 +79,7 @@ public class GameController {
   }
 
   public void dugongo() {
-
+  
   }
 
   public void info() {
