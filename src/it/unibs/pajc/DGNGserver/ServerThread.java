@@ -25,7 +25,7 @@ public class ServerThread extends Thread {
     try {
       this.client = client;
   
-        inizializzaAzioni();
+      inizializzaAzioni();
       
       reader = new ObjectInputStream(client.getInputStream());
       writer = new ObjectOutputStream(client.getOutputStream());
@@ -40,9 +40,6 @@ public class ServerThread extends Thread {
     azioni.put(DGNG.ESCI, this::esci);
     
     azioni.put(DGNG.COLLEGAMENTO, (request) -> {
-      System.out.println("Nome: " + request.getAttributes()[0]);
-      System.out.println("ServerThread: "+client.getLocalPort() + " " + client.getPort()+"\n\n");
-
       ServerController.getInstance().addClientName(client.getPort(), String.valueOf(request.getAttributes()[0]));
 
       Answer answer = new Answer(DGNG.ATTESA);
@@ -89,7 +86,6 @@ public class ServerThread extends Thread {
     while(!client.isClosed()){
       try {
         Request request = (Request) reader.readObject();
-      System.out.println("ServerThread-Run: "+client.getLocalPort() + " " + client.getPort());
         azioni.get(request.getRequest()).accept(request);
       } catch (IOException | ClassNotFoundException e) {
         throw new RuntimeException(e);

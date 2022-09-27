@@ -77,7 +77,6 @@ public class ServerController extends Controller {
 
       while (connectedClients.size() < MAX_CLIENTS) {
         Socket client = server.accept();
-        System.out.println("ServerController: "+client.getLocalPort() + " " + client.getPort());
         ServerThread clientThread = new ServerThread(client);
 
         connectedClients.add(clientThread);
