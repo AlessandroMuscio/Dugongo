@@ -46,7 +46,7 @@ public class ServerThread extends Thread {
       try {
         writer.writeObject(answer);
         writer.flush();
-        //objectWriter.reset();
+        writer.reset();
       } catch (IOException e) {
         throw new RuntimeException(e);
       }
@@ -60,7 +60,7 @@ public class ServerThread extends Thread {
       try {
         writer.writeObject(answer);
         writer.flush();
-        //objectWriter.reset();
+        writer.reset();
       } catch (IOException e) {
         throw new RuntimeException(e);
       }
@@ -106,9 +106,8 @@ public class ServerThread extends Thread {
   public void send(Answer answer) {
     try {
       writer.writeObject(answer);
-      //objectWriter.reset();
       writer.flush();
-      //objectWriter.reset();
+      writer.reset();
     } catch (IOException e) {
       throw new RuntimeException(e);
     }
