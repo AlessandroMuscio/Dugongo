@@ -44,7 +44,7 @@ public class ServerThread extends Thread {
     
     azioni.put(DGNG.COLLEGAMENTO, (request) -> {
       System.out.println("Nome: " + request.getAttributes()[0]);
-      ServerController.getInstance().addClientName(client.getPort(), String.valueOf(request.getAttributes()[0]));
+      ServerController.getInstance().addClientName(client.getLocalPort(), String.valueOf(request.getAttributes()[0]));
       Answer answer = new Answer(DGNG.ATTESA);
       try {
         writer.writeObject(answer);
