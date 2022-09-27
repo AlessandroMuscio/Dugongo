@@ -8,7 +8,6 @@ import it.unibs.pajc.myComponents.MyTextField;
 import it.unibs.pajc.varie.Carta;
 import it.unibs.pajc.varie.Mano;
 import it.unibs.pajc.varie.Scartate;
-import it.unibs.pajc.view.ServerPanel;
 import it.unibs.pajc.view.View;
 import it.unibs.pajc.view.WaitingPanel;
 
@@ -75,7 +74,7 @@ public class ClientController extends Controller {
       Carta[] change = (Carta[]) answer.getBody()[1];
       Scartate scartate = (Scartate) answer.getBody()[2];
       gameController.aggiorna(mano, change, scartate);
-      //gameController.nostroTurno();
+      gameController.pescato();
     });
     
     azioni.put(DGNG.AGGIORNA, (answer) -> {
@@ -83,10 +82,10 @@ public class ClientController extends Controller {
       Carta[] change = (Carta[]) answer.getBody()[1];
       Scartate scartate = (Scartate) answer.getBody()[2];
       gameController.aggiorna(mano, change, scartate);
-      //gameController.nostroTurno();
+      gameController.pescato();
     });
   
-    azioni.put(DGNG.AGGIORNA, (answer) -> {
+    azioni.put(DGNG.ULTIMO_TURNO, (answer) -> {
       Mano mano = (Mano) answer.getBody()[0];
       Carta[] change = (Carta[]) answer.getBody()[1];
       Scartate scartate = (Scartate) answer.getBody()[2];

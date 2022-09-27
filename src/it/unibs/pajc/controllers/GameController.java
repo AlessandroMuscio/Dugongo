@@ -105,4 +105,8 @@ public class GameController {
     gamePanel.scarta();
     gamePanel.setTimer(10);
   }
+  
+  public void pescato() {
+    gamePanel.abilita();
+  }
 }

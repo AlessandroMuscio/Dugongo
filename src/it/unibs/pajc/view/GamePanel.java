@@ -220,6 +220,17 @@ public class GamePanel extends JPanel {
   public JButton[] getBtnAzioni() {
     return btnAzioni;
   }
+  
+  public void abilita() {
+    btnAzioni[0].setEnabled(true);
+    btnAzioni[1].setEnabled(true);
+  
+    for (CartaButton carta : tavolo){
+      if(carta.getCarta() != null){
+        carta.setEnabled(true);
+      }
+    }
+  }
 
   public void startTurno() {
     btnMazzo.setEnabled(true);
