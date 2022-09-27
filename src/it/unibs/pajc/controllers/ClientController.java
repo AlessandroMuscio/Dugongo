@@ -8,6 +8,7 @@ import it.unibs.pajc.myComponents.MyTextField;
 import it.unibs.pajc.varie.Carta;
 import it.unibs.pajc.varie.Mano;
 import it.unibs.pajc.varie.Scartate;
+import it.unibs.pajc.view.ServerPanel;
 import it.unibs.pajc.view.View;
 import it.unibs.pajc.view.WaitingPanel;
 
@@ -33,6 +34,7 @@ public class ClientController extends Controller {
   private ExecutorService executor;
   private static HashMap<Integer, Consumer<Answer>> azioni;
   private GameController gameController;
+  private boolean server = false;
   
   static {
     azioni = new HashMap<>();
@@ -49,8 +51,11 @@ public class ClientController extends Controller {
   }
   
   private void inizializzaAzioni(){
-    azioni.put(DGNG.ATTESA, (answer) ->
-      View.getInstance().setPnlCorrente(new WaitingPanel())
+    azioni.put(DGNG.ATTESA, (answer) -> {
+      if(!server){
+        View.getInstance().setPnlCorrente(new WaitingPanel());
+      }
+    }
     );
     
     azioni.put(DGNG.INIZIA, (answer) -> {
@@ -111,14 +116,15 @@ public class ClientController extends Controller {
 
   private void connettiAlServer() {
     if (areInputsValid()) {
+      this.server = false;
       connessione();
-      
     }
   }
 
   public void joinGame(String ipAddress, int port) {
     this.ipAddress = ipAddress;
     this.port = port;
+    this.server = true;
     connessione();
   }
   

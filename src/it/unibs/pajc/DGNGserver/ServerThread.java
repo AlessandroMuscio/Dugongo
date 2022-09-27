@@ -10,15 +10,14 @@ import java.io.ObjectOutputStream;
 import java.net.Socket;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.function.Consumer;
 
 public class ServerThread extends Thread {
   private Socket client;
-  private Request request;
 
-  private Answer answer;
-  private ObjectInputStream objectReader;
-  private ObjectOutputStream objectWriter;
-  private static HashMap<Integer, Runnable> azioni;
+  private ObjectInputStream reader;
+  private ObjectOutputStream writer;
+  private static HashMap<Integer, Consumer<Request>> azioni;
   
   static {
     azioni = new HashMap<>();
@@ -33,8 +32,8 @@ public class ServerThread extends Thread {
         inizializzaAzioni();
       }
       
-      objectReader = new ObjectInputStream(client.getInputStream());
-      objectWriter = new ObjectOutputStream(client.getOutputStream());
+      reader = new ObjectInputStream(client.getInputStream());
+      writer = new ObjectOutputStream(client.getOutputStream());
     } catch (IOException e) {
       e.printStackTrace();
     }
@@ -43,53 +42,61 @@ public class ServerThread extends Thread {
   private void inizializzaAzioni(){
     azioni.put(DGNG.ESCI, this::esci);
     
-    azioni.put(DGNG.COLLEGAMENTO, () -> {
+    azioni.put(DGNG.COLLEGAMENTO, (request) -> {
+      System.out.println("Nome: " + request.getAttributes()[0]);
       ServerController.getInstance().addClientName(client.getPort(), String.valueOf(request.getAttributes()[0]));
-      answer = new Answer(DGNG.ATTESA);
+      Answer answer = new Answer(DGNG.ATTESA);
       try {
-        objectWriter.writeObject(answer);
-        objectWriter.flush();
+        writer.writeObject(answer);
+        writer.flush();
         //objectWriter.reset();
       } catch (IOException e) {
         throw new RuntimeException(e);
       }
     });
     
-    azioni.put(DGNG.PESCA, () -> {
+    azioni.put(DGNG.PESCA, (request) -> {
       DugongoModel model = ServerController.getInstance().getModel();
       model.pesca(client.getPort());
   
-      answer = new Answer(DGNG.MANO, model.getData(client.getPort()));
+      Answer answer = new Answer(DGNG.MANO, model.getData(client.getPort()));
       try {
-        objectWriter.writeObject(answer);
-        objectWriter.flush();
+        writer.writeObject(answer);
+        writer.flush();
         //objectWriter.reset();
       } catch (IOException e) {
         throw new RuntimeException(e);
       }
     });
   
-    azioni.put(DGNG.SCARTA, () -> {
+    azioni.put(DGNG.SCARTA, (request) -> {
       DugongoModel model = ServerController.getInstance().getModel();
       ArrayList<Carta> daScartare = (ArrayList<Carta>) request.getAttributes()[0];
       model.confronto(daScartare, client.getPort());
     });
   
-    azioni.put(DGNG.DUGONGO, () -> {
-      answer = new Answer(DGNG.ULTIMO_TURNO);
+    azioni.put(DGNG.DUGONGO, (request) -> {
+      Answer answer = new Answer(DGNG.ULTIMO_TURNO);
       ServerController.getInstance().sendToAllClients(answer);
     });
   
-    azioni.put(DGNG.FINE, () ->
+    azioni.put(DGNG.FINE, (request) ->
       ServerController.getInstance().play()
     );
   }
 
   public void run() {
-  
+    while(!client.isClosed()){
+      try {
+        Request request = (Request) reader.readObject();
+        azioni.get(request.getRequest()).accept(request);
+      } catch (IOException | ClassNotFoundException e) {
+        throw new RuntimeException(e);
+      }
+    }
   }
 
-  public void esci() {
+  public void esci(Request request) {
     try {
       if (!isClosed()) {
         client.close();
@@ -101,9 +108,9 @@ public class ServerThread extends Thread {
 
   public void send(Answer answer) {
     try {
-      objectWriter.writeObject(answer);
+      writer.writeObject(answer);
       //objectWriter.reset();
-      objectWriter.flush();
+      writer.flush();
       //objectWriter.reset();
     } catch (IOException e) {
       throw new RuntimeException(e);

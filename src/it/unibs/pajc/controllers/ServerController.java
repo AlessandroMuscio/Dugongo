@@ -162,7 +162,7 @@ public class ServerController extends Controller {
   public void closeServer() throws IOException {
     for (ServerThread connectedClient : connectedClients) {
       if (!connectedClient.isClosed()) {
-        connectedClient.esci();
+        connectedClient.esci(null);
         connectedClient.interrupt();
       }
     }

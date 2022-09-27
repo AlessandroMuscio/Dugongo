@@ -21,7 +21,7 @@ public class ServerPanel extends JPanel {
   private MyButton esciButton;
   private MyButton avviaButton;
 
-  public ServerPanel() throws SocketException {
+  public ServerPanel() {
     lblTitolo = new MyLabel("Stato del Server", SwingConstants.CENTER, 8);
     pnlCenter = new JPanel(new GridLayout(2, 1));
     pnlServerCredentials = new JPanel(new GridBagLayout());
