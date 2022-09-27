@@ -1,5 +1,5 @@
 package it.unibs.pajc.controllers;
-
+/*
 import it.unibs.pajc.DGNGserver.Answer;
 import it.unibs.pajc.DGNGserver.DGNG;
 import it.unibs.pajc.DGNGserver.Request;
@@ -233,3 +233,4 @@ public class VecchioClientController extends Controller {
     this.name = name;
   }
 }
+*/

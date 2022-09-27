@@ -1,5 +1,5 @@
 package it.unibs.pajc.DGNGserver;
-
+/*
 import it.unibs.pajc.controllers.ServerController;
 import it.unibs.pajc.modello.DugongoModel;
 import it.unibs.pajc.varie.Carta;
@@ -123,3 +123,4 @@ public class VecchioServerThread extends Thread {
     return client.getPort();
   }
 }
+*/
