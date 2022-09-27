@@ -132,6 +132,7 @@ public class ClientController extends Controller {
   private void connessione(){
     try {
       client = new Socket(ipAddress, port);
+      System.out.println(client.getLocalPort()+" "+client.getPort());
       writer = new ObjectOutputStream(client.getOutputStream());
       reader = new ObjectInputStream(client.getInputStream());
       executor.execute(this::listenToServer);
