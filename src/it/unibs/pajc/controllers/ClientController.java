@@ -34,10 +34,11 @@ public class ClientController extends Controller {
   private ExecutorService executor;
   private static HashMap<Integer, Consumer<Answer>> azioni;
   private GameController gameController;
-  private boolean server = false;
+  public static boolean server;
   
   static {
     azioni = new HashMap<>();
+    server = false;
   }
   
 

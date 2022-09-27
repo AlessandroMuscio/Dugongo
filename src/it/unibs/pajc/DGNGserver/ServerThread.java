@@ -1,5 +1,6 @@
 package it.unibs.pajc.DGNGserver;
 
+import it.unibs.pajc.controllers.ClientController;
 import it.unibs.pajc.controllers.ServerController;
 import it.unibs.pajc.modello.DugongoModel;
 import it.unibs.pajc.varie.Carta;
@@ -44,7 +45,11 @@ public class ServerThread extends Thread {
     
     azioni.put(DGNG.COLLEGAMENTO, (request) -> {
       System.out.println("Nome: " + request.getAttributes()[0]);
-      ServerController.getInstance().addClientName(client.getLocalPort(), String.valueOf(request.getAttributes()[0]));
+      if(ClientController.server)
+        ServerController.getInstance().addClientName(client.getLocalPort(), String.valueOf(request.getAttributes()[0]));
+      else
+        ServerController.getInstance().addClientName(client.getPort(), String.valueOf(request.getAttributes()[0]));
+
       Answer answer = new Answer(DGNG.ATTESA);
       try {
         writer.writeObject(answer);
