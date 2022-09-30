@@ -1,6 +1,5 @@
 package it.unibs.pajc.DGNGserver;
 
-import it.unibs.pajc.controllers.ClientController;
 import it.unibs.pajc.controllers.ServerController;
 import it.unibs.pajc.modello.DugongoModel;
 import it.unibs.pajc.varie.Carta;
@@ -15,7 +14,6 @@ import java.util.function.Consumer;
 
 public class ServerThread extends Thread {
   private Socket client;
-
   private ObjectInputStream reader;
   private ObjectOutputStream writer;
   private HashMap<Integer, Consumer<Request>> azioni;
@@ -83,7 +81,7 @@ public class ServerThread extends Thread {
   }
 
   public void run() {
-    while(!client.isClosed()){
+    while(true){
       try {
         Request request = (Request) reader.readObject();
         azioni.get(request.getRequest()).accept(request);

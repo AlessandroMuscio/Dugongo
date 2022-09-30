@@ -26,23 +26,21 @@ public class ClientController extends Controller {
   private String ipAddress;
   private int port;
   private String name;
-
-  private Socket client;
+  private Socket server;
   private ObjectInputStream reader;
   private ObjectOutputStream writer;
   private ExecutorService executor;
   private static HashMap<Integer, Consumer<Answer>> azioni;
   private GameController gameController;
-  public static boolean server;
+  public static boolean isHosting;
   
   static {
     azioni = new HashMap<>();
-    server = false;
+    isHosting = false;
   }
   
-
   private static ClientController singleton = null;
-
+  
   private ClientController() {
     if (azioni.isEmpty()){
       inizializzaAzioni();
@@ -52,7 +50,7 @@ public class ClientController extends Controller {
   
   private void inizializzaAzioni(){
     azioni.put(DGNG.ATTESA, (answer) -> {
-      if(!server){
+      if(!isHosting){
         View.getInstance().setPnlCorrente(new WaitingPanel());
       }
     }
@@ -62,7 +60,7 @@ public class ClientController extends Controller {
       gameController = new GameController();
       View.getInstance().setPnlCorrente(gameController.getGamePanel());
       DugongoModel model = (DugongoModel) answer.getBody()[0];
-      gameController.inizializzaPartita(model.getMano(client.getLocalPort()), model.getScartate());
+      gameController.inizializzaPartita(model.getMano(server.getLocalPort()), model.getScartate());
     });
     
     azioni.put(DGNG.GETTONE, (answer) ->
@@ -116,7 +114,7 @@ public class ClientController extends Controller {
 
   private void connettiAlServer() {
     if (areInputsValid()) {
-      this.server = false;
+      isHosting = false;
       connessione();
     }
   }
@@ -124,15 +122,15 @@ public class ClientController extends Controller {
   public void joinGame(String ipAddress, int port) {
     this.ipAddress = ipAddress;
     this.port = port;
-    this.server = true;
+    isHosting = true;
     connessione();
   }
   
   private void connessione(){
     try {
-      client = new Socket(ipAddress, port);
-      writer = new ObjectOutputStream(client.getOutputStream());
-      reader = new ObjectInputStream(client.getInputStream());
+      server = new Socket(ipAddress, port);
+      writer = new ObjectOutputStream(server.getOutputStream());
+      reader = new ObjectInputStream(server.getInputStream());
       executor.execute(this::listenToServer);
       Request request = new Request(DGNG.COLLEGAMENTO, new Object[] { name });
       sendToServer(request);
@@ -144,12 +142,8 @@ public class ClientController extends Controller {
 
   private void listenToServer() {
     Answer answer;
-    DugongoModel model;
-    Mano mano;
-    Carta[] change;
-    Scartate scartate;
-    
-    while(!client.isClosed()){
+
+    while(true){
       try {
         answer = (Answer) reader.readObject();
         azioni.get(answer.getCode()).accept(answer);
