@@ -251,16 +251,20 @@ public class GamePanel extends JPanel {
   }
 
   public void setData(Mano mano, Carta[] daVisualizzare, Scartate scartate) {
-    aggiornaTavolo(mano);
-    aggiornaMazzi(scartate);
-    aggiornaInformazioni("");
-    stampaMazzi();
-    stampaNuoveCarte(daVisualizzare);
+    aggiornaView(mano, daVisualizzare, scartate);
 
     pnlTavolo.repaint();
     pnlTavolo.revalidate();
     pnlInformazioni.repaint();
     pnlInformazioni.revalidate();
+  }
+  
+  private void aggiornaView(Mano mano, Carta[] daVisualizzare, Scartate scartate) {
+    aggiornaTavolo(mano);
+    aggiornaMazzi(scartate);
+    aggiornaInformazioni("");
+    stampaMazzi();
+    stampaNuoveCarte(daVisualizzare);
   }
   
   private void stampaNuoveCarte(Carta[] daVisualizzare) {
