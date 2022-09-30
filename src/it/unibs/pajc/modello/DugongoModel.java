@@ -34,30 +34,22 @@ public class DugongoModel extends BaseModel implements Serializable {
     cambiate = new Carta[20];
     boolean flag = true;
     Carta cartaBase = daScartare.get(0);
-
-    if (scartate.getSize() != 0) {
-      Carta primaCarta = daScartare.get(0);
-      for (Carta temp : daScartare) {
-        if (!primaCarta.getValore().equals(temp.getValore())) {
-          Mano mano = maniClients.get(key);
-          cambiate[i++] = scartate.seeLast();
-          mano.aggiungi(scartate.getLast());
-          break;
-        }
-      }
-    }
-
+    
     for (Carta temp : daScartare) {
-      if (!temp.equalsValore(cartaBase)) {
+      if (!cartaBase.equalsValore(temp)) {
         flag = false;
       }
-      cambiate[i++] = temp;
+      cambiate[i++] = scartate.seeLast();
     }
-
-    if (daScartare.size() == i && flag) {
+  
+    if(flag){
       Mano mano = maniClients.get(key);
+      cambiate = new Carta[20];
+    
       mano.scarta(daScartare);
       scartate.aggiungi(daScartare);
+    } else{
+      cambiate[i] = mazzo.pesca();
     }
 
     fireValuesChange();
