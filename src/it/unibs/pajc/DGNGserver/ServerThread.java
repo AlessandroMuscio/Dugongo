@@ -14,6 +14,7 @@ import java.util.function.Consumer;
 
 public class ServerThread extends Thread {
   private Socket client;
+
   private ObjectInputStream reader;
   private ObjectOutputStream writer;
   private HashMap<Integer, Consumer<Request>> azioni;
@@ -81,7 +82,7 @@ public class ServerThread extends Thread {
   }
 
   public void run() {
-    while(true){
+    while(!client.isClosed()){
       try {
         Request request = (Request) reader.readObject();
         azioni.get(request.getRequest()).accept(request);
