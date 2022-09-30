@@ -114,15 +114,14 @@ public class GameController {
     gamePanel.abilita();
   }
   
-  public Request timer() {
+  public void timer() {
     Timer timer = new Timer();
     timer.schedule(new TimerTask() {
       @Override
       public void run() {
         gamePanel.endTurno();
+        ClientController.getInstance().sendToServer(new Request(VINCOLO_DI_STO_CAZZO));
       }
     }, 10000);
-    
-    return new Request(VINCOLO_DI_STO_CAZZO);
   }
 }
