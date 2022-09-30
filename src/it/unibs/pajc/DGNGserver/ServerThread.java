@@ -79,6 +79,10 @@ public class ServerThread extends Thread {
     azioni.put(DGNG.FINE, (request) ->
       ServerController.getInstance().play()
     );
+    
+    azioni.put(DGNG.VINCOLO_DI_STO_CAZZO, (request ->
+      ServerController.getInstance().incrementaCount()
+    ));
   }
 
   public void run() {

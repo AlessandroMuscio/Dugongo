@@ -28,6 +28,7 @@ public class ServerController extends Controller {
   private int port;
   private ExecutorService executors;
   private ServerThread corrente;
+  private int count;
 
   private ServerController() {
     try {
@@ -38,7 +39,7 @@ public class ServerController extends Controller {
       executors = Executors.newCachedThreadPool();
       turnoCorrente = new LinkedList<>();
       turnoSuccessivo = new LinkedList<>();
-  
+      count = 0;
       executors.execute(this::startServer);
     } catch (SocketException e) {
       throw new RuntimeException(e);
@@ -168,5 +169,14 @@ public class ServerController extends Controller {
     }
     singleton = null;
     System.out.println("Server closed");
+  }
+  
+  public void incrementaCount() {
+    count++;
+    
+    if(count == connectedClients.size()){
+      count = 0;
+      play();
+    }
   }
 }

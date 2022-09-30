@@ -15,6 +15,8 @@ import java.util.ArrayList;
 import java.util.Timer;
 import java.util.TimerTask;
 
+import static it.unibs.pajc.DGNGserver.DGNG.VINCOLO_DI_STO_CAZZO;
+
 public class GameController {
   private GamePanel gamePanel;
   private boolean nostroScarta = false;
@@ -112,14 +114,15 @@ public class GameController {
     gamePanel.abilita();
   }
   
-  public void timer() {
+  public Request timer() {
     Timer timer = new Timer();
     timer.schedule(new TimerTask() {
       @Override
       public void run() {
         gamePanel.endTurno();
-        ServerController.getInstance().play();
       }
     }, 10000);
+    
+    return new Request(VINCOLO_DI_STO_CAZZO);
   }
 }

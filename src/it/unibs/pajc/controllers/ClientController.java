@@ -83,7 +83,8 @@ public class ClientController extends Controller {
       Scartate scartate = (Scartate) answer.getBody()[2];
       gameController.aggiorna(mano, change, scartate);
       gameController.pescato();
-      gameController.timer();
+      Request request = gameController.timer();
+      sendToServer(request);
     });
   
     azioni.put(DGNG.ULTIMO_TURNO, (answer) -> {
