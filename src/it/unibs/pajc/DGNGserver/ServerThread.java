@@ -73,6 +73,7 @@ public class ServerThread extends Thread {
         model.confronto(daScartare, client.getPort());
       } else{
         model.fakeConfronto(daScartare, client.getPort());
+        System.out.println("FAKE SCARTA");
       }
     });
   

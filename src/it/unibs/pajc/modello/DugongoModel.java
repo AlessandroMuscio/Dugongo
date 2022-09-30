@@ -15,7 +15,6 @@ public class DugongoModel extends BaseModel implements Serializable {
   private HashMap<Integer, Mano> maniClients;
   private Scartate scartate;
   private Carta[] cambiate;
-  private Carta nostraScartata;
 
   public DugongoModel() {
     this.mazzo = new Mazzo();
@@ -62,8 +61,6 @@ public class DugongoModel extends BaseModel implements Serializable {
     }
 
     fireValuesChange();
-
-    nostraScartata = scartate.seeLast();
   }
 
   public void pesca(Integer key) {
@@ -100,27 +97,7 @@ public class DugongoModel extends BaseModel implements Serializable {
     cambiate = new Carta[20];
     boolean flag = true;
     Carta cartaBase = daScartare.get(0);
-
-    if (scartate.getSize() != 0) {
-
-      for (Carta temp : daScartare) {
-
-        if (!nostraScartata.equalsValore(temp)) {
-          Mano mano = maniClients.get(key);
-
-          if (scartate.seeLast().equalsValore(nostraScartata)) {
-            cambiate[i++] = scartate.seeLast();
-            mano.aggiungi(scartate.getLast());
-          } else {
-            cambiate[i] = mazzo.pesca();
-            mano.aggiungi(cambiate[i++]);
-          }
-
-          break;
-        }
-      }
-    }
-
+  
     for (Carta temp : daScartare) {
       if (!temp.equalsValore(cartaBase)) {
         flag = false;
@@ -128,10 +105,22 @@ public class DugongoModel extends BaseModel implements Serializable {
       cambiate[i++] = temp;
     }
 
-    if (daScartare.size() == i && flag) {
+    if (flag) {
+      if(scartate.getSize() != 0) {
+        if (!scartate.seeLast().equalsValore(cartaBase)) {
+          flag = false;
+        }
+      }
+    }
+  
+    if(flag){
       Mano mano = maniClients.get(key);
+      cambiate = new Carta[20];
+      
       mano.scarta(daScartare);
       scartate.aggiungi(daScartare);
+    } else{
+      cambiate[i] = mazzo.pesca();
     }
   }
 }
