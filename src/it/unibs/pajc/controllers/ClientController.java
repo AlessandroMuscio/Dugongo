@@ -149,7 +149,7 @@ public class ClientController extends Controller {
     Carta[] change;
     Scartate scartate;
     
-    while(!client.isClosed()){
+    while(true){
       try {
         answer = (Answer) reader.readObject();
         azioni.get(answer.getCode()).accept(answer);

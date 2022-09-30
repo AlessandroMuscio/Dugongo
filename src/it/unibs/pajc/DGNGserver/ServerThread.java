@@ -82,7 +82,7 @@ public class ServerThread extends Thread {
   }
 
   public void run() {
-    while(!client.isClosed()){
+    while(true){
       try {
         Request request = (Request) reader.readObject();
         azioni.get(request.getRequest()).accept(request);
