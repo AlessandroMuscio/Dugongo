@@ -86,6 +86,14 @@ public class ClientController extends Controller {
       gameController.timer();
     });
   
+    azioni.put(DGNG.FAKE_AGGIORNA, (answer) -> {
+      Mano mano = (Mano) answer.getBody()[0];
+      Carta[] change = (Carta[]) answer.getBody()[1];
+      Scartate scartate = (Scartate) answer.getBody()[2];
+      gameController.aggiorna(mano, change, scartate);
+      gameController.endTurno();
+    });
+  
     azioni.put(DGNG.ULTIMO_TURNO, (answer) -> {
       Mano mano = (Mano) answer.getBody()[0];
       Carta[] change = (Carta[]) answer.getBody()[1];
