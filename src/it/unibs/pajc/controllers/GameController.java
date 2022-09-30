@@ -12,6 +12,8 @@ import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
+import java.util.Timer;
+import java.util.TimerTask;
 
 public class GameController {
   private GamePanel gamePanel;
@@ -108,5 +110,16 @@ public class GameController {
   
   public void pescato() {
     gamePanel.abilita();
+  }
+  
+  public void timer() {
+    Timer timer = new Timer();
+    timer.schedule(new TimerTask() {
+      @Override
+      public void run() {
+        gamePanel.endTurno();
+        ServerController.getInstance().play();
+      }
+    }, 10000);
   }
 }
