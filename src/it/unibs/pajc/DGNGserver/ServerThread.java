@@ -115,6 +115,7 @@ public class ServerThread extends Thread {
   public void send(Answer answer) {
     try {
       writer.writeObject(answer);
+      writer.reset();
       writer.flush();
       writer.reset();
     } catch (IOException e) {

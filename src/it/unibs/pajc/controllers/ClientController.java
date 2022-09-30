@@ -171,7 +171,9 @@ public class ClientController extends Controller {
   public void sendToServer(Request request) {
     try {
       writer.writeUnshared(request);
+      writer.reset();
       writer.flush();
+      writer.reset();
     } catch (IOException e) {
       e.printStackTrace();
     }
