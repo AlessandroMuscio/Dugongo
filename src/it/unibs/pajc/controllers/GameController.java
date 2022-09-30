@@ -99,6 +99,7 @@ public class GameController {
   
   public void pescato() {
     gamePanel.abilita();
+    gamePanel.getBtnMazzo().setEnabled(false);
   }
   
   public void timer() {
