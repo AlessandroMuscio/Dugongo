@@ -24,5 +24,6 @@ public class DGNG {
   public static final int MANO = 4;
   public static final int AGGIORNA = 5;
   public static final int ULTIMO_TURNO = 6;
+  public static final int FAKE_AGGIORNA = 7;
   
 }

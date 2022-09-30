@@ -95,7 +95,7 @@ public class DugongoModel extends BaseModel implements Serializable {
     return cambiate;
   }
 
-  public void nostroConfronto(ArrayList<Carta> daScartare, int key) {
+  public void fakeConfronto(ArrayList<Carta> daScartare, int key) {
     int i = 0;
     cambiate = new Carta[20];
     boolean flag = true;

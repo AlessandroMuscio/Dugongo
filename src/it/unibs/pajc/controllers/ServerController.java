@@ -176,6 +176,13 @@ public class ServerController extends Controller {
     
     if(count == connectedClients.size()){
       count = 0;
+      
+      for (ServerThread connectedClient : connectedClients) {
+        port = connectedClient.getPorta();
+    
+        sendToSingleClient(port, DGNG.FAKE_AGGIORNA, getModel().getData(port));
+      }
+      
       play();
     }
   }

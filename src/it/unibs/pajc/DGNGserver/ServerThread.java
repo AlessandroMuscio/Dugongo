@@ -68,7 +68,12 @@ public class ServerThread extends Thread {
     azioni.put(DGNG.SCARTA, (request) -> {
       DugongoModel model = ServerController.getInstance().getModel();
       ArrayList<Carta> daScartare = (ArrayList<Carta>) request.getAttributes()[0];
-      model.confronto(daScartare, client.getPort());
+      
+      if ((boolean) request.getAttributes()[1]){
+        model.confronto(daScartare, client.getPort());
+      } else{
+        model.fakeConfronto(daScartare, client.getPort());
+      }
     });
   
     azioni.put(DGNG.DUGONGO, (request) -> {

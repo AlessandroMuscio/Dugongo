@@ -19,7 +19,7 @@ import static it.unibs.pajc.DGNGserver.DGNG.VINCOLO_DI_STO_CAZZO;
 
 public class GameController {
   private GamePanel gamePanel;
-  private boolean nostroScarta = false;
+  private boolean turno = false;
 
   public GameController() {
     gamePanel = new GamePanel();
@@ -50,20 +50,12 @@ public class GameController {
   }
 
   public void turno() {
+    turno = true;
     gamePanel.startTurno();
   }
 
   public void aggiorna(Mano mano, Carta[] change, Scartate scartate) {
     gamePanel.setData(mano, change, scartate);
-  }
-  
-  public void mossa(){
-    nostroScarta = false;
-    gamePanel.scarta();
-  }
-  
-  public void end(){
-      gamePanel.endTurno();
   }
   
   public void pesca(){
@@ -72,10 +64,11 @@ public class GameController {
   }
 
   public void scarta() {
+    
     ArrayList<Carta> daScartare = gamePanel.getDaScartare();
     Request request;
   
-    request = new Request(DGNG.SCARTA, new Object[] { daScartare, nostroScarta });
+    request = new Request(DGNG.SCARTA, new Object[] { daScartare, turno });
     ClientController.getInstance().sendToServer(request);
   }
 
@@ -104,12 +97,6 @@ public class GameController {
     return gamePanel;
   }
   
-  public void nostroTurno() {
-    nostroScarta = true;
-    gamePanel.scarta();
-    gamePanel.setTimer(10);
-  }
-  
   public void pescato() {
     gamePanel.abilita();
   }
@@ -123,5 +110,9 @@ public class GameController {
         ClientController.getInstance().sendToServer(new Request(VINCOLO_DI_STO_CAZZO));
       }
     }, 10000);
+  }
+  
+  public void setTurno(boolean turno) {
+    this.turno = turno;
   }
 }
