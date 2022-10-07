@@ -110,10 +110,9 @@ public class ServerThread extends Thread {
 
   public void send(Answer answer) {
     try {
+      writer.reset();
       writer.writeObject(answer);
-      writer.reset();
       writer.flush();
-      writer.reset();
     } catch (IOException e) {
       throw new RuntimeException(e);
     }
