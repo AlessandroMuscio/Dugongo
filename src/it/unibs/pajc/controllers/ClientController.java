@@ -162,7 +162,6 @@ public class ClientController extends Controller {
       try {
         answer = (Answer) reader.readObject();
         azioni.get(answer.getCode()).accept(answer);
-        reader.reset();
       } catch (IOException | ClassNotFoundException e) {
         throw new RuntimeException(e);
       }
@@ -171,8 +170,8 @@ public class ClientController extends Controller {
 
   public void sendToServer(Request request) {
     try {
-      writer.writeUnshared(request);
-      writer.reset();
+      writer.writeObject(request);
+      //writer.reset();
       writer.flush();
       writer.reset();
     } catch (IOException e) {
