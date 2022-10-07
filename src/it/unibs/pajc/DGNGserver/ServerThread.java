@@ -81,10 +81,6 @@ public class ServerThread extends Thread {
       Answer answer = new Answer(DGNG.ULTIMO_TURNO);
       ServerController.getInstance().sendToAllClients(answer);
     });
-  
-    azioni.put(DGNG.FINE, (request) ->
-      ServerController.getInstance().play()
-    );
     
     azioni.put(DGNG.VINCOLO_DI_STO_CAZZO, (request ->
       ServerController.getInstance().incrementaCount()

@@ -11,15 +11,9 @@ public class BaseModel {
   public void addChangeListener(ChangeListener l) {
     listenerList.add(ChangeListener.class, l);
   }
-  
-  public void addPescListener(ChangeListener l){pescaList.add(ChangeListener.class, l);}
 
   public void removeChangeListener(ChangeListener l) {
     listenerList.remove(ChangeListener.class, l);
-  }
-
-  public void pescaChange(){
-    pescaChange(new ChangeEvent(this));
   }
   
   public void fireValuesChange() {

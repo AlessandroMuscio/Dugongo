@@ -172,6 +172,7 @@ public class ServerController extends Controller {
   }
   
   public void incrementaCount() {
+    System.out.println(count);
     count++;
     
     if(count == connectedClients.size()){
@@ -179,7 +180,6 @@ public class ServerController extends Controller {
       
       for (ServerThread connectedClient : connectedClients) {
         port = connectedClient.getPorta();
-    
         sendToSingleClient(port, DGNG.FAKE_AGGIORNA, getModel().getData(port));
       }
       

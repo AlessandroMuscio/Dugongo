@@ -29,6 +29,7 @@ public class DugongoModel extends BaseModel implements Serializable {
     }
   }
 
+  //NON FUNZIONA UN CAZZO
   public void confronto(ArrayList<Carta> daScartare, Integer key) {
     int i = 0;
     cambiate = new Carta[20];
