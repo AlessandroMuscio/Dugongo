@@ -162,6 +162,7 @@ public class ClientController extends Controller {
       try {
         answer = (Answer) reader.readObject();
         azioni.get(answer.getCode()).accept(answer);
+        reader.reset();
       } catch (IOException | ClassNotFoundException e) {
         throw new RuntimeException(e);
       }
