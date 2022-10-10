@@ -19,13 +19,13 @@ public class View {
   private View() {
     setScreenSize();
     inizializzaFrame();
-    
-    colore1 = new Color(241,225,183);
-    colore2 = new Color(243,147,182);
-    colore3 = new Color(235,92,95);
-    colore4 = new Color(243,52,83);
-    colore5 = new Color(120,85,157);
-    
+
+    colore1 = new Color(251,103,87);
+    colore2 = new Color(241,225,183);
+    colore3 = new Color(243,147,182);
+    colore4 = new Color(120,85,157);
+    colore5 = new Color(232,227,225);
+  
     frame.setVisible(true);
   }
 
