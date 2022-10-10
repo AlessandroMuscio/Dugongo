@@ -54,7 +54,7 @@ public class InfoFrame {
     pagina = new JTextPane();
 
     pagina.setBackground(View.colore1);
-    pagina.setForeground(Color.BLACK);
+    pagina.setForeground(View.colore5);
     pagina.setFont(pagina.getFont().deriveFont(14f));
     pagina.setEditable(false);
   }
