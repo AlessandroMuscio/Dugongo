@@ -5,7 +5,6 @@ import it.unibs.pajc.myComponents.MyLabel;
 
 import javax.swing.*;
 import java.awt.*;
-import java.net.SocketException;
 import java.util.ArrayList;
 
 public class ServerPanel extends JPanel {
@@ -37,9 +36,9 @@ public class ServerPanel extends JPanel {
 
   private void inizializza() {
     this.setLayout(new BorderLayout());
-    this.setBackground(Color.PINK);
+    this.setBackground(View.colore2);
 
-    pnlCenter.setBackground(Color.pink);
+    pnlCenter.setBackground(View.colore2);
 
     inizializzaPnlServerCredentials();
     inizializzaPnlUsers();
@@ -47,7 +46,7 @@ public class ServerPanel extends JPanel {
     pnlCenter.add(pnlServerCredentials);
     pnlCenter.add(pnlUsers);
 
-    pnlOpzioni.setBackground(Color.PINK);
+    pnlOpzioni.setBackground(View.colore2);
     pnlOpzioni.add(esciButton);
     pnlOpzioni.add(avviaButton);
 
@@ -57,7 +56,7 @@ public class ServerPanel extends JPanel {
   }
 
   private void inizializzaPnlServerCredentials() {
-    pnlServerCredentials.setBackground(Color.PINK);
+    pnlServerCredentials.setBackground(View.colore2);
     int fontScalingPercentage = 10;
 
     GridBagConstraints constraints = new GridBagConstraints();
@@ -87,7 +86,7 @@ public class ServerPanel extends JPanel {
   }
 
   private void inizializzaPnlUsers() {
-    pnlUsers.setBackground(Color.PINK);
+    pnlUsers.setBackground(View.colore2);
 
     GridBagConstraints constraints = new GridBagConstraints();
 
