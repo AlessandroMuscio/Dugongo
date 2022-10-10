@@ -91,7 +91,7 @@ public class ClientController extends Controller {
       Mano mano = (Mano) answer.getBody()[0];
       ArrayList<Carta> change = (ArrayList<Carta>) answer.getBody()[1];
       Scartate scartate = (Scartate) answer.getBody()[2];
-      gameController.aggiorna(mano, change, scartate);
+      gameController.fakeAggiorna(mano, change, scartate);
       gameController.endTurno();
     });
   

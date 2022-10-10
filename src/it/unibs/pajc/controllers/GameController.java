@@ -116,11 +116,13 @@ public class GameController {
     }, 10000);
   }
   
-  public void setTurno(boolean turno) {
-    this.turno = turno;
-  }
-  
   public void endTurno() {
     gamePanel.endTurno();
+  }
+  
+  public void fakeAggiorna(Mano mano, ArrayList<Carta> change, Scartate scartate) {
+    turno = false;
+    gamePanel.setDaScartare(new ArrayList<>());
+    gamePanel.setData(mano, change, scartate);
   }
 }
