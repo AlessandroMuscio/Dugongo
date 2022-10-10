@@ -1,5 +1,7 @@
 package it.unibs.pajc.myComponents;
 
+import it.unibs.pajc.view.View;
+
 import javax.swing.*;
 import java.awt.*;
 
@@ -46,6 +48,7 @@ public class MyButton extends JButton {
     this.setCursor(new Cursor(Cursor.HAND_CURSOR));
     this.setVerticalTextPosition(SwingConstants.BOTTOM);
     this.setHorizontalTextPosition(SwingConstants.CENTER);
+    this.setForeground(View.colore5);
   }
 
   public void setIconScalingPercentage(int iconScalingPercentage) {

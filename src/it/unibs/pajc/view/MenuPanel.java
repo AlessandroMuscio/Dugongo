@@ -47,6 +47,8 @@ public class MenuPanel extends JPanel {
     pnlPrincipale.add(pnlBottoniPartita);
     pnlPrincipale.add(pnlBottoniOpzioni);
 
+    lblTitolo.setForeground(View.colore5);
+    
     this.add(lblTitolo, BorderLayout.PAGE_START);
     this.add(pnlPrincipale, BorderLayout.CENTER);
   }

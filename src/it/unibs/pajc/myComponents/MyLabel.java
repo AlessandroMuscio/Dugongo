@@ -1,13 +1,9 @@
 package it.unibs.pajc.myComponents;
 
-import java.awt.Color;
-import java.awt.Dimension;
-import java.awt.Font;
-import java.awt.Graphics;
-import java.awt.Graphics2D;
-import java.awt.RenderingHints;
+import it.unibs.pajc.view.View;
 
-import javax.swing.JLabel;
+import javax.swing.*;
+import java.awt.*;
 
 public class MyLabel extends JLabel {
   private Dimension parentPreviousSize;
@@ -21,8 +17,8 @@ public class MyLabel extends JLabel {
     this.fontScalingPercentage = fontScalingPercentage;
 
     this.setOpaque(false);
-    this.setBackground(Color.PINK);
-    this.setForeground(Color.BLACK);
+    this.setBackground(View.colore1);
+    this.setForeground(View.colore5);
   }
 
   @Override

@@ -1,5 +1,7 @@
 package it.unibs.pajc.myComponents;
 
+import it.unibs.pajc.view.View;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.FocusEvent;
@@ -15,7 +17,8 @@ public class MyTextField extends JTextField {
     this.parentPreviousSize = new Dimension(-1, -1);
     this.placeholder = placeholder;
     this.fontScalingPercentage = fontScalingPercentage;
-    this.setForeground(Color.GRAY);
+    this.setForeground(View.colore4);
+    this.setBackground(View.colore5);
 
     this.addFocusListener(new FocusListener() {
       @Override
@@ -27,7 +30,7 @@ public class MyTextField extends JTextField {
 
           if (thisTextField.getText().equals(placeholder)) {
             thisTextField.setText("");
-            thisTextField.setForeground(Color.BLACK);
+            thisTextField.setForeground(View.colore4);
           }
         }
       }
@@ -40,7 +43,7 @@ public class MyTextField extends JTextField {
           MyTextField thisTextField = (MyTextField) e.getComponent();
 
           if (thisTextField.getText().isEmpty()) {
-            thisTextField.setForeground(Color.GRAY);
+            thisTextField.setForeground(View.colore4);
             thisTextField.setText(placeholder);
           }
         }
