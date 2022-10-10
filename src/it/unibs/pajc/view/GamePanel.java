@@ -233,7 +233,6 @@ public class GamePanel extends JPanel {
   }
 
   public void startTurno() {
-    daScartare = new ArrayList<>();
     btnMazzo.setEnabled(true);
     btnAzioni[2].setEnabled(true);
   }

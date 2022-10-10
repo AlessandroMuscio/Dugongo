@@ -45,16 +45,19 @@ public class GameController {
   }
 
   public void inizializzaPartita(Mano mano, Scartate scartate) {
+    gamePanel.setDaScartare(new ArrayList<Carta>());
     gamePanel.setData(mano, mano.getCarte(), scartate);
     gamePanel.endTurno();
   }
 
   public void turno() {
     turno = true;
+    gamePanel.setDaScartare(new ArrayList<Carta>());
     gamePanel.startTurno();
   }
 
   public void aggiorna(Mano mano, ArrayList<Carta> change, Scartate scartate) {
+    gamePanel.setDaScartare(new ArrayList<>());
     gamePanel.setData(mano, change, scartate);
   }
   
@@ -64,7 +67,6 @@ public class GameController {
   }
 
   public void scarta() {
-    
     ArrayList<Carta> daScartare = gamePanel.getDaScartare();
     Request request;
   
@@ -73,7 +75,7 @@ public class GameController {
   }
 
   public void annulla() {
-    gamePanel.setDaScartare(new ArrayList<Carta>());
+    gamePanel.setDaScartare(new ArrayList<>());
   }
 
   public void dugongo() {
