@@ -34,13 +34,13 @@ public class MenuPanel extends JPanel {
 
   private void inizializza() {
     this.setLayout(new BorderLayout());
-    this.setBackground(Color.PINK);
+    this.setBackground(View.colore1);
 
-    pnlBottoniPartita.setBackground(Color.PINK);
+    pnlBottoniPartita.setBackground(View.colore1);
     pnlBottoniPartita.add(avviaButton);
     pnlBottoniPartita.add(uniscitiButton);
 
-    pnlBottoniOpzioni.setBackground(Color.PINK);
+    pnlBottoniOpzioni.setBackground(View.colore1);
     pnlBottoniOpzioni.add(chiudiButton);
     pnlBottoniOpzioni.add(infoButton);
 

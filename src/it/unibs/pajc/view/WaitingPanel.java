@@ -14,6 +14,7 @@ public class WaitingPanel extends JPanel {
 
     this.setLayout(new BorderLayout());
     this.add(label, BorderLayout.CENTER);
+    this.setBackground(View.colore3);
     new Thread(this::waitingAnimation).start();
   }
 

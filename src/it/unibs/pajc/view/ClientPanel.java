@@ -31,16 +31,16 @@ public class ClientPanel extends JPanel {
 
   private void inizializza() {
     this.setLayout(new BorderLayout());
-    this.setBackground(Color.PINK);
+    this.setBackground(View.colore1);
 
-    pnlTextFields.setBackground(Color.PINK);
+    pnlTextFields.setBackground(View.colore1);
     for (int i = 0; i < textFields.length; i++) {
       textFields[i] = new MyTextField(placeholders[i], 8);
 
       pnlTextFields.add(textFields[i]);
     }
 
-    pnlOpzioni.setBackground(Color.PINK);
+    pnlOpzioni.setBackground(View.colore1);
     pnlOpzioni.add(esciButton);
     pnlOpzioni.add(avviaButton);
 

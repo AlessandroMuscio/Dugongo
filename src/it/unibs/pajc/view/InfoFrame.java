@@ -1,15 +1,9 @@
 package it.unibs.pajc.view;
 
-import java.awt.BorderLayout;
-import java.awt.Color;
-import java.awt.GridLayout;
-
-import javax.swing.ImageIcon;
-import javax.swing.JFrame;
-import javax.swing.JPanel;
-import javax.swing.JTextPane;
-
 import it.unibs.pajc.myComponents.MyButton;
+
+import javax.swing.*;
+import java.awt.*;
 
 public class InfoFrame {
   private static final String FRAME_TITLE = "Regole di Gioco";
@@ -45,7 +39,7 @@ public class InfoFrame {
     pnlPrincipale = new JPanel(new BorderLayout());
 
     pnlPrincipale.setBorder(null);
-    pnlPrincipale.setBackground(Color.PINK);
+    pnlPrincipale.setBackground(View.colore1);
 
     inizializzaPagina();
     inizializzaDirezioni();
@@ -59,7 +53,7 @@ public class InfoFrame {
   private void inizializzaPagina() {
     pagina = new JTextPane();
 
-    pagina.setBackground(Color.PINK);
+    pagina.setBackground(View.colore1);
     pagina.setForeground(Color.BLACK);
     pagina.setFont(pagina.getFont().deriveFont(14f));
     pagina.setEditable(false);
@@ -76,7 +70,7 @@ public class InfoFrame {
       pnlDirezioni[i] = new JPanel(new GridLayout(1, 2));
 
       pnlDirezioni[i].setBorder(null);
-      pnlDirezioni[i].setBackground(Color.PINK);
+      pnlDirezioni[i].setBackground(View.colore1);
 
       if (i != 0)
         indietroButtons[i] = (MyButton) pnlDirezioni[i].add(new MyButton("indietro", 90, MyButton.ICONS_PATH));
