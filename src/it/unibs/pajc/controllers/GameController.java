@@ -54,7 +54,7 @@ public class GameController {
     gamePanel.startTurno();
   }
 
-  public void aggiorna(Mano mano, Carta[] change, Scartate scartate) {
+  public void aggiorna(Mano mano, ArrayList<Carta> change, Scartate scartate) {
     gamePanel.setData(mano, change, scartate);
   }
   

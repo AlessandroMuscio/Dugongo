@@ -14,13 +14,13 @@ public class DugongoModel extends BaseModel implements Serializable {
   private Mazzo mazzo;
   private HashMap<Integer, Mano> maniClients;
   private Scartate scartate;
-  private Carta[] cambiate;
+  private ArrayList<Carta> cambiate;
 
   public DugongoModel() {
     this.mazzo = new Mazzo();
     this.maniClients = new HashMap<>();
     this.scartate = new Scartate();
-    this.cambiate = new Carta[20];
+    this.cambiate = new ArrayList<>();
   }
 
   public void inizializzaPartita(Set<Integer> ports) {
@@ -31,26 +31,23 @@ public class DugongoModel extends BaseModel implements Serializable {
 
   //NON FUNZIONA UN CAZZO
   public void confronto(ArrayList<Carta> daScartare, Integer key) {
-    int i = 0;
-    cambiate = new Carta[20];
-    boolean flag = true;
-    Carta cartaBase = daScartare.get(0);
     
-    for (Carta temp : daScartare) {
-      if (!cartaBase.equalsValore(temp)) {
-        flag = false;
+    boolean status = true;
+    Mano mano = maniClients.get(key);
+    cambiate = new ArrayList<>();
+    
+    for(Carta c : daScartare) {
+      if (!c.equalsValore(daScartare.get(0))){
+        status = false;
       }
-      cambiate[i++] = scartate.seeLast();
     }
-  
-    if(flag){
-      Mano mano = maniClients.get(key);
-      cambiate = new Carta[20];
     
+    if(status) {
       mano.scarta(daScartare);
       scartate.aggiungi(daScartare);
-    } else{
-      cambiate[i] = mazzo.pesca();
+    } else {
+      pesca(key);
+      cambiate.addAll(daScartare);
     }
 
     fireValuesChange();
@@ -58,13 +55,12 @@ public class DugongoModel extends BaseModel implements Serializable {
 
   public void pesca(Integer key) {
     int i = 0;
-    cambiate = new Carta[20];
+    cambiate = new ArrayList<>();
 
     Mano mano = maniClients.get(key);
     Carta carta = mazzo.pesca();
     mano.aggiungi(carta);
-    cambiate[i] = carta;
-
+    cambiate.add(carta);
   }
 
   public Object[] getData(int porta) {
@@ -81,39 +77,32 @@ public class DugongoModel extends BaseModel implements Serializable {
     return scartate;
   }
 
-  public Carta[] getCambiate() {
-    return cambiate;
-  }
-
   public void fakeConfronto(ArrayList<Carta> daScartare, int key) {
-    int i = 0;
-    cambiate = new Carta[20];
-    boolean flag = true;
-    Carta cartaBase = daScartare.get(0);
   
-    for (Carta temp : daScartare) {
-      if (!temp.equalsValore(cartaBase)) {
-        flag = false;
+    boolean status = true;
+    Mano mano = maniClients.get(key);
+    cambiate = new ArrayList<>();
+  
+    for(Carta c : daScartare) {
+      if (!c.equalsValore(daScartare.get(0))){
+        status = false;
       }
-      cambiate[i++] = temp;
     }
-
-    if (flag) {
-      if(scartate.getSize() != 0) {
-        if (!scartate.seeLast().equalsValore(cartaBase)) {
-          flag = false;
+  
+    if(status){
+      if (scartate.getSize() != 0){
+        if(!scartate.seeLast().equalsValore(daScartare.get(0))){
+          status = false;
         }
       }
     }
   
-    if(flag){
-      Mano mano = maniClients.get(key);
-      cambiate = new Carta[20];
-      
+    if(status) {
       mano.scarta(daScartare);
       scartate.aggiungi(daScartare);
-    } else{
-      cambiate[i] = mazzo.pesca();
+    } else {
+      pesca(key);
+      cambiate.addAll(daScartare);
     }
   }
 }

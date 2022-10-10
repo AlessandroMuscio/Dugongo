@@ -16,6 +16,7 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -71,7 +72,7 @@ public class ClientController extends Controller {
     
     azioni.put(DGNG.MANO, (answer) -> {
       Mano mano = (Mano) answer.getBody()[0];
-      Carta[] change = (Carta[]) answer.getBody()[1];
+      ArrayList<Carta> change = (ArrayList<Carta>) answer.getBody()[1];
       Scartate scartate = (Scartate) answer.getBody()[2];
       gameController.aggiorna(mano, change, scartate);
       gameController.pescato();
@@ -79,7 +80,7 @@ public class ClientController extends Controller {
     
     azioni.put(DGNG.AGGIORNA, (answer) -> {
       Mano mano = (Mano) answer.getBody()[0];
-      Carta[] change = (Carta[]) answer.getBody()[1];
+      ArrayList<Carta> change = (ArrayList<Carta>) answer.getBody()[1];
       Scartate scartate = (Scartate) answer.getBody()[2];
       gameController.aggiorna(mano, change, scartate);
       gameController.pescato();
@@ -88,7 +89,7 @@ public class ClientController extends Controller {
   
     azioni.put(DGNG.FAKE_AGGIORNA, (answer) -> {
       Mano mano = (Mano) answer.getBody()[0];
-      Carta[] change = (Carta[]) answer.getBody()[1];
+      ArrayList<Carta> change = (ArrayList<Carta>) answer.getBody()[1];
       Scartate scartate = (Scartate) answer.getBody()[2];
       gameController.aggiorna(mano, change, scartate);
       gameController.endTurno();
@@ -96,7 +97,7 @@ public class ClientController extends Controller {
   
     azioni.put(DGNG.ULTIMO_TURNO, (answer) -> {
       Mano mano = (Mano) answer.getBody()[0];
-      Carta[] change = (Carta[]) answer.getBody()[1];
+      ArrayList<Carta> change = (ArrayList<Carta>) answer.getBody()[1];
       Scartate scartate = (Scartate) answer.getBody()[2];
       gameController.aggiorna(mano, change, scartate);
       //gameController.nostroTurno();

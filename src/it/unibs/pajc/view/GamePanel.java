@@ -250,7 +250,7 @@ public class GamePanel extends JPanel {
     }
   }
 
-  public void setData(Mano mano, Carta[] daVisualizzare, Scartate scartate) {
+  public void setData(Mano mano, ArrayList<Carta> daVisualizzare, Scartate scartate) {
     aggiornaView(mano, daVisualizzare, scartate);
 
     pnlTavolo.repaint();
@@ -259,7 +259,16 @@ public class GamePanel extends JPanel {
     pnlInformazioni.revalidate();
   }
   
-  private void aggiornaView(Mano mano, Carta[] daVisualizzare, Scartate scartate) {
+  public void setData(Mano mano, Carta[] daVisualizzare, Scartate scartate) {
+    aggiornaView(mano, new ArrayList<>(Arrays.stream(daVisualizzare).toList()), scartate);
+    
+    pnlTavolo.repaint();
+    pnlTavolo.revalidate();
+    pnlInformazioni.repaint();
+    pnlInformazioni.revalidate();
+  }
+  
+  private void aggiornaView(Mano mano, ArrayList<Carta> daVisualizzare, Scartate scartate) {
     aggiornaTavolo(mano);
     aggiornaMazzi(scartate);
     aggiornaInformazioni("");
@@ -267,7 +276,7 @@ public class GamePanel extends JPanel {
     stampaNuoveCarte(daVisualizzare);
   }
   
-  private void stampaNuoveCarte(Carta[] daVisualizzare) {
+  private void stampaNuoveCarte(ArrayList<Carta> daVisualizzare) {
     
     timer = new Timer();
 
