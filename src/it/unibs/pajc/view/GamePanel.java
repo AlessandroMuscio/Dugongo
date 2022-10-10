@@ -156,7 +156,7 @@ public class GamePanel extends JPanel {
     int width, height;
 
     pnlInformazioni = new JPanel(new GridLayout(MAX_INFORMATION_SHOWN, 1));
-    pnlInformazioni.setBackground(Color.yellow);
+    pnlInformazioni.setBackground(View.colore5);
 
     width = (int) (SCREEN_SIZE.width * 0.3);
     height = (int) (SCREEN_SIZE.width * 0.3);
