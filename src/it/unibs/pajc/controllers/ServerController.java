@@ -21,8 +21,8 @@ public class ServerController extends Controller {
   private static final int MAX_CLIENTS = 5;
 
   private ArrayList<ServerThread> connectedClients;
-  private Queue<ServerThread> turnoCorrente;
-  private Queue<ServerThread> turnoSuccessivo;
+  private Deque<ServerThread> turnoCorrente;
+  private Deque<ServerThread> turnoSuccessivo;
   private HashMap<Integer, String> clientsNames;
   private String IPaddress;
   private int port;
@@ -126,7 +126,7 @@ public class ServerController extends Controller {
       turnoSuccessivo = new LinkedList<>();
     }
 
-    corrente = turnoCorrente.poll();
+    corrente = turnoCorrente.peekFirst();
     turnoSuccessivo.add(corrente);
 
     sendToSingleClient(corrente.getPorta(), DGNG.GETTONE, new Object[] {});
@@ -185,5 +185,10 @@ public class ServerController extends Controller {
       
       play();
     }
+  }
+  
+  public void dugongo() {
+    // turnoSuccessivo.peekLast();
+    // turnoCorrente.addAll(turnoSuccessivo);
   }
 }

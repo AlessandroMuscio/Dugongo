@@ -79,7 +79,7 @@ public class GameController {
   }
 
   public void dugongo() {
-  
+    ServerController.getInstance().dugongo();
   }
 
   public void info() {
