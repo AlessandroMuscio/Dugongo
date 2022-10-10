@@ -6,6 +6,11 @@ import java.awt.*;
 public class View {
 
   private static View singleton = null;
+  public static Color colore1;
+  public static Color colore2;
+  public static Color colore3;
+  public static Color colore4;
+  public static Color colore5;
   public JFrame frame;
   private JPanel pnlCorrente;
   private Dimension screenSize;
@@ -14,7 +19,13 @@ public class View {
   private View() {
     setScreenSize();
     inizializzaFrame();
-
+    
+    colore1 = new Color(241,225,183);
+    colore2 = new Color(243,147,182);
+    colore3 = new Color(235,92,95);
+    colore4 = new Color(243,52,83);
+    colore5 = new Color(120,85,157);
+    
     frame.setVisible(true);
   }
 
