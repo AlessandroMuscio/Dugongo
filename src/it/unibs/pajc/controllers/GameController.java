@@ -73,6 +73,7 @@ public class GameController {
   }
 
   public void annulla() {
+    gamePanel.setDaScartare(new ArrayList<Carta>());
   }
 
   public void dugongo() {

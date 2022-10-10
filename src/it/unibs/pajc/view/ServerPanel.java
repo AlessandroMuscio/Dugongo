@@ -36,9 +36,9 @@ public class ServerPanel extends JPanel {
 
   private void inizializza() {
     this.setLayout(new BorderLayout());
-    this.setBackground(View.colore2);
+    this.setBackground(View.colore1);
 
-    pnlCenter.setBackground(View.colore2);
+    pnlCenter.setBackground(View.colore1);
 
     inizializzaPnlServerCredentials();
     inizializzaPnlUsers();
@@ -46,7 +46,7 @@ public class ServerPanel extends JPanel {
     pnlCenter.add(pnlServerCredentials);
     pnlCenter.add(pnlUsers);
 
-    pnlOpzioni.setBackground(View.colore2);
+    pnlOpzioni.setBackground(View.colore1);
     pnlOpzioni.add(esciButton);
     pnlOpzioni.add(avviaButton);
 
@@ -56,7 +56,7 @@ public class ServerPanel extends JPanel {
   }
 
   private void inizializzaPnlServerCredentials() {
-    pnlServerCredentials.setBackground(View.colore2);
+    pnlServerCredentials.setBackground(View.colore1);
     int fontScalingPercentage = 10;
 
     GridBagConstraints constraints = new GridBagConstraints();
@@ -86,7 +86,7 @@ public class ServerPanel extends JPanel {
   }
 
   private void inizializzaPnlUsers() {
-    pnlUsers.setBackground(View.colore2);
+    pnlUsers.setBackground(View.colore1);
 
     GridBagConstraints constraints = new GridBagConstraints();
 
