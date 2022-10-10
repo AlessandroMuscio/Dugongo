@@ -172,7 +172,7 @@ public class ClientController extends Controller {
   public void sendToServer(Request request) {
     try {
       writer.writeObject(request);
-      //writer.reset();
+      writer.reset();
       writer.flush();
       writer.reset();
     } catch (IOException e) {
