@@ -200,5 +200,10 @@ public class ServerController extends Controller {
     dungongoPlayer = temp[temp.length-1];
     
     turnoCorrente.addAll(Arrays.stream(temp).toList());
+  
+    for (ServerThread connectedClient : connectedClients) {
+      port = connectedClient.getPorta();
+      sendToSingleClient(port, DGNG.END, new Object[]{getModel()});
+    }
   }
 }
