@@ -97,7 +97,12 @@ public class ManiPanel extends JPanel {
       gbc.gridy = i;
       
       if(i%2 == 0) {
-        this.add(new MyLabel(lblNomi[i/2], 0 ,50), gbc);
+        MyLabel lbl = new MyLabel(lblNomi[i/2], 0 ,50);
+        int width = (int) (SCREEN_SIZE.width);
+        int height = (int) (SCREEN_SIZE.height * 1/42);
+        lbl.setPreferredSize(new Dimension(width, height));
+        
+        this.add(lbl, gbc);
       } else{
         this.add(pnlCarte[i/2], gbc);
       }
@@ -109,7 +114,13 @@ public class ManiPanel extends JPanel {
     pnlCarte = new JPanel[6];
     
     for (int i = 0; i < 6; i++) {
-      pnlCarte[i] = new JPanel(new GridLayout(1, CARD_ROWS_SHOWN * CARD_COLS_SHOWN, 0, 0));
+      int width = (int) (SCREEN_SIZE.width * 1/20);
+      int height = (int) (SCREEN_SIZE.height * 1/7);
+      JPanel pnl = new JPanel(new GridLayout(1, CARD_ROWS_SHOWN * CARD_COLS_SHOWN, 0, 0));
+      
+      pnl.setPreferredSize(new Dimension(width, height));
+      
+      pnlCarte[i] = pnl;
     }
   
     int i = 0;
@@ -117,6 +128,7 @@ public class ManiPanel extends JPanel {
     for (Mano m : model.getManiClients().values()) {
       for (Carta c : m.getCarte()){
         CartaButton cartaButton = new CartaButton("retro", 92, MyButton.CARTE_PATH, null);
+        cartaButton.stampaFronte();
         cartaButton.setCarta(c);
         
         pnlCarte[i].add(cartaButton);
