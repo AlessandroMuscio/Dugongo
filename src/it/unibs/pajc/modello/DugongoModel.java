@@ -105,4 +105,12 @@ public class DugongoModel extends BaseModel implements Serializable {
       cambiate.addAll(daScartare);
     }
   }
+  
+  public HashMap<Integer, Mano> getManiClients() {
+    return maniClients;
+  }
+  
+  public Mano[] getMani(){
+    return maniClients.values().toArray(new Mano[0]);
+  }
 }

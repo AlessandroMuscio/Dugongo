@@ -12,8 +12,7 @@ public class DGNG {
   public static final int PESCA = 2;
   public static final int SCARTA = 3;
   public static final int DUGONGO = 4;
-
-  public static final int VINCOLO_DI_STO_CAZZO = 6;
+  public static final int VINCOLO_DI_STO_CAZZO = 5;
   
   
   
@@ -23,7 +22,7 @@ public class DGNG {
   public static final int GETTONE = 3;
   public static final int MANO = 4;
   public static final int AGGIORNA = 5;
-  public static final int ULTIMO_TURNO = 6;
-  public static final int FAKE_AGGIORNA = 7;
+  public static final int FAKE_AGGIORNA = 6;
+  public static final int END = 7;
   
 }

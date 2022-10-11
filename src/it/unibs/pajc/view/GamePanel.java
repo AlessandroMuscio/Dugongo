@@ -1,11 +1,12 @@
 package it.unibs.pajc.view;
 
-import it.unibs.pajc.varie.Carta;
-import it.unibs.pajc.varie.Mano;
-import it.unibs.pajc.varie.Scartate;
+import it.unibs.pajc.modello.DugongoModel;
 import it.unibs.pajc.myComponents.CartaButton;
 import it.unibs.pajc.myComponents.MyButton;
 import it.unibs.pajc.myComponents.MyLabel;
+import it.unibs.pajc.varie.Carta;
+import it.unibs.pajc.varie.Mano;
+import it.unibs.pajc.varie.Scartate;
 
 import javax.swing.*;
 import java.awt.*;
@@ -144,7 +145,7 @@ public class GamePanel extends JPanel {
 
     pnlMazzi.add(btnMazzo, BorderLayout.WEST);
 
-    btnScartate = new CartaButton("prova", 92, MyButton.CARTE_PATH, null);
+    btnScartate = new CartaButton("retro", 92, MyButton.CARTE_PATH, null);
     btnScartate.setPreferredSize(new Dimension(width, height));
     btnScartate.setBorderPainted(true);
     btnScartate.setEnabled(false);
@@ -168,7 +169,7 @@ public class GamePanel extends JPanel {
       lblInformazioni[i] = (MyLabel) pnlInformazioni.add(new MyLabel("", SwingConstants.CENTER, 6));
     }
   }
-
+  
   private void inizializzaPnlTavolo() {
     int width, height;
 
@@ -367,34 +368,13 @@ public class GamePanel extends JPanel {
     g.drawImage(SFONDO, 0, 0, this);
   }
   
-  public void scarta() {
-    daScartare = new ArrayList<>();
-  
-    for (CartaButton carta : tavolo){
-      if(carta.getCarta() != null){
-        carta.setEnabled(true);
-      }
-    }
-    
-    btnAzioni[0].setEnabled(true);
-    btnAzioni[1].setEnabled(true);
-    btnMazzo.setEnabled(false);
-  }
-  
-  public void setTimer(int time) {
-  
-    timer = new Timer();
-    
-    timer.schedule(new TimerTask() {
-      @Override
-      public void run() {
-        endTurno();
-      }
-    }, time * 1000);
-    
-  }
-  
   public void setDaScartare(ArrayList<Carta> daScartare) {
     this.daScartare = daScartare;
+  }
+  
+  public void remove(DugongoModel model) {
+    this.remove(pnlAzioni);
+    this.remove(pnlStato);
+    this.remove(pnlTavolo);
   }
 }

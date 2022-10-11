@@ -78,8 +78,7 @@ public class ServerThread extends Thread {
     });
   
     azioni.put(DGNG.DUGONGO, (request) -> {
-      Answer answer = new Answer(DGNG.ULTIMO_TURNO);
-      ServerController.getInstance().sendToAllClients(answer);
+      ServerController.getInstance().dugongo();
     });
     
     azioni.put(DGNG.VINCOLO_DI_STO_CAZZO, (request ->

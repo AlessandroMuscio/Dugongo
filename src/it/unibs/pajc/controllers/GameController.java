@@ -2,10 +2,13 @@ package it.unibs.pajc.controllers;
 
 import it.unibs.pajc.DGNGserver.DGNG;
 import it.unibs.pajc.DGNGserver.Request;
+import it.unibs.pajc.modello.DugongoModel;
 import it.unibs.pajc.varie.Carta;
 import it.unibs.pajc.varie.Mano;
 import it.unibs.pajc.varie.Scartate;
 import it.unibs.pajc.view.GamePanel;
+import it.unibs.pajc.view.ManiPanel;
+import it.unibs.pajc.view.View;
 
 import javax.swing.*;
 import java.io.IOException;
@@ -124,5 +127,18 @@ public class GameController {
     turno = false;
     gamePanel.setDaScartare(new ArrayList<>());
     gamePanel.setData(mano, change, scartate);
+  }
+  
+  public void end(DugongoModel model) {
+    gamePanel.remove(model);
+    View.getInstance().setPnlCorrente(new ManiPanel(model));
+    
+    Timer timer = new Timer();
+    timer.schedule(new TimerTask() {
+      @Override
+      public void run() {
+        //gamePanel.classifica();
+      }
+    }, 10000);
   }
 }

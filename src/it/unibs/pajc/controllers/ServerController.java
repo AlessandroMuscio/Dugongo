@@ -21,13 +21,14 @@ public class ServerController extends Controller {
   private static final int MAX_CLIENTS = 5;
 
   private ArrayList<ServerThread> connectedClients;
-  private Deque<ServerThread> turnoCorrente;
-  private Deque<ServerThread> turnoSuccessivo;
+  private Queue<ServerThread> turnoCorrente;
+  private Queue<ServerThread> turnoSuccessivo;
   private HashMap<Integer, String> clientsNames;
   private String IPaddress;
   private int port;
   private ExecutorService executors;
   private ServerThread corrente;
+  private ServerThread dungongoPlayer;
   private int count;
 
   private ServerController() {
@@ -126,10 +127,17 @@ public class ServerController extends Controller {
       turnoSuccessivo = new LinkedList<>();
     }
 
-    corrente = turnoCorrente.peekFirst();
+    corrente = turnoCorrente.poll();
     turnoSuccessivo.add(corrente);
-
-    sendToSingleClient(corrente.getPorta(), DGNG.GETTONE, new Object[] {});
+    
+    if(corrente.equals(dungongoPlayer)){
+      for (ServerThread connectedClient : connectedClients) {
+        port = connectedClient.getPorta();
+        sendToSingleClient(port, DGNG.END, new Object[]{getModel()});
+      }
+    } else{
+      sendToSingleClient(corrente.getPorta(), DGNG.GETTONE, new Object[] {});
+    }
   }
 
   public void sendToAllClients(Answer answer) {
@@ -188,7 +196,9 @@ public class ServerController extends Controller {
   }
   
   public void dugongo() {
-    // turnoSuccessivo.peekLast();
-    // turnoCorrente.addAll(turnoSuccessivo);
+    ServerThread[] temp = (ServerThread[]) turnoSuccessivo.toArray();
+    dungongoPlayer = temp[temp.length-1];
+    
+    turnoCorrente.addAll(Arrays.stream(temp).toList());
   }
 }

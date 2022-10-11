@@ -95,12 +95,9 @@ public class ClientController extends Controller {
       gameController.endTurno();
     });
   
-    azioni.put(DGNG.ULTIMO_TURNO, (answer) -> {
-      Mano mano = (Mano) answer.getBody()[0];
-      ArrayList<Carta> change = (ArrayList<Carta>) answer.getBody()[1];
-      Scartate scartate = (Scartate) answer.getBody()[2];
-      gameController.aggiorna(mano, change, scartate);
-      //gameController.nostroTurno();
+    azioni.put(DGNG.END, (answer) -> {
+      DugongoModel model = (DugongoModel) answer.getBody()[0];
+      gameController.end(model);
     });
   }
 
