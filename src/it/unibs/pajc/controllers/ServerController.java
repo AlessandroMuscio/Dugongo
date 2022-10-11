@@ -196,10 +196,10 @@ public class ServerController extends Controller {
   }
   
   public void dugongo() {
-    ServerThread[] temp = (ServerThread[]) turnoSuccessivo.toArray();
+    /*ServerThread[] temp = (ServerThread[]) turnoSuccessivo.toArray();
     dungongoPlayer = temp[temp.length-1];
     
-    turnoCorrente.addAll(Arrays.stream(temp).toList());
+    turnoCorrente.addAll(Arrays.stream(temp).toList());*/
   
     for (ServerThread connectedClient : connectedClients) {
       port = connectedClient.getPorta();
