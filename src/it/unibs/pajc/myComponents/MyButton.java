@@ -55,7 +55,7 @@ public class MyButton extends JButton {
     this.iconScalingPercentage = iconScalingPercentage;
   }
 
-  private String getFilePath(String text, String path) {
+  protected String getFilePath(String text, String path) {
     StringBuffer buffer = new StringBuffer(path.length() + text.length() + ICONS_EXT.length());
 
     buffer.append(path);
@@ -126,5 +126,17 @@ public class MyButton extends JButton {
   
       parentPreviousSize = parentCurrentSize;
     }
+  }
+  
+  public Image getOriginalIcon() {
+    return originalIcon;
+  }
+  
+  public int getIconScalingPercentage() {
+    return iconScalingPercentage;
+  }
+  
+  public void setOriginalIcon(Image originalIcon) {
+    this.originalIcon = originalIcon;
   }
 }

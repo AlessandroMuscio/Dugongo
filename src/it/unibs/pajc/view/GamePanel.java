@@ -145,7 +145,7 @@ public class GamePanel extends JPanel {
 
     pnlMazzi.add(btnMazzo, BorderLayout.WEST);
 
-    btnScartate = new CartaButton("retro", 92, MyButton.CARTE_PATH, null);
+    btnScartate = new CartaButton("prova", 92, MyButton.CARTE_PATH, null);
     btnScartate.setPreferredSize(new Dimension(width, height));
     btnScartate.setBorderPainted(true);
     btnScartate.setEnabled(false);

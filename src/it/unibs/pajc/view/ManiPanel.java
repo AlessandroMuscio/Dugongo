@@ -9,6 +9,7 @@ import it.unibs.pajc.varie.Mano;
 
 import javax.swing.*;
 import java.awt.*;
+import java.util.ArrayList;
 
 public class ManiPanel extends JPanel {
   private static final Dimension SCREEN_SIZE;
@@ -23,6 +24,7 @@ public class ManiPanel extends JPanel {
  
   private JPanel[] pnlCarte;
   private JPanel pnlMani;
+  private ArrayList<CartaButton> btn;
   private String lblNomi[] = {"A", "B", "C", "D", "E", "F"};
 
   static {
@@ -81,59 +83,69 @@ public class ManiPanel extends JPanel {
   }
   
   public ManiPanel(DugongoModel model) {
-    inizializzaPnlCarte(model);
-    inizializzaPnlMani();
-    this.add(pnlMani, BorderLayout.CENTER);
+    btn = new ArrayList<>();
     
     setFullScreen(true);
+    inizializzaPnlCarte();
+    inizializzaPnlMani(model);
+    this.add(pnlMani, BorderLayout.CENTER);
+    
+    for(CartaButton c : btn){
+      if(c.getCarta() != null){
+        c.setVisible(true);
+        
+        c.stampaFronteMagico();
+        c.repaint();
+      } else{
+        c.setVisible(false);
+      }
+    }
   }
   
-  private void inizializzaPnlMani() {
+  private void inizializzaPnlMani(DugongoModel model) {
     pnlMani = new JPanel(new GridBagLayout());
     GridBagConstraints gbc = new GridBagConstraints();
+  
+    pnlMani.setOpaque(false);
     gbc.gridx = 0;
     
     for(int i = 0; i < 12; i++){
       gbc.gridy = i;
       
       if(i%2 == 0) {
-        MyLabel lbl = new MyLabel(lblNomi[i/2], 0 ,50);
-        int width = (int) (SCREEN_SIZE.width);
-        int height = (int) (SCREEN_SIZE.height * 1/42);
-        lbl.setPreferredSize(new Dimension(width, height));
-        
+        MyLabel lbl = new MyLabel(lblNomi[i/2], 0 ,2);
         this.add(lbl, gbc);
       } else{
         this.add(pnlCarte[i/2], gbc);
       }
     }
-    
-  }
-  
-  private void inizializzaPnlCarte(DugongoModel model) {
-    pnlCarte = new JPanel[6];
-    
-    for (int i = 0; i < 6; i++) {
-      int width = (int) (SCREEN_SIZE.width);
-      int height = (int) (SCREEN_SIZE.height * 1/7);
-      JPanel pnl = new JPanel(new GridLayout(1, CARD_ROWS_SHOWN * CARD_COLS_SHOWN, 0, 0));
-      
-      pnl.setPreferredSize(new Dimension(width, height));
-      
-      pnlCarte[i] = pnl;
-    }
   
     int i = 0;
-    
+  
     for (Mano m : model.getManiClients().values()) {
       for (Carta c : m.getCarte()){
-        CartaButton cartaButton = new CartaButton("retro", 92, MyButton.CARTE_PATH, null);
-        cartaButton.stampaFronte();
+        CartaButton cartaButton = new CartaButton("retro", 96, MyButton.CARTE_PATH, null);
         cartaButton.setCarta(c);
         
         pnlCarte[i].add(cartaButton);
+        btn.add(cartaButton);
       }
       i++;
+    }
+  }
+  
+  private void inizializzaPnlCarte() {
+    pnlCarte = new JPanel[6];
+    
+    for (int i = 0; i < 6; i++) {
+      int width = SCREEN_SIZE.width;
+      int height = (int) (SCREEN_SIZE.height * 1/7.4);
+      JPanel pnl = new JPanel(new GridLayout(1, CARD_ROWS_SHOWN * CARD_COLS_SHOWN, 0, 0));
+      
+      pnl.setPreferredSize(new Dimension(width, height));
+      pnl.setOpaque(false);
+      
+      pnlCarte[i] = pnl;
     }
   }
   
