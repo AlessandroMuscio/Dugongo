@@ -94,7 +94,7 @@ public class ServerThread extends Thread {
   }
 
   public void run() {
-    while(true){
+    while(ServerController.getInstance().isRunning()){
       try {
         Request request = (Request) reader.readObject();
         azioni.get(request.getRequest()).accept(request);

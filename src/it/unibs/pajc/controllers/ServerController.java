@@ -20,6 +20,7 @@ public class ServerController extends Controller {
 
   private static final int MAX_REQUESTS = 3;
   private static final int MAX_CLIENTS = 5;
+  private boolean running = true;
 
   private ArrayList<ServerThread> connectedClients;
   private Queue<ServerThread> turnoCorrente;
@@ -197,23 +198,27 @@ public class ServerController extends Controller {
   }
   
   public void removeClient(int port){
-   // try {
+   try {
       
       for (ServerThread e : connectedClients){
         
         System.out.println(e.getClient().getPort() + "   " + port);
         
-        /*if(e.getClient().getPort() == port){
+        if(e.getClient().getPort() == port){
           connectedClients.remove(e);
           e.getClient().close();
-        }*/
+        }
       }
       
       if(connectedClients.isEmpty()){
-        new Controller();
+        running = false;
       }
-   /* } catch (IOException ex) {
+   } catch (IOException ex) {
       throw new RuntimeException(ex);
-    }*/
+    }
+  }
+  
+  public boolean isRunning() {
+    return running;
   }
 }
