@@ -131,13 +131,5 @@ public class GameController {
   public void end(ArrayList<ElementoClassifica> classifica) {
     gamePanel.remove();
     View.getInstance().setPnlCorrente(new ManiPanel(classifica));
-    
-    Timer timer = new Timer();
-    timer.schedule(new TimerTask() {
-      @Override
-      public void run() {
-        //gamePanel.classifica();
-      }
-    }, 10000);
   }
 }
