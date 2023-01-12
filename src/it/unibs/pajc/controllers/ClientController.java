@@ -98,6 +98,11 @@ public class ClientController extends Controller {
   
     azioni.put(DGNG.END, (answer) -> {
       ArrayList<ElementoClassifica> classifica = (ArrayList<ElementoClassifica>) answer.getBody()[0];
+      
+      for(ElementoClassifica e : classifica){
+        System.out.println(e);
+      }
+      
       gameController.end(classifica);
     });
   }
