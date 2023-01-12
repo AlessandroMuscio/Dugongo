@@ -197,17 +197,23 @@ public class ServerController extends Controller {
   }
   
   public void removeClient(int port){
-    
-    for (ServerThread e : connectedClients){
-      if(e.getClient().getPort() == port){
-        connectedClients.remove(e);
+    try {
+      
+      for (ServerThread e : connectedClients){
+        
+        System.out.println(e.getClient().getPort() + "   + port");
+        
+        if(e.getClient().getPort() == port){
+          connectedClients.remove(e);
+          e.getClient().close();
+        }
       }
-    }
-    
-    System.out.println(connectedClients.size());
-    
-    if(connectedClients.isEmpty()){
-      new Controller();
+      
+      if(connectedClients.isEmpty()){
+        new Controller();
+      }
+    } catch (IOException ex) {
+      throw new RuntimeException(ex);
     }
   }
 }
