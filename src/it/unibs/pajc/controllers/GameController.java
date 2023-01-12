@@ -93,7 +93,6 @@ public class GameController {
     try {
       gamePanel.setFullScreen(false);
       ServerController.getInstance().closeServer();
-      new Controller();
     } catch (IOException e1) {
       e1.printStackTrace();
     }
