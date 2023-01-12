@@ -201,7 +201,7 @@ public class ServerController extends Controller {
       
       for (ServerThread e : connectedClients){
         
-        System.out.println(e.getClient().getPort() + "   + port");
+        System.out.println(e.getClient().getPort() + "   " + port);
         
         if(e.getClient().getPort() == port){
           connectedClients.remove(e);
