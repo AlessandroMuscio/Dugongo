@@ -203,5 +203,11 @@ public class ServerController extends Controller {
         connectedClients.remove(e);
       }
     }
+    
+    System.out.println(connectedClients.size());
+    
+    if(connectedClients.isEmpty()){
+      new Controller();
+    }
   }
 }
