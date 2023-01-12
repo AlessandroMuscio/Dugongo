@@ -11,7 +11,7 @@ public class DGNG {
   public static final int COLLEGAMENTO = 1;
   public static final int PESCA = 2;
   public static final int SCARTA = 3;
-  public static final int DUGONGO = 4;
+  public static final int DNG = 4;
   public static final int VINCOLO_DI_STO_CAZZO = 5;
   
   
@@ -24,5 +24,6 @@ public class DGNG {
   public static final int AGGIORNA = 5;
   public static final int FAKE_AGGIORNA = 6;
   public static final int END = 7;
+  public static final int DUGONGO = 8;
   
 }

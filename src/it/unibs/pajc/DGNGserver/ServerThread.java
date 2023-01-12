@@ -75,6 +75,10 @@ public class ServerThread extends Thread {
       }
     });
   
+    azioni.put(DGNG.DNG, (request) -> {
+      ServerController.getInstance().dugongo();
+    });
+  
     azioni.put(DGNG.DUGONGO, (request) -> {
       ServerController.getInstance().dugongo();
     });

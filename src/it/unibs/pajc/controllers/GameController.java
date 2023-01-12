@@ -82,7 +82,10 @@ public class GameController {
   }
 
   public void dugongo() {
-    ServerController.getInstance().dugongo();
+    Request request;
+    
+    request = new Request(DGNG.DNG);
+    ClientController.getInstance().sendToServer(request);
   }
 
   public void info() {
