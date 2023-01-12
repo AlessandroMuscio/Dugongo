@@ -196,10 +196,10 @@ public class ServerController extends Controller {
     }
   }
   
-  public void removeClient(Socket client){
+  public void removeClient(int port){
     
     for (ServerThread e : connectedClients){
-      if(e.getClient().equals(client)){
+      if(e.getClient().getPort() == port){
         connectedClients.remove(e);
       }
     }

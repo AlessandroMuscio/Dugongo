@@ -76,8 +76,8 @@ public class ServerThread extends Thread {
     });
   
     azioni.put(DGNG.DISCONNESSIONE, (request) -> {
-      Socket client = (Socket) request.getAttributes()[0];
-      ServerController.getInstance().removeClient(client);
+      int port = (int) request.getAttributes()[0];
+      ServerController.getInstance().removeClient(port);
     });
   
     azioni.put(DGNG.DNG, (request) -> {

@@ -94,10 +94,10 @@ public class GameController {
   public void esci() {
     Request request;
   
-    request = new Request(DGNG.DISCONNESSIONE, new Object[] { ClientController.getInstance().getClient() });
-    gamePanel.setFullScreen(false);
+    request = new Request(DGNG.DISCONNESSIONE, new Object[] { ClientController.getInstance().getClient().getPort() });
     ClientController.getInstance().sendToServer(request);
-  
+    gamePanel.setFullScreen(false);
+    
     new Controller();
   }
 
