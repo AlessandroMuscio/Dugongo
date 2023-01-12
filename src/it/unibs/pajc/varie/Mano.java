@@ -41,6 +41,18 @@ public class Mano extends Carte implements Serializable {
     return carte;
   }
   
+  public int getPunteggio(){
+    int punteggio = 0;
+    
+    for(Carta c: carte){
+      if(c != null){
+        punteggio += c.getPunteggio();
+      }
+    }
+    
+    return punteggio;
+  }
+  
   @Override
   public String toString() {
     return "Mano{" +

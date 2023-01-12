@@ -23,7 +23,7 @@ public class View {
     colore3 = new Color(251,103,87);
     colore1 = new Color(1,88,139);
     colore2 = new Color(243,147,182);
-    colore4 = new Color(29,90,136);
+    colore4 = new Color(0,0,0);
     colore5 = new Color(248,231,173);
   
     frame.setVisible(true);

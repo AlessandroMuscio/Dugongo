@@ -8,9 +8,9 @@ import java.awt.*;
 public class MyLabel extends JLabel {
   private Dimension parentPreviousSize;
 
-  private int fontScalingPercentage;
+  private float fontScalingPercentage;
 
-  public MyLabel(String text, int horizontalAlignment, int fontScalingPercentage) {
+  public MyLabel(String text, int horizontalAlignment, float fontScalingPercentage) {
     super(text, horizontalAlignment);
 
     this.parentPreviousSize = new Dimension(-1, -1);

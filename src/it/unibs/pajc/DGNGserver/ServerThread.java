@@ -14,13 +14,11 @@ import java.util.function.Consumer;
 
 public class ServerThread extends Thread {
   private Socket client;
-
   private ObjectInputStream reader;
   private ObjectOutputStream writer;
   private HashMap<Integer, Consumer<Request>> azioni;
 
   public ServerThread(Socket client) {
-    
     try {
       this.client = client;
   

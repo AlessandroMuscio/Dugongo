@@ -17,7 +17,7 @@ public class MyTextField extends JTextField {
     this.parentPreviousSize = new Dimension(-1, -1);
     this.placeholder = placeholder;
     this.fontScalingPercentage = fontScalingPercentage;
-    this.setForeground(View.colore4);
+    this.setForeground(View.colore1);
     this.setBackground(View.colore5);
 
     this.addFocusListener(new FocusListener() {
@@ -30,7 +30,7 @@ public class MyTextField extends JTextField {
 
           if (thisTextField.getText().equals(placeholder)) {
             thisTextField.setText("");
-            thisTextField.setForeground(View.colore4);
+            thisTextField.setForeground(View.colore1);
           }
         }
       }
@@ -43,7 +43,7 @@ public class MyTextField extends JTextField {
           MyTextField thisTextField = (MyTextField) e.getComponent();
 
           if (thisTextField.getText().isEmpty()) {
-            thisTextField.setForeground(View.colore4);
+            thisTextField.setForeground(View.colore1);
             thisTextField.setText(placeholder);
           }
         }

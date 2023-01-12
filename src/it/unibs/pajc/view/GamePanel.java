@@ -372,7 +372,7 @@ public class GamePanel extends JPanel {
     this.daScartare = daScartare;
   }
   
-  public void remove(DugongoModel model) {
+  public void remove() {
     this.remove(pnlAzioni);
     this.remove(pnlStato);
     this.remove(pnlTavolo);

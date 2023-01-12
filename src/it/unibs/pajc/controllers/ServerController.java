@@ -4,6 +4,7 @@ import it.unibs.pajc.DGNGserver.Answer;
 import it.unibs.pajc.DGNGserver.DGNG;
 import it.unibs.pajc.DGNGserver.ServerThread;
 import it.unibs.pajc.modello.DugongoModel;
+import it.unibs.pajc.varie.Franco;
 import it.unibs.pajc.view.ServerPanel;
 import it.unibs.pajc.view.View;
 
@@ -28,7 +29,6 @@ public class ServerController extends Controller {
   private int port;
   private ExecutorService executors;
   private ServerThread corrente;
-  private ServerThread dungongoPlayer;
   private int count;
 
   private ServerController() {
@@ -129,21 +129,8 @@ public class ServerController extends Controller {
 
     corrente = turnoCorrente.poll();
     turnoSuccessivo.add(corrente);
-    
-    if(corrente.equals(dungongoPlayer)){
-      for (ServerThread connectedClient : connectedClients) {
-        port = connectedClient.getPorta();
-        sendToSingleClient(port, DGNG.END, new Object[]{getModel()});
-      }
-    } else{
-      sendToSingleClient(corrente.getPorta(), DGNG.GETTONE, new Object[] {});
-    }
-  }
-
-  public void sendToAllClients(Answer answer) {
-    for (ServerThread connectedClient : connectedClients) {
-      connectedClient.send(answer);
-    }
+  
+    sendToSingleClient(corrente.getPorta(), DGNG.GETTONE, new Object[] {});
   }
 
   private void sendToSingleClient(int port, int code, Object[] body) {
@@ -196,14 +183,16 @@ public class ServerController extends Controller {
   }
   
   public void dugongo() {
-    /*ServerThread[] temp = (ServerThread[]) turnoSuccessivo.toArray();
-    dungongoPlayer = temp[temp.length-1];
     
-    turnoCorrente.addAll(Arrays.stream(temp).toList());*/
-  
+    ArrayList<Franco> franchi = new ArrayList<>();
+    
+    for (Integer port : clientsNames.keySet()){
+      franchi.add(new Franco(getModel().getMano(port), clientsNames.get(port)));
+    }
+    
     for (ServerThread connectedClient : connectedClients) {
       port = connectedClient.getPorta();
-      sendToSingleClient(port, DGNG.END, new Object[]{getModel()});
+      sendToSingleClient(port, DGNG.END, new Object[]{franchi});
     }
   }
 }

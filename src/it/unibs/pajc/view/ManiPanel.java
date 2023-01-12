@@ -1,11 +1,10 @@
 package it.unibs.pajc.view;
 
-import it.unibs.pajc.modello.DugongoModel;
 import it.unibs.pajc.myComponents.CartaButton;
 import it.unibs.pajc.myComponents.MyButton;
 import it.unibs.pajc.myComponents.MyLabel;
 import it.unibs.pajc.varie.Carta;
-import it.unibs.pajc.varie.Mano;
+import it.unibs.pajc.varie.Franco;
 
 import javax.swing.*;
 import java.awt.*;
@@ -14,26 +13,18 @@ import java.util.ArrayList;
 public class ManiPanel extends JPanel {
   private static final Dimension SCREEN_SIZE;
   private static final String SFONDO_PATH;
-  private static final String[] AZIONI;
-  private static final int MAX_INFORMATION_SHOWN;
-  private static final int CARD_ROWS_SHOWN;
-  private static final int CARD_COLS_SHOWN;
+  private static final int CARD_SHOWN;
   private static final Image SFONDO;
-
-
- 
+  
   private JPanel[] pnlCarte;
   private JPanel pnlMani;
   private ArrayList<CartaButton> btn;
-  private String lblNomi[] = {"A", "B", "C", "D", "E", "F"};
+  private String lblNomi[] = {"", "", "", "", "", ""};
 
   static {
     SCREEN_SIZE = getScreenSize();
     SFONDO_PATH = "src/it/unibs/pajc/assets/generiche/Sfondo.jpeg";
-    AZIONI = new String[] { "SCARTA", "ANNULLA", "DUGONGO", "INFO", "ESCI" };
-    MAX_INFORMATION_SHOWN = 5;
-    CARD_ROWS_SHOWN = 2;
-    CARD_COLS_SHOWN = 10;
+    CARD_SHOWN = 20;
     SFONDO = scaleSfondo();
   }
   
@@ -82,12 +73,13 @@ public class ManiPanel extends JPanel {
     frame.repaint();
   }
   
-  public ManiPanel(DugongoModel model) {
+  public ManiPanel(ArrayList<Franco> franchi) {
     btn = new ArrayList<>();
     
     setFullScreen(true);
     inizializzaPnlCarte();
-    inizializzaPnlMani(model);
+    inizializza(franchi);
+
     this.add(pnlMani, BorderLayout.CENTER);
     
     for(CartaButton c : btn){
@@ -102,35 +94,40 @@ public class ManiPanel extends JPanel {
     }
   }
   
-  private void inizializzaPnlMani(DugongoModel model) {
+  private void inizializza(ArrayList<Franco> franchi) {
     pnlMani = new JPanel(new GridBagLayout());
     GridBagConstraints gbc = new GridBagConstraints();
   
     pnlMani.setOpaque(false);
     gbc.gridx = 0;
+  
+    int i = 0;
     
-    for(int i = 0; i < 12; i++){
-      gbc.gridy = i;
+    for (Franco f : franchi){
       
+      for (Carta c : f.getMano().getCarte()){
+        CartaButton cartaButton = new CartaButton("retro", 96, MyButton.CARTE_PATH, null);
+        cartaButton.setCarta(c);
+    
+        pnlCarte[i].add(cartaButton);
+        lblNomi[i] = f.getNome() + "  PUNTI = " + f.getPunteggio();
+        btn.add(cartaButton);
+      }
+      i++;
+      
+    }
+  
+    for( i = 0; i < 12; i++){
+      gbc.gridy = i;
+    
       if(i%2 == 0) {
-        MyLabel lbl = new MyLabel(lblNomi[i/2], 0 ,2);
+        MyLabel lbl = new MyLabel(lblNomi[i/2], 0 ,1.7f);
+        lbl.setForeground(View.colore4);
+        lbl.setPreferredSize(new Dimension(SCREEN_SIZE.width, SCREEN_SIZE.height/48));
         this.add(lbl, gbc);
       } else{
         this.add(pnlCarte[i/2], gbc);
       }
-    }
-  
-    int i = 0;
-  
-    for (Mano m : model.getManiClients().values()) {
-      for (Carta c : m.getCarte()){
-        CartaButton cartaButton = new CartaButton("retro", 96, MyButton.CARTE_PATH, null);
-        cartaButton.setCarta(c);
-        
-        pnlCarte[i].add(cartaButton);
-        btn.add(cartaButton);
-      }
-      i++;
     }
   }
   
@@ -139,8 +136,8 @@ public class ManiPanel extends JPanel {
     
     for (int i = 0; i < 6; i++) {
       int width = SCREEN_SIZE.width;
-      int height = (int) (SCREEN_SIZE.height * 1/7.4);
-      JPanel pnl = new JPanel(new GridLayout(1, CARD_ROWS_SHOWN * CARD_COLS_SHOWN, 0, 0));
+      int height = (int) (SCREEN_SIZE.height * 1/7.6);
+      JPanel pnl = new JPanel(new GridLayout(1, CARD_SHOWN, 0, 0));
       
       pnl.setPreferredSize(new Dimension(width, height));
       pnl.setOpaque(false);
@@ -151,7 +148,9 @@ public class ManiPanel extends JPanel {
   
   @Override
   protected void paintComponent(Graphics g) {
+    Font font = this.getFont().deriveFont(1.0f);
     super.paintComponent(g);
+    this.setFont(font);
     
     g.drawImage(SFONDO, 0, 0, this);
   }

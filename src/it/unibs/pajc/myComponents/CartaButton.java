@@ -32,9 +32,20 @@ public class CartaButton extends MyButton {
   
   public void stampaFronteMagico(){
     int width = SCREEN_SIZE.width/20;
-    int height = (int) (SCREEN_SIZE.height * 1/7.4);
+    int height = (int) (SCREEN_SIZE.height * 1/7.6);
   
     super.setOriginalIcon(new ImageIcon(getFilePath(carta.getFrontePath(), CARTE_PATH)).getImage());
+    
+    Image scaledIcon = super.getOriginalIcon().getScaledInstance(width, height, Image.SCALE_SMOOTH);
+    this.setIcon(new ImageIcon(scaledIcon));
+    this.repaint();
+  }
+  
+  public void stampaRetroMagico(){
+    int width = SCREEN_SIZE.width/20;
+    int height = (int) (SCREEN_SIZE.height * 1/7.6);
+    
+    super.setOriginalIcon(new ImageIcon(getFilePath("retro", CARTE_PATH)).getImage());
     
     Image scaledIcon = super.getOriginalIcon().getScaledInstance(width, height, Image.SCALE_SMOOTH);
     this.setIcon(new ImageIcon(scaledIcon));
