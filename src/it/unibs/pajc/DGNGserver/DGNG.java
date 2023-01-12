@@ -13,6 +13,7 @@ public class DGNG {
   public static final int SCARTA = 3;
   public static final int DNG = 4;
   public static final int VINCOLO_DI_STO_CAZZO = 5;
+  public static final int DISCONNESSIONE = 6;
   
   
   

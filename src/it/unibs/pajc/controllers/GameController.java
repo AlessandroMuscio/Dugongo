@@ -11,7 +11,6 @@ import it.unibs.pajc.view.ManiPanel;
 import it.unibs.pajc.view.View;
 
 import javax.swing.*;
-import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
@@ -93,12 +92,13 @@ public class GameController {
   }
 
   public void esci() {
-    try {
-      gamePanel.setFullScreen(false);
-      ServerController.getInstance().closeServer();
-    } catch (IOException e1) {
-      e1.printStackTrace();
-    }
+    Request request;
+  
+    request = new Request(DGNG.DISCONNESSIONE, new Object[] { ClientController.getInstance().getClient() });
+    gamePanel.setFullScreen(false);
+    ClientController.getInstance().sendToServer(request);
+  
+    new Controller();
   }
 
   public GamePanel getGamePanel() {
@@ -132,7 +132,19 @@ public class GameController {
   }
   
   public void end(ArrayList<ElementoClassifica> classifica) {
+  
     gamePanel.remove();
     View.getInstance().setPnlCorrente(new ManiPanel(classifica));
+    
+    Timer timer = new Timer();
+    
+    timer.schedule(new TimerTask() {
+      @Override
+      public void run() {
+        ClientController.getInstance().sendToServer(new Request(VINCOLO_DI_STO_CAZZO));
+        gamePanel.remove();
+        esci();
+      }
+    }, 15000);
   }
 }

@@ -28,7 +28,6 @@ public class ClientController extends Controller {
   private String ipAddress;
   private int port;
   private String name;
-
   private Socket client;
   private ObjectInputStream reader;
   private ObjectOutputStream writer;
@@ -252,5 +251,9 @@ public class ClientController extends Controller {
 
   public void setName(String name) {
     this.name = name;
+  }
+  
+  public Socket getClient() {
+    return client;
   }
 }

@@ -75,6 +75,11 @@ public class ServerThread extends Thread {
       }
     });
   
+    azioni.put(DGNG.DISCONNESSIONE, (request) -> {
+      Socket client = (Socket) request.getAttributes()[0];
+      ServerController.getInstance().removeClient(client);
+    });
+  
     azioni.put(DGNG.DNG, (request) -> {
       ServerController.getInstance().dugongo();
     });
@@ -121,6 +126,10 @@ public class ServerThread extends Thread {
 
   public int getPorta() {
     return client.getPort();
+  }
+  
+  public Socket getClient() {
+    return client;
   }
   
   public boolean isClosed() {

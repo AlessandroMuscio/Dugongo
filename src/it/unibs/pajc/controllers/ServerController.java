@@ -195,4 +195,13 @@ public class ServerController extends Controller {
       sendToSingleClient(port, DGNG.END, new Object[]{classifica});
     }
   }
+  
+  public void removeClient(Socket client){
+    
+    for (ServerThread e : connectedClients){
+      if(e.getClient().equals(client)){
+        connectedClients.remove(e);
+      }
+    }
+  }
 }
