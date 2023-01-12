@@ -6,7 +6,7 @@ import it.unibs.pajc.DGNGserver.Request;
 import it.unibs.pajc.modello.DugongoModel;
 import it.unibs.pajc.myComponents.MyTextField;
 import it.unibs.pajc.varie.Carta;
-import it.unibs.pajc.varie.Franco;
+import it.unibs.pajc.varie.ElementoClassifica;
 import it.unibs.pajc.varie.Mano;
 import it.unibs.pajc.varie.Scartate;
 import it.unibs.pajc.view.View;
@@ -97,8 +97,8 @@ public class ClientController extends Controller {
     });
   
     azioni.put(DGNG.END, (answer) -> {
-      ArrayList<Franco> franchi = (ArrayList<Franco>) answer.getBody()[0];
-      gameController.end(franchi);
+      ArrayList<ElementoClassifica> classifica = (ArrayList<ElementoClassifica>) answer.getBody()[0];
+      gameController.end(classifica);
     });
   }
 

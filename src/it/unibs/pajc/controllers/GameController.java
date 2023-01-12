@@ -3,7 +3,7 @@ package it.unibs.pajc.controllers;
 import it.unibs.pajc.DGNGserver.DGNG;
 import it.unibs.pajc.DGNGserver.Request;
 import it.unibs.pajc.varie.Carta;
-import it.unibs.pajc.varie.Franco;
+import it.unibs.pajc.varie.ElementoClassifica;
 import it.unibs.pajc.varie.Mano;
 import it.unibs.pajc.varie.Scartate;
 import it.unibs.pajc.view.GamePanel;
@@ -129,9 +129,9 @@ public class GameController {
     gamePanel.setData(mano, change, scartate);
   }
   
-  public void end(ArrayList<Franco> franchi) {
+  public void end(ArrayList<ElementoClassifica> classifica) {
     gamePanel.remove();
-    View.getInstance().setPnlCorrente(new ManiPanel(franchi));
+    View.getInstance().setPnlCorrente(new ManiPanel(classifica));
     
     Timer timer = new Timer();
     timer.schedule(new TimerTask() {

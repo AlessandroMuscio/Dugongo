@@ -4,7 +4,7 @@ import it.unibs.pajc.DGNGserver.Answer;
 import it.unibs.pajc.DGNGserver.DGNG;
 import it.unibs.pajc.DGNGserver.ServerThread;
 import it.unibs.pajc.modello.DugongoModel;
-import it.unibs.pajc.varie.Franco;
+import it.unibs.pajc.varie.ElementoClassifica;
 import it.unibs.pajc.view.ServerPanel;
 import it.unibs.pajc.view.View;
 
@@ -184,15 +184,15 @@ public class ServerController extends Controller {
   
   public void dugongo() {
     
-    ArrayList<Franco> franchi = new ArrayList<>();
+    ArrayList<ElementoClassifica> classifica = new ArrayList<>();
     
     for (Integer port : clientsNames.keySet()){
-      franchi.add(new Franco(getModel().getMano(port), clientsNames.get(port)));
+      classifica.add(new ElementoClassifica(getModel().getMano(port), clientsNames.get(port)));
     }
     
     for (ServerThread connectedClient : connectedClients) {
       port = connectedClient.getPorta();
-      sendToSingleClient(port, DGNG.END, new Object[]{franchi});
+      sendToSingleClient(port, DGNG.END, new Object[]{classifica});
     }
   }
 }

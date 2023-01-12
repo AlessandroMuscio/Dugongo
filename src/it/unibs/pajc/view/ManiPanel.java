@@ -4,7 +4,7 @@ import it.unibs.pajc.myComponents.CartaButton;
 import it.unibs.pajc.myComponents.MyButton;
 import it.unibs.pajc.myComponents.MyLabel;
 import it.unibs.pajc.varie.Carta;
-import it.unibs.pajc.varie.Franco;
+import it.unibs.pajc.varie.ElementoClassifica;
 
 import javax.swing.*;
 import java.awt.*;
@@ -73,7 +73,7 @@ public class ManiPanel extends JPanel {
     frame.repaint();
   }
   
-  public ManiPanel(ArrayList<Franco> franchi) {
+  public ManiPanel(ArrayList<ElementoClassifica> franchi) {
     btn = new ArrayList<>();
     
     setFullScreen(true);
@@ -94,7 +94,7 @@ public class ManiPanel extends JPanel {
     }
   }
   
-  private void inizializza(ArrayList<Franco> franchi) {
+  private void inizializza(ArrayList<ElementoClassifica> franchi) {
     pnlMani = new JPanel(new GridBagLayout());
     GridBagConstraints gbc = new GridBagConstraints();
   
@@ -103,7 +103,7 @@ public class ManiPanel extends JPanel {
   
     int i = 0;
     
-    for (Franco f : franchi){
+    for (ElementoClassifica f : franchi){
       
       for (Carta c : f.getMano().getCarte()){
         CartaButton cartaButton = new CartaButton("retro", 96, MyButton.CARTE_PATH, null);

@@ -2,13 +2,13 @@ package it.unibs.pajc.varie;
 
 import java.io.Serializable;
 
-public class Franco implements Serializable{
+public class ElementoClassifica implements Serializable{
   
   private Mano mano;
   private String nome;
   private int punteggio;
   
-  public Franco(Mano mano, String nome) {
+  public ElementoClassifica(Mano mano, String nome) {
     this.mano = mano;
     this.nome = nome;
     this.punteggio = this.mano.getPunteggio();
