@@ -11,19 +11,18 @@ public class DGNG {
   public static final int COLLEGAMENTO = 1;
   public static final int PESCA = 2;
   public static final int SCARTA = 3;
-  public static final int DNG = 4;
-  public static final int VINCOLO_DI_STO_CAZZO = 5;
+  public static final int DUGONGO = 4;
+  public static final int END_TURNO = 5;
   public static final int DISCONNESSIONE = 6;
-  
-  
+  public static final int CLIENT_QUIT = 7;
+  public static final int DUGONGO_QUIT = 8;
   
   //Risposte
   public static final int ATTESA = 1;
   public static final int INIZIA = 2;
-  public static final int GETTONE = 3;
-  public static final int MANO = 4;
-  public static final int AGGIORNA = 5;
-  public static final int FAKE_AGGIORNA = 6;
-  public static final int END = 7;
-  
+  public static final int TOKEN = 3;
+  public static final int AGGIORNA_MANO = 4;
+  public static final int AGGIORNA_VIEW = 5;
+  public static final int AGGIORNA_SCARTATE = 6;
+  public static final int CLASSIFICA = 7;
 }

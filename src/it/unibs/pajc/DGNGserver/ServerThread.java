@@ -57,7 +57,7 @@ public class ServerThread extends Thread {
       DugongoModel model = ServerController.getInstance().getModel();
       model.pesca(client.getPort());
   
-      Answer answer = new Answer(DGNG.MANO, model.getData(client.getPort()));
+      Answer answer = new Answer(DGNG.AGGIORNA_MANO, model.getData(client.getPort()));
       try {
         writer.writeObject(answer);
         writer.flush();
@@ -80,19 +80,28 @@ public class ServerThread extends Thread {
     });
   
     azioni.put(DGNG.DISCONNESSIONE, (request) -> {
-      int port = (int) request.getAttributes()[0];
-      ServerController a = ServerController.getInstance();
-      a.removeClient(port);
+      ServerController.getInstance().removeAll();
       running = false;
     });
   
-    azioni.put(DGNG.DNG, (request) -> {
+    azioni.put(DGNG.DUGONGO, (request) -> {
       ServerController.getInstance().dugongo();
     });
     
-    azioni.put(DGNG.VINCOLO_DI_STO_CAZZO, (request ->
+    azioni.put(DGNG.END_TURNO, (request ->
       ServerController.getInstance().incrementaCount()
     ));
+  
+    azioni.put(DGNG.CLIENT_QUIT, (request -> {
+      int port = (int) request.getAttributes()[0];
+      ServerController.getInstance().removeClient(port);
+    }));
+    
+    azioni.put(DGNG.DUGONGO_QUIT, (request -> {
+      int port = (int) request.getAttributes()[0];
+      ServerController.getInstance().removeDugongo(port);
+      running = false;
+    }));
   }
 
   public void run() {

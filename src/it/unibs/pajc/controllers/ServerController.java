@@ -31,9 +31,8 @@ public class ServerController extends Controller {
   private ExecutorService executors;
   private ServerThread corrente;
   private int temp = 0;
-  
-  private final ReadWriteLock lock = new ReentrantReadWriteLock();
   private int count;
+  private ReadWriteLock lock;
 
   private ServerController() {
     try {
@@ -47,6 +46,7 @@ public class ServerController extends Controller {
       count = 0;
       running = true;
       executors.execute(this::startServer);
+      lock = new ReentrantReadWriteLock();
     } catch (SocketException e) {
       throw new RuntimeException(e);
     }
@@ -121,7 +121,7 @@ public class ServerController extends Controller {
     for (ServerThread connectedClient : connectedClients) {
       port = connectedClient.getPorta();
 
-      sendToSingleClient(port, DGNG.AGGIORNA, getModel().getData(port));
+      sendToSingleClient(port, DGNG.AGGIORNA_VIEW, getModel().getData(port));
     }
   }
 
@@ -135,7 +135,7 @@ public class ServerController extends Controller {
     corrente = turnoCorrente.poll();
     turnoSuccessivo.add(corrente);
   
-    sendToSingleClient(corrente.getPorta(), DGNG.GETTONE, new Object[] {});
+    sendToSingleClient(corrente.getPorta(), DGNG.TOKEN, new Object[] {});
   }
 
   private void sendToSingleClient(int port, int code, Object[] body) {
@@ -165,8 +165,6 @@ public class ServerController extends Controller {
     singleton = null;
     
     System.out.println("Server closed");
-  
-    new Controller();
   }
   
   public void incrementaCount() {
@@ -178,7 +176,7 @@ public class ServerController extends Controller {
       
       for (ServerThread connectedClient : connectedClients) {
         port = connectedClient.getPorta();
-        sendToSingleClient(port, DGNG.FAKE_AGGIORNA, getModel().getData(port));
+        sendToSingleClient(port, DGNG.AGGIORNA_SCARTATE, getModel().getData(port));
       }
       
       play();
@@ -195,38 +193,75 @@ public class ServerController extends Controller {
     
     for (ServerThread connectedClient : connectedClients) {
       port = connectedClient.getPorta();
-      sendToSingleClient(port, DGNG.END, new Object[]{classifica});
+      sendToSingleClient(port, DGNG.CLASSIFICA, new Object[]{classifica});
     }
   }
   
   public void removeClient(int port){
-    running = false;
-    
-      try {
-    
-        for (ServerThread e : connectedClients){
+    try{
       
-          if(e.getClient().getPort() == port){
-            e.close();
-            temp++;
-            //connectedClients.remove(e);
+      for (ServerThread e : connectedClients){
+        
+        if(e.getClient().getPort() == port){
+          e.close();
+          connectedClients.remove(e);
+          
+          if (turnoSuccessivo.contains(e)) {
+            turnoSuccessivo.remove(e);
+          } else {
+            turnoCorrente.remove(e);
+          }
+          
+          if (corrente.equals(e)){
+            play();
           }
         }
-      } catch (IOException ex) {
-        throw new RuntimeException(ex);
       }
-      
-      if (temp == connectedClients.size()){
-        connectedClients.removeAll( (Vector<ServerThread>) connectedClients.clone());
-        try {
-          closeServer();
-        } catch (IOException e) {
-          throw new RuntimeException(e);
-        }
-      }
+    } catch (IOException ex) {
+      throw new RuntimeException(ex);
+    }
   }
   
-  public boolean isRunning() {
-    return running;
+  public void removeDugongo(int port){
+    running = false;
+    
+    try {
+      for (ServerThread e : connectedClients){
+    
+        if(e.getClient().getPort() == port){
+          e.close();
+          temp++;
+        }
+      }
+    } catch (IOException ex) {
+      throw new RuntimeException(ex);
+    }
+    
+    if (temp == connectedClients.size()){
+      connectedClients.removeAll( (Vector<ServerThread>) connectedClients.clone());
+      try {
+        closeServer();
+      } catch (IOException e) {
+        throw new RuntimeException(e);
+      }
+    }
+  }
+  
+  public void removeAll(){
+    
+    lock.writeLock().lock();
+    
+    try{
+      for (ServerThread e : connectedClients) {
+        e.close();
+        connectedClients.remove(e);
+      }
+      
+      closeServer();
+    } catch (IOException ex) {
+      throw new RuntimeException(ex);
+    }
+    
+    lock.writeLock().unlock();
   }
 }

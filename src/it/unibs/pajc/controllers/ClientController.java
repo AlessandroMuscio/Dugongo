@@ -32,7 +32,7 @@ public class ClientController extends Controller {
   private ObjectInputStream reader;
   private ObjectOutputStream writer;
   private ExecutorService executor;
-  private static HashMap<Integer, Consumer<Answer>> azioni;
+  private static final HashMap<Integer, Consumer<Answer>> azioni;
   private GameController gameController;
   private static boolean server;
   private boolean running;
@@ -60,15 +60,16 @@ public class ClientController extends Controller {
     });
 
     azioni.put(DGNG.INIZIA, (answer) -> {
+      System.out.println("HO RICEVUTO");
       gameController = new GameController();
       View.getInstance().setPnlCorrente(gameController.getGamePanel());
       DugongoModel model = (DugongoModel) answer.getBody()[0];
       gameController.inizializzaPartita(model.getMano(client.getLocalPort()), model.getScartate());
     });
 
-    azioni.put(DGNG.GETTONE, (answer) -> gameController.turno());
+    azioni.put(DGNG.TOKEN, (answer) -> gameController.turno());
 
-    azioni.put(DGNG.MANO, (answer) -> {
+    azioni.put(DGNG.AGGIORNA_MANO, (answer) -> {
       Mano mano = (Mano) answer.getBody()[0];
       ArrayList<Carta> change = (ArrayList<Carta>) answer.getBody()[1];
       Scartate scartate = (Scartate) answer.getBody()[2];
@@ -76,7 +77,7 @@ public class ClientController extends Controller {
       gameController.pescato();
     });
 
-    azioni.put(DGNG.AGGIORNA, (answer) -> {
+    azioni.put(DGNG.AGGIORNA_VIEW, (answer) -> {
       Mano mano = (Mano) answer.getBody()[0];
       ArrayList<Carta> change = (ArrayList<Carta>) answer.getBody()[1];
       Scartate scartate = (Scartate) answer.getBody()[2];
@@ -85,7 +86,7 @@ public class ClientController extends Controller {
       gameController.timer();
     });
 
-    azioni.put(DGNG.FAKE_AGGIORNA, (answer) -> {
+    azioni.put(DGNG.AGGIORNA_SCARTATE, (answer) -> {
       Mano mano = (Mano) answer.getBody()[0];
       ArrayList<Carta> change = (ArrayList<Carta>) answer.getBody()[1];
       Scartate scartate = (Scartate) answer.getBody()[2];
@@ -93,7 +94,7 @@ public class ClientController extends Controller {
       gameController.endTurno();
     });
 
-    azioni.put(DGNG.END, (answer) -> {
+    azioni.put(DGNG.CLASSIFICA, (answer) -> {
       ArrayList<ElementoClassifica> classifica = (ArrayList<ElementoClassifica>) answer.getBody()[0];
       gameController.end(classifica);
       running = false;
@@ -122,7 +123,7 @@ public class ClientController extends Controller {
 
   private void connettiAlServer() {
     if (areInputsValid()) {
-      this.server = false;
+      server = false;
       connessione();
     }
   }
@@ -130,7 +131,7 @@ public class ClientController extends Controller {
   public void joinGame(String ipAddress, int port) {
     this.ipAddress = ipAddress;
     this.port = port;
-    this.server = true;
+    server = true;
     connessione();
   }
 
@@ -139,10 +140,14 @@ public class ClientController extends Controller {
       client = new Socket(ipAddress, port);
       writer = new ObjectOutputStream(client.getOutputStream());
       reader = new ObjectInputStream(client.getInputStream());
+      
       if (executor.isTerminated()) {
         executor = Executors.newCachedThreadPool();
       }
+      
+      running = true;
       executor.execute(this::listenToServer);
+      
       Request request = new Request(DGNG.COLLEGAMENTO, new Object[] { name });
       sendToServer(request);
     } catch (Exception e) {
@@ -253,6 +258,32 @@ public class ClientController extends Controller {
   }
 
   public void close() {
+    Request request;
+  
+    if(server){
+      request = new Request(DGNG.DISCONNESSIONE, new Object[] { ClientController.getInstance().getClient().getLocalPort() });
+    } else{
+      request = new Request(DGNG.CLIENT_QUIT, new Object[] { ClientController.getInstance().getClient().getLocalPort() });
+    }
+  
+    ClientController.getInstance().sendToServer(request);
+    
+    try {
+      writer.flush();
+      reader.close();
+      writer.close();
+      executor.shutdownNow();
+    } catch (IOException e) {
+      throw new RuntimeException(e);
+    }
+  }
+  
+  public void closeDugongo() {
+    Request request;
+
+    request = new Request(DGNG.DUGONGO_QUIT, new Object[] { ClientController.getInstance().getClient().getLocalPort() });
+    ClientController.getInstance().sendToServer(request);
+    
     try {
       writer.flush();
       reader.close();

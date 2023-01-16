@@ -59,7 +59,6 @@ public class Controller {
 
     if (name != null) {
       serverController = ServerController.getInstance();
-
       clientController = ClientController.getInstance();
       clientController.setName(name);
 

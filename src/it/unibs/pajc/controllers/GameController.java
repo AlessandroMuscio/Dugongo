@@ -81,7 +81,7 @@ public class GameController {
   public void dugongo() {
     Request request;
     
-    request = new Request(DGNG.DNG);
+    request = new Request(DGNG.DUGONGO);
     ClientController.getInstance().sendToServer(request);
   }
 
@@ -90,10 +90,6 @@ public class GameController {
   }
 
   public void esci() {
-    Request request;
-  
-    request = new Request(DGNG.DISCONNESSIONE, new Object[] { ClientController.getInstance().getClient().getLocalPort() });
-    ClientController.getInstance().sendToServer(request);
     gamePanel.setFullScreen(false);
     ClientController.getInstance().close();
     
@@ -115,7 +111,7 @@ public class GameController {
       @Override
       public void run() {
         gamePanel.endTurno();
-        ClientController.getInstance().sendToServer(new Request(DGNG.VINCOLO_DI_STO_CAZZO));
+        ClientController.getInstance().sendToServer(new Request(DGNG.END_TURNO));
       }
     }, 10000);
   }
@@ -141,8 +137,10 @@ public class GameController {
       @Override
       public void run() {
         gamePanel.remove();
-        esci();
+        gamePanel.setFullScreen(false);
+        ClientController.getInstance().closeDugongo();
+        new Controller();
       }
-    }, 15000);
+    }, 5000);
   }
 }
