@@ -34,11 +34,11 @@ public class ClientController extends Controller {
   private ExecutorService executor;
   private static HashMap<Integer, Consumer<Answer>> azioni;
   private GameController gameController;
-  public static boolean server;
+  public static boolean connectionClosed;
   
   static {
     azioni = new HashMap<>();
-    server = false;
+    connectionClosed = false;
   }
   
 
@@ -53,7 +53,7 @@ public class ClientController extends Controller {
   
   private void inizializzaAzioni(){
     azioni.put(DGNG.ATTESA, (answer) -> {
-      if(!server){
+      if(!connectionClosed){
         View.getInstance().setPnlCorrente(new WaitingPanel());
       }
     }
@@ -103,6 +103,7 @@ public class ClientController extends Controller {
       }
       
       gameController.end(classifica);
+      connectionClosed = true;
     });
   }
 
@@ -128,7 +129,7 @@ public class ClientController extends Controller {
 
   private void connettiAlServer() {
     if (areInputsValid()) {
-      this.server = false;
+      this.connectionClosed = false;
       connessione();
     }
   }
@@ -136,7 +137,7 @@ public class ClientController extends Controller {
   public void joinGame(String ipAddress, int port) {
     this.ipAddress = ipAddress;
     this.port = port;
-    this.server = true;
+    this.connectionClosed = true;
     connessione();
   }
   
@@ -156,12 +157,8 @@ public class ClientController extends Controller {
 
   private void listenToServer() {
     Answer answer;
-    DugongoModel model;
-    Mano mano;
-    Carta[] change;
-    Scartate scartate;
     
-    while(true){
+    while(!connectionClosed){
       try {
         answer = (Answer) reader.readObject();
         azioni.get(answer.getCode()).accept(answer);
