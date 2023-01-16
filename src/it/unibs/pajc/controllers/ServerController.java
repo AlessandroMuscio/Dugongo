@@ -197,9 +197,9 @@ public class ServerController extends Controller {
     }
   }
   
-  public void removeClient(int port){
+  public synchronized void removeClient(int port){
    try {
-      
+     
       for (ServerThread e : connectedClients){
         
         System.out.println(e.getClient().getPort() + "   " + port);
