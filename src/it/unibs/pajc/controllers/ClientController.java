@@ -161,7 +161,7 @@ public class ClientController extends Controller {
     Carta[] change;
     Scartate scartate;
     
-    while(true){
+    while(ServerController.getInstance().isRunning()){
       try {
         answer = (Answer) reader.readObject();
         azioni.get(answer.getCode()).accept(answer);

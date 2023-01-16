@@ -20,8 +20,7 @@ public class ServerController extends Controller {
 
   private static final int MAX_REQUESTS = 3;
   private static final int MAX_CLIENTS = 5;
-  private boolean running = true;
-
+  private boolean running;
   private ArrayList<ServerThread> connectedClients;
   private Queue<ServerThread> turnoCorrente;
   private Queue<ServerThread> turnoSuccessivo;
@@ -42,6 +41,7 @@ public class ServerController extends Controller {
       turnoCorrente = new LinkedList<>();
       turnoSuccessivo = new LinkedList<>();
       count = 0;
+      running = true;
       executors.execute(this::startServer);
     } catch (SocketException e) {
       throw new RuntimeException(e);
