@@ -34,7 +34,7 @@ public class ClientController extends Controller {
   private ExecutorService executor;
   private static HashMap<Integer, Consumer<Answer>> azioni;
   private GameController gameController;
-  public static boolean server;
+  private static boolean server;
   private boolean running;
   
   static {
@@ -42,7 +42,6 @@ public class ClientController extends Controller {
     server = false;
   }
   
-
   private static ClientController singleton = null;
 
   private ClientController() {
@@ -155,7 +154,7 @@ public class ClientController extends Controller {
   private void listenToServer() {
     Answer answer;
     
-    while(ServerController.getInstance().isRunning() && running){
+    while(running){
       try {
         answer = (Answer) reader.readObject();
         azioni.get(answer.getCode()).accept(answer);

@@ -140,8 +140,6 @@ public class GameController {
     timer.schedule(new TimerTask() {
       @Override
       public void run() {
-        //ClientController.getInstance().sendToServer(new Request(DGNG.DISCONNESSIONE, new Object[] { ClientController.getInstance().getClient().getLocalPort() }));
-        //ClientController.getInstance().close();
         gamePanel.remove();
         esci();
       }
