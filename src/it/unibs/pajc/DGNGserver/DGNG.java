@@ -25,6 +25,5 @@ public class DGNG {
   public static final int AGGIORNA = 5;
   public static final int FAKE_AGGIORNA = 6;
   public static final int END = 7;
-  public static final int DUGONGO = 8;
   
 }

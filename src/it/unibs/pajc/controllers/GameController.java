@@ -17,8 +17,6 @@ import java.util.ArrayList;
 import java.util.Timer;
 import java.util.TimerTask;
 
-import static it.unibs.pajc.DGNGserver.DGNG.VINCOLO_DI_STO_CAZZO;
-
 public class GameController {
   private GamePanel gamePanel;
   private boolean turno = false;
@@ -97,6 +95,7 @@ public class GameController {
     request = new Request(DGNG.DISCONNESSIONE, new Object[] { ClientController.getInstance().getClient().getLocalPort() });
     ClientController.getInstance().sendToServer(request);
     gamePanel.setFullScreen(false);
+    ClientController.getInstance().close();
     
     new Controller();
   }
@@ -116,7 +115,7 @@ public class GameController {
       @Override
       public void run() {
         gamePanel.endTurno();
-        ClientController.getInstance().sendToServer(new Request(VINCOLO_DI_STO_CAZZO));
+        ClientController.getInstance().sendToServer(new Request(DGNG.VINCOLO_DI_STO_CAZZO));
       }
     }, 10000);
   }
@@ -141,7 +140,8 @@ public class GameController {
     timer.schedule(new TimerTask() {
       @Override
       public void run() {
-        ClientController.getInstance().sendToServer(new Request(VINCOLO_DI_STO_CAZZO));
+        //ClientController.getInstance().sendToServer(new Request(DGNG.DISCONNESSIONE, new Object[] { ClientController.getInstance().getClient().getLocalPort() }));
+        //ClientController.getInstance().close();
         gamePanel.remove();
         esci();
       }

@@ -14,14 +14,15 @@ import java.net.*;
 import java.util.*;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import java.util.concurrent.locks.ReadWriteLock;
+import java.util.concurrent.locks.ReentrantReadWriteLock;
 
 public class ServerController extends Controller {
   private static ServerController singleton = null;
-
   private static final int MAX_REQUESTS = 3;
   private static final int MAX_CLIENTS = 5;
   private boolean running;
-  private ArrayList<ServerThread> connectedClients;
+  private Vector<ServerThread> connectedClients;
   private Queue<ServerThread> turnoCorrente;
   private Queue<ServerThread> turnoSuccessivo;
   private HashMap<Integer, String> clientsNames;
@@ -29,11 +30,14 @@ public class ServerController extends Controller {
   private int port;
   private ExecutorService executors;
   private ServerThread corrente;
+  private int temp = 0;
+  
+  private final ReadWriteLock lock = new ReentrantReadWriteLock();
   private int count;
 
   private ServerController() {
     try {
-      connectedClients = new ArrayList<>();
+      connectedClients = new Vector<>();
       clientsNames = new HashMap<>();
       IPaddress = getLocalIPaddress();
       port = new Random().nextInt(DGNG.MIN_PORT, DGNG.MAX_PORT + 1);
@@ -157,12 +161,6 @@ public class ServerController extends Controller {
   }
 
   public void closeServer() throws IOException {
-    for (ServerThread connectedClient : connectedClients) {
-      if (!connectedClient.isClosed()) {
-        connectedClient.esci(null);
-        connectedClient.interrupt();
-      }
-    }
     singleton = null;
     System.out.println("Server closed");
   }
@@ -197,25 +195,31 @@ public class ServerController extends Controller {
     }
   }
   
-  public synchronized void removeClient(int port){
-   try {
-     
-      for (ServerThread e : connectedClients){
-        
-        System.out.println(e.getClient().getPort() + "   " + port);
-        
-        if(e.getClient().getPort() == port){
-          connectedClients.remove(e);
-          e.getClient().close();
+  public void removeClient(int port){
+    running = false;
+    
+      try {
+    
+        for (ServerThread e : connectedClients){
+      
+          if(e.getClient().getPort() == port){
+            e.close();
+            temp++;
+            //connectedClients.remove(e);
+          }
         }
+      } catch (IOException ex) {
+        throw new RuntimeException(ex);
       }
       
-      if(connectedClients.isEmpty()){
-        running = false;
+      if (temp == connectedClients.size()){
+        connectedClients.removeAll( (Vector<ServerThread>) connectedClients.clone());
+        try {
+          closeServer();
+        } catch (IOException e) {
+          throw new RuntimeException(e);
+        }
       }
-   } catch (IOException ex) {
-      throw new RuntimeException(ex);
-    }
   }
   
   public boolean isRunning() {

@@ -10,6 +10,8 @@ import java.io.ObjectOutputStream;
 import java.net.Socket;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.concurrent.locks.ReadWriteLock;
+import java.util.concurrent.locks.ReentrantReadWriteLock;
 import java.util.function.Consumer;
 
 public class ServerThread extends Thread {
@@ -17,11 +19,13 @@ public class ServerThread extends Thread {
   private ObjectInputStream reader;
   private ObjectOutputStream writer;
   private HashMap<Integer, Consumer<Request>> azioni;
+  private boolean running;
+  private ReadWriteLock lock = new ReentrantReadWriteLock();
 
   public ServerThread(Socket client) {
     try {
       this.client = client;
-  
+      this.running = true;
       inizializzaAzioni();
       
       reader = new ObjectInputStream(client.getInputStream());
@@ -77,14 +81,12 @@ public class ServerThread extends Thread {
   
     azioni.put(DGNG.DISCONNESSIONE, (request) -> {
       int port = (int) request.getAttributes()[0];
-      ServerController.getInstance().removeClient(port);
+      ServerController a = ServerController.getInstance();
+      a.removeClient(port);
+      running = false;
     });
   
     azioni.put(DGNG.DNG, (request) -> {
-      ServerController.getInstance().dugongo();
-    });
-  
-    azioni.put(DGNG.DUGONGO, (request) -> {
       ServerController.getInstance().dugongo();
     });
     
@@ -94,12 +96,19 @@ public class ServerThread extends Thread {
   }
 
   public void run() {
-    while(ServerController.getInstance().isRunning()){
+    while(ServerController.getInstance().isRunning() && running){
+      
+      lock.writeLock().lock();
+      
       try {
         Request request = (Request) reader.readObject();
-        azioni.get(request.getRequest()).accept(request);
+        
+          azioni.get(request.getRequest()).accept(request);
+        
       } catch (IOException | ClassNotFoundException e) {
         throw new RuntimeException(e);
+      } finally {
+        lock.writeLock().unlock();
       }
     }
   }
@@ -134,5 +143,11 @@ public class ServerThread extends Thread {
   
   public boolean isClosed() {
     return client.isClosed();
+  }
+  
+  public void close() throws IOException {
+    reader.close();
+    writer.close();
+    client.close();
   }
 }

@@ -35,6 +35,7 @@ public class ClientController extends Controller {
   private static HashMap<Integer, Consumer<Answer>> azioni;
   private GameController gameController;
   public static boolean server;
+  private boolean running;
   
   static {
     azioni = new HashMap<>();
@@ -49,6 +50,7 @@ public class ClientController extends Controller {
       inizializzaAzioni();
     }
     executor = Executors.newCachedThreadPool();
+    running = true;
   }
   
   private void inizializzaAzioni(){
@@ -97,12 +99,8 @@ public class ClientController extends Controller {
   
     azioni.put(DGNG.END, (answer) -> {
       ArrayList<ElementoClassifica> classifica = (ArrayList<ElementoClassifica>) answer.getBody()[0];
-      
-      for(ElementoClassifica e : classifica){
-        System.out.println(e);
-      }
-      
       gameController.end(classifica);
+      running  = false;
     });
   }
 
@@ -156,12 +154,8 @@ public class ClientController extends Controller {
 
   private void listenToServer() {
     Answer answer;
-    DugongoModel model;
-    Mano mano;
-    Carta[] change;
-    Scartate scartate;
     
-    while(ServerController.getInstance().isRunning()){
+    while(ServerController.getInstance().isRunning() && running){
       try {
         answer = (Answer) reader.readObject();
         azioni.get(answer.getCode()).accept(answer);
@@ -255,5 +249,16 @@ public class ClientController extends Controller {
   
   public Socket getClient() {
     return client;
+  }
+  
+  public void close(){
+    try {
+      writer.flush();
+      reader.close();
+      writer.close();
+      executor.shutdownNow();
+    } catch (IOException e) {
+      throw new RuntimeException(e);
+    }
   }
 }
