@@ -96,7 +96,7 @@ public class ServerThread extends Thread {
   }
 
   public void run() {
-    while(ServerController.getInstance().isRunning() && running){
+    while(running){
       
       lock.writeLock().lock();
       

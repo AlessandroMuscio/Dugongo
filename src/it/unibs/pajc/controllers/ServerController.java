@@ -161,8 +161,12 @@ public class ServerController extends Controller {
   }
 
   public void closeServer() throws IOException {
+    executors.shutdownNow();
     singleton = null;
+    
     System.out.println("Server closed");
+  
+    new Controller();
   }
   
   public void incrementaCount() {
