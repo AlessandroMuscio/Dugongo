@@ -279,6 +279,8 @@ public class ClientController extends Controller {
       } catch (IOException e) {
         throw new RuntimeException(e);
       }
+  
+      new Controller();
     }
 
   }

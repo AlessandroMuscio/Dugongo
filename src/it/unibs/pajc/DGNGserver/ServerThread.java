@@ -81,7 +81,7 @@ public class ServerThread extends Thread {
 
     azioni.put(DGNG.DISCONNESSIONE, (request) -> {
       ServerController.getInstance().dugongo();
-      running = false;
+      //running = false;
     });
 
     azioni.put(DGNG.DUGONGO, (request) -> {

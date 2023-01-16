@@ -253,7 +253,7 @@ public class ServerController extends Controller {
     } catch (IOException ex) {
       throw new RuntimeException(ex);
     }
-
+    
     if (temp == connectedClients.size()) {
       connectedClients.removeAll((Vector<ServerThread>) connectedClients.clone());
       try {
@@ -262,23 +262,5 @@ public class ServerController extends Controller {
         throw new RuntimeException(e);
       }
     }
-  }
-
-  public void removeAll() {
-
-    lock.writeLock().lock();
-
-    try {
-      for (ServerThread e : connectedClients) {
-        e.close();
-        connectedClients.remove(e);
-      }
-
-      closeServer();
-    } catch (IOException ex) {
-      throw new RuntimeException(ex);
-    }
-
-    lock.writeLock().unlock();
   }
 }
