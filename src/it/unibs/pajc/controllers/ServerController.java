@@ -213,12 +213,13 @@ public class ServerController extends Controller {
 
   public void removeClient(int port) {
     try {
+      int i = 0;
 
       for (ServerThread e : connectedClients) {
 
         if (e.getClient().getPort() == port) {
+          i = connectedClients.indexOf(e);
           e.close();
-          connectedClients.remove(e);
 
           if (turnoSuccessivo.contains(e)) {
             turnoSuccessivo.remove(e);
@@ -231,6 +232,8 @@ public class ServerController extends Controller {
           }
         }
       }
+
+      connectedClients.remove(((Vector<ServerThread>) connectedClients.clone()).get(i));
     } catch (IOException ex) {
       throw new RuntimeException(ex);
     }
