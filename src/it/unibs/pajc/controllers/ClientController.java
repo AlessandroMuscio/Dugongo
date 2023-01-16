@@ -36,41 +36,38 @@ public class ClientController extends Controller {
   private GameController gameController;
   private static boolean server;
   private boolean running;
-  
+
   static {
     azioni = new HashMap<>();
     server = false;
   }
-  
+
   private static ClientController singleton = null;
 
   private ClientController() {
-    if (azioni.isEmpty()){
+    if (azioni.isEmpty()) {
       inizializzaAzioni();
     }
     executor = Executors.newCachedThreadPool();
     running = true;
   }
-  
-  private void inizializzaAzioni(){
+
+  private void inizializzaAzioni() {
     azioni.put(DGNG.ATTESA, (answer) -> {
-      if(!server){
+      if (!server) {
         View.getInstance().setPnlCorrente(new WaitingPanel());
       }
-    }
-    );
-    
+    });
+
     azioni.put(DGNG.INIZIA, (answer) -> {
       gameController = new GameController();
       View.getInstance().setPnlCorrente(gameController.getGamePanel());
       DugongoModel model = (DugongoModel) answer.getBody()[0];
       gameController.inizializzaPartita(model.getMano(client.getLocalPort()), model.getScartate());
     });
-    
-    azioni.put(DGNG.GETTONE, (answer) ->
-      gameController.turno()
-    );
-    
+
+    azioni.put(DGNG.GETTONE, (answer) -> gameController.turno());
+
     azioni.put(DGNG.MANO, (answer) -> {
       Mano mano = (Mano) answer.getBody()[0];
       ArrayList<Carta> change = (ArrayList<Carta>) answer.getBody()[1];
@@ -78,7 +75,7 @@ public class ClientController extends Controller {
       gameController.aggiorna(mano, change, scartate);
       gameController.pescato();
     });
-    
+
     azioni.put(DGNG.AGGIORNA, (answer) -> {
       Mano mano = (Mano) answer.getBody()[0];
       ArrayList<Carta> change = (ArrayList<Carta>) answer.getBody()[1];
@@ -87,7 +84,7 @@ public class ClientController extends Controller {
       gameController.pescato();
       gameController.timer();
     });
-  
+
     azioni.put(DGNG.FAKE_AGGIORNA, (answer) -> {
       Mano mano = (Mano) answer.getBody()[0];
       ArrayList<Carta> change = (ArrayList<Carta>) answer.getBody()[1];
@@ -95,11 +92,11 @@ public class ClientController extends Controller {
       gameController.fakeAggiorna(mano, change, scartate);
       gameController.endTurno();
     });
-  
+
     azioni.put(DGNG.END, (answer) -> {
       ArrayList<ElementoClassifica> classifica = (ArrayList<ElementoClassifica>) answer.getBody()[0];
       gameController.end(classifica);
-      running  = false;
+      running = false;
     });
   }
 
@@ -136,25 +133,29 @@ public class ClientController extends Controller {
     this.server = true;
     connessione();
   }
-  
-  private void connessione(){
+
+  private void connessione() {
     try {
       client = new Socket(ipAddress, port);
       writer = new ObjectOutputStream(client.getOutputStream());
       reader = new ObjectInputStream(client.getInputStream());
+      if (executor.isTerminated()) {
+        executor = Executors.newCachedThreadPool();
+      }
       executor.execute(this::listenToServer);
       Request request = new Request(DGNG.COLLEGAMENTO, new Object[] { name });
       sendToServer(request);
     } catch (Exception e) {
+      e.printStackTrace();
       JOptionPane.showMessageDialog(null, "ERRORE!\nImpossibile stabilire la connessione con il server",
-              "Errore di Connessione", JOptionPane.ERROR_MESSAGE);
+          "Errore di Connessione", JOptionPane.ERROR_MESSAGE);
     }
   }
 
   private void listenToServer() {
     Answer answer;
-    
-    while(running){
+
+    while (running) {
       try {
         answer = (Answer) reader.readObject();
         azioni.get(answer.getCode()).accept(answer);
@@ -234,7 +235,8 @@ public class ClientController extends Controller {
     } catch (NumberFormatException e) {
 
       JOptionPane.showMessageDialog(null,
-          "ATTENZIONE!!\nPorta assente o errato\nRicordati che la porta deve essere compresa tra " + DGNG.MIN_PORT + " e "
+          "ATTENZIONE!!\nPorta assente o errato\nRicordati che la porta deve essere compresa tra " + DGNG.MIN_PORT
+              + " e "
               + DGNG.MAX_PORT,
           "Errore d'Inserimento",
           JOptionPane.ERROR_MESSAGE);
@@ -245,12 +247,12 @@ public class ClientController extends Controller {
   public void setName(String name) {
     this.name = name;
   }
-  
+
   public Socket getClient() {
     return client;
   }
-  
-  public void close(){
+
+  public void close() {
     try {
       writer.flush();
       reader.close();
