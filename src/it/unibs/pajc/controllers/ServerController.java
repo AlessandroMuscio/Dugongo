@@ -134,7 +134,7 @@ public class ServerController extends Controller {
 
     corrente = turnoCorrente.poll();
     turnoSuccessivo.add(corrente);
-  
+
     sendToSingleClient(corrente.getPorta(), DGNG.TOKEN, new Object[] {});
   }
 
@@ -163,56 +163,70 @@ public class ServerController extends Controller {
   public void closeServer() throws IOException {
     executors.shutdownNow();
     singleton = null;
-    
+
     System.out.println("Server closed");
   }
-  
+
   public void incrementaCount() {
     System.out.println(count);
     count++;
-    
-    if(count == connectedClients.size()){
+
+    if (count == connectedClients.size()) {
       count = 0;
-      
+
       for (ServerThread connectedClient : connectedClients) {
         port = connectedClient.getPorta();
         sendToSingleClient(port, DGNG.AGGIORNA_SCARTATE, getModel().getData(port));
       }
-      
+
       play();
     }
   }
-  
+
   public void dugongo() {
-    
+
     ArrayList<ElementoClassifica> classifica = new ArrayList<>();
-    
-    for (Integer port : clientsNames.keySet()){
+
+    for (Integer port : clientsNames.keySet()) {
       classifica.add(new ElementoClassifica(getModel().getMano(port), clientsNames.get(port)));
     }
-    
+
+    // Bubble Sort
+    for (int i = 0; i < classifica.size() - 1; i++) {
+      for (int j = i + 1; j < classifica.size(); j++) {
+        ElementoClassifica elementoClassificaI = classifica.get(i);
+        ElementoClassifica elementoClassificaJ = classifica.get(j);
+
+        if (elementoClassificaJ.getPunteggio() < elementoClassificaI.getPunteggio()) {
+          ElementoClassifica temp = elementoClassificaI;
+          classifica.set(i, elementoClassificaJ);
+          classifica.set(j, temp);
+        }
+      }
+    }
+
     for (ServerThread connectedClient : connectedClients) {
       port = connectedClient.getPorta();
-      sendToSingleClient(port, DGNG.CLASSIFICA, new Object[]{classifica});
+      sendToSingleClient(port, DGNG.CLASSIFICA, new Object[] { classifica });
     }
   }
-  
-  public void removeClient(int port){
-    try{
-      
-      for (ServerThread e : connectedClients){
-        
-        if(e.getClient().getPort() == port){
+
+  public void removeClient(int port) {
+    try {
+
+      for (ServerThread e : connectedClients) {
+
+        if (e.getClient().getPort() == port) {
           e.close();
           connectedClients.remove(e);
-          
+
           if (turnoSuccessivo.contains(e)) {
             turnoSuccessivo.remove(e);
           } else {
             turnoCorrente.remove(e);
           }
-          
-          if (corrente.equals(e)){
+
+          if (corrente.equals(e)) {
             play();
           }
         }
@@ -221,14 +235,14 @@ public class ServerController extends Controller {
       throw new RuntimeException(ex);
     }
   }
-  
-  public void removeDugongo(int port){
+
+  public void removeDugongo(int port) {
     running = false;
-    
+
     try {
-      for (ServerThread e : connectedClients){
-    
-        if(e.getClient().getPort() == port){
+      for (ServerThread e : connectedClients) {
+
+        if (e.getClient().getPort() == port) {
           e.close();
           temp++;
         }
@@ -236,9 +250,9 @@ public class ServerController extends Controller {
     } catch (IOException ex) {
       throw new RuntimeException(ex);
     }
-    
-    if (temp == connectedClients.size()){
-      connectedClients.removeAll( (Vector<ServerThread>) connectedClients.clone());
+
+    if (temp == connectedClients.size()) {
+      connectedClients.removeAll((Vector<ServerThread>) connectedClients.clone());
       try {
         closeServer();
       } catch (IOException e) {
@@ -246,22 +260,22 @@ public class ServerController extends Controller {
       }
     }
   }
-  
-  public void removeAll(){
-    
+
+  public void removeAll() {
+
     lock.writeLock().lock();
-    
-    try{
+
+    try {
       for (ServerThread e : connectedClients) {
         e.close();
         connectedClients.remove(e);
       }
-      
+
       closeServer();
     } catch (IOException ex) {
       throw new RuntimeException(ex);
     }
-    
+
     lock.writeLock().unlock();
   }
 }

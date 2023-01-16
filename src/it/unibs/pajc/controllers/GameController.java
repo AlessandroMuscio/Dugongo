@@ -40,7 +40,7 @@ public class GameController {
         e1.printStackTrace();
       }
     }
-    
+
     gamePanel.getBtnMazzo().addActionListener((e) -> pesca());
   }
 
@@ -60,8 +60,8 @@ public class GameController {
     gamePanel.setDaScartare(new ArrayList<>());
     gamePanel.setData(mano, change, scartate);
   }
-  
-  public void pesca(){
+
+  public void pesca() {
     Request request = new Request(DGNG.PESCA);
     ClientController.getInstance().sendToServer(request);
   }
@@ -69,7 +69,7 @@ public class GameController {
   public void scarta() {
     ArrayList<Carta> daScartare = gamePanel.getDaScartare();
     Request request;
-  
+
     request = new Request(DGNG.SCARTA, new Object[] { daScartare, turno });
     ClientController.getInstance().sendToServer(request);
   }
@@ -80,7 +80,7 @@ public class GameController {
 
   public void dugongo() {
     Request request;
-    
+
     request = new Request(DGNG.DUGONGO);
     ClientController.getInstance().sendToServer(request);
   }
@@ -90,21 +90,18 @@ public class GameController {
   }
 
   public void esci() {
-    gamePanel.setFullScreen(false);
     ClientController.getInstance().close();
-    
-    new Controller();
   }
 
   public GamePanel getGamePanel() {
     return gamePanel;
   }
-  
+
   public void pescato() {
     gamePanel.abilita();
     gamePanel.getBtnMazzo().setEnabled(false);
   }
-  
+
   public void timer() {
     Timer timer = new Timer();
     timer.schedule(new TimerTask() {
@@ -115,24 +112,24 @@ public class GameController {
       }
     }, 10000);
   }
-  
+
   public void endTurno() {
     gamePanel.endTurno();
   }
-  
+
   public void fakeAggiorna(Mano mano, ArrayList<Carta> change, Scartate scartate) {
     turno = false;
     gamePanel.setDaScartare(new ArrayList<>());
     gamePanel.setData(mano, change, scartate);
   }
-  
+
   public void end(ArrayList<ElementoClassifica> classifica) {
-  
+
     gamePanel.remove();
     View.getInstance().setPnlCorrente(new ManiPanel(classifica));
-    
+
     Timer timer = new Timer();
-    
+
     timer.schedule(new TimerTask() {
       @Override
       public void run() {

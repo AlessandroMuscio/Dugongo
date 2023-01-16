@@ -60,7 +60,6 @@ public class ClientController extends Controller {
     });
 
     azioni.put(DGNG.INIZIA, (answer) -> {
-      System.out.println("HO RICEVUTO");
       gameController = new GameController();
       View.getInstance().setPnlCorrente(gameController.getGamePanel());
       DugongoModel model = (DugongoModel) answer.getBody()[0];
@@ -140,14 +139,14 @@ public class ClientController extends Controller {
       client = new Socket(ipAddress, port);
       writer = new ObjectOutputStream(client.getOutputStream());
       reader = new ObjectInputStream(client.getInputStream());
-      
+
       if (executor.isTerminated()) {
         executor = Executors.newCachedThreadPool();
       }
-      
+
       running = true;
       executor.execute(this::listenToServer);
-      
+
       Request request = new Request(DGNG.COLLEGAMENTO, new Object[] { name });
       sendToServer(request);
     } catch (Exception e) {
@@ -259,31 +258,38 @@ public class ClientController extends Controller {
 
   public void close() {
     Request request;
-  
-    if(server){
-      request = new Request(DGNG.DISCONNESSIONE, new Object[] { ClientController.getInstance().getClient().getLocalPort() });
-    } else{
-      request = new Request(DGNG.CLIENT_QUIT, new Object[] { ClientController.getInstance().getClient().getLocalPort() });
+
+    if (server) {
+      request = new Request(DGNG.DISCONNESSIONE,
+          new Object[] { ClientController.getInstance().getClient().getLocalPort() });
+
+      ClientController.getInstance().sendToServer(request);
+
+    } else {
+      request = new Request(DGNG.CLIENT_QUIT,
+          new Object[] { ClientController.getInstance().getClient().getLocalPort() });
+
+      ClientController.getInstance().sendToServer(request);
+
+      try {
+        writer.flush();
+        reader.close();
+        writer.close();
+        executor.shutdownNow();
+      } catch (IOException e) {
+        throw new RuntimeException(e);
+      }
     }
-  
-    ClientController.getInstance().sendToServer(request);
-    
-    try {
-      writer.flush();
-      reader.close();
-      writer.close();
-      executor.shutdownNow();
-    } catch (IOException e) {
-      throw new RuntimeException(e);
-    }
+
   }
-  
+
   public void closeDugongo() {
     Request request;
 
-    request = new Request(DGNG.DUGONGO_QUIT, new Object[] { ClientController.getInstance().getClient().getLocalPort() });
+    request = new Request(DGNG.DUGONGO_QUIT,
+        new Object[] { ClientController.getInstance().getClient().getLocalPort() });
     ClientController.getInstance().sendToServer(request);
-    
+
     try {
       writer.flush();
       reader.close();
