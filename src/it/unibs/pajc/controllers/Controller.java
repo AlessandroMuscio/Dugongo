@@ -44,7 +44,7 @@ public class Controller {
     boolean notValid;
 
     do {
-      name = JOptionPane.showInputDialog(null, "Qual'è il tuo nome?", "Inserimento Nome", JOptionPane.QUESTION_MESSAGE);
+      name = JOptionPane.showInputDialog(null, "Qual è il tuo nome?", "Inserimento Nome", JOptionPane.QUESTION_MESSAGE);
 
       if (name != null) {
         notValid = name.isBlank() || name.replace(" ", "").length() < 4;
