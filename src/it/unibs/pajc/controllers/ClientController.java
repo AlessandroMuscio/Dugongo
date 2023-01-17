@@ -53,22 +53,22 @@ public class ClientController extends Controller {
   }
 
   private void inizializzaAzioni() {
-    azioni.put(DGNG.ATTESA, (answer) -> {
+    azioni.put(DGNG.ATTESA, answer -> {
       if (!server) {
         View.getInstance().setPnlCorrente(new WaitingPanel());
       }
     });
 
-    azioni.put(DGNG.INIZIA, (answer) -> {
+    azioni.put(DGNG.INIZIA, answer -> {
       gameController = new GameController();
       View.getInstance().setPnlCorrente(gameController.getGamePanel());
       DugongoModel model = (DugongoModel) answer.getBody()[0];
       gameController.inizializzaPartita(model.getMano(client.getLocalPort()), model.getScartate());
     });
 
-    azioni.put(DGNG.TOKEN, (answer) -> gameController.turno());
+    azioni.put(DGNG.TOKEN, answer -> gameController.turno());
 
-    azioni.put(DGNG.AGGIORNA_MANO, (answer) -> {
+    azioni.put(DGNG.AGGIORNA_MANO, answer -> {
       Mano mano = (Mano) answer.getBody()[0];
       ArrayList<Carta> change = (ArrayList<Carta>) answer.getBody()[1];
       Scartate scartate = (Scartate) answer.getBody()[2];
@@ -76,7 +76,7 @@ public class ClientController extends Controller {
       gameController.pescato();
     });
 
-    azioni.put(DGNG.AGGIORNA_VIEW, (answer) -> {
+    azioni.put(DGNG.AGGIORNA_VIEW, answer -> {
       Mano mano = (Mano) answer.getBody()[0];
       ArrayList<Carta> change = (ArrayList<Carta>) answer.getBody()[1];
       Scartate scartate = (Scartate) answer.getBody()[2];
@@ -85,7 +85,7 @@ public class ClientController extends Controller {
       gameController.timer();
     });
 
-    azioni.put(DGNG.AGGIORNA_SCARTATE, (answer) -> {
+    azioni.put(DGNG.AGGIORNA_SCARTATE, answer -> {
       Mano mano = (Mano) answer.getBody()[0];
       ArrayList<Carta> change = (ArrayList<Carta>) answer.getBody()[1];
       Scartate scartate = (Scartate) answer.getBody()[2];
@@ -93,9 +93,23 @@ public class ClientController extends Controller {
       gameController.endTurno();
     });
 
-    azioni.put(DGNG.CLASSIFICA, (answer) -> {
+    azioni.put(DGNG.CLASSIFICA, answer -> {
       ArrayList<ElementoClassifica> classifica = (ArrayList<ElementoClassifica>) answer.getBody()[0];
       gameController.end(classifica);
+      running = false;
+    });
+
+    azioni.put(DGNG.QUIT_NOW, answer -> {
+      sendToServer(new Request(DGNG.ESCI, new Object[] { ClientController.getInstance().getClient().getLocalPort() }));
+
+      try {
+        writer.flush();
+        reader.close();
+        writer.close();
+        executor.shutdownNow();
+      } catch (IOException e) {
+        throw new RuntimeException(e);
+      }
       running = false;
     });
   }
@@ -164,7 +178,7 @@ public class ClientController extends Controller {
         answer = (Answer) reader.readObject();
         azioni.get(answer.getCode()).accept(answer);
       } catch (IOException | ClassNotFoundException e) {
-        throw new RuntimeException(e);
+        e.printStackTrace();
       }
     }
   }
@@ -266,20 +280,10 @@ public class ClientController extends Controller {
       ClientController.getInstance().sendToServer(request);
 
     } else {
-      request = new Request(DGNG.CLIENT_QUIT,
-          new Object[] { ClientController.getInstance().getClient().getLocalPort() });
+      request = new Request(DGNG.CLIENT_QUIT);
 
       ClientController.getInstance().sendToServer(request);
 
-      try {
-        writer.flush();
-        reader.close();
-        writer.close();
-        executor.shutdownNow();
-      } catch (IOException e) {
-        throw new RuntimeException(e);
-      }
-  
       new Controller();
     }
 

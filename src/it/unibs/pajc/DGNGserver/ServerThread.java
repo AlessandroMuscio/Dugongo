@@ -10,8 +10,6 @@ import java.io.ObjectOutputStream;
 import java.net.Socket;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.concurrent.locks.ReadWriteLock;
-import java.util.concurrent.locks.ReentrantReadWriteLock;
 import java.util.function.Consumer;
 
 public class ServerThread extends Thread {
@@ -20,7 +18,6 @@ public class ServerThread extends Thread {
   private ObjectOutputStream writer;
   private HashMap<Integer, Consumer<Request>> azioni;
   private boolean running;
-  private ReadWriteLock lock = new ReentrantReadWriteLock();
 
   public ServerThread(Socket client) {
     try {
@@ -38,9 +35,7 @@ public class ServerThread extends Thread {
   private void inizializzaAzioni() {
     azioni = new HashMap<>();
 
-    azioni.put(DGNG.ESCI, this::esci);
-
-    azioni.put(DGNG.COLLEGAMENTO, (request) -> {
+    azioni.put(DGNG.COLLEGAMENTO, request -> {
       ServerController.getInstance().addClientName(client.getPort(), String.valueOf(request.getAttributes()[0]));
 
       Answer answer = new Answer(DGNG.ATTESA);
@@ -53,7 +48,7 @@ public class ServerThread extends Thread {
       }
     });
 
-    azioni.put(DGNG.PESCA, (request) -> {
+    azioni.put(DGNG.PESCA, request -> {
       DugongoModel model = ServerController.getInstance().getModel();
       model.pesca(client.getPort());
 
@@ -67,7 +62,7 @@ public class ServerThread extends Thread {
       }
     });
 
-    azioni.put(DGNG.SCARTA, (request) -> {
+    azioni.put(DGNG.SCARTA, request -> {
       DugongoModel model = ServerController.getInstance().getModel();
       ArrayList<Carta> daScartare = (ArrayList<Carta>) request.getAttributes()[0];
 
@@ -79,34 +74,36 @@ public class ServerThread extends Thread {
       }
     });
 
-    azioni.put(DGNG.DISCONNESSIONE, (request) -> {
+    azioni.put(DGNG.DISCONNESSIONE, request -> {
       ServerController.getInstance().dugongo();
-      //running = false;
+      // running = false;
     });
 
-    azioni.put(DGNG.DUGONGO, (request) -> {
+    azioni.put(DGNG.DUGONGO, request -> {
       ServerController.getInstance().dugongo();
     });
 
-    azioni.put(DGNG.END_TURNO, (request -> ServerController.getInstance().incrementaCount()));
+    azioni.put(DGNG.END_TURNO, request -> ServerController.getInstance().incrementaCount());
 
-    azioni.put(DGNG.CLIENT_QUIT, (request -> {
+    azioni.put(DGNG.ESCI, request -> {
       int port = (int) request.getAttributes()[0];
       ServerController.getInstance().removeClient(port);
-    }));
+      running = false;
+    });
 
-    azioni.put(DGNG.DUGONGO_QUIT, (request -> {
+    azioni.put(DGNG.CLIENT_QUIT, request -> {
+      send(new Answer(DGNG.QUIT_NOW));
+    });
+
+    azioni.put(DGNG.DUGONGO_QUIT, request -> {
       int port = (int) request.getAttributes()[0];
       ServerController.getInstance().removeDugongo(port);
       running = false;
-    }));
+    });
   }
 
   public void run() {
     while (running) {
-
-      lock.writeLock().lock();
-
       try {
         Request request = (Request) reader.readObject();
 
@@ -114,19 +111,7 @@ public class ServerThread extends Thread {
 
       } catch (IOException | ClassNotFoundException e) {
         throw new RuntimeException(e);
-      } finally {
-        lock.writeLock().unlock();
       }
-    }
-  }
-
-  public void esci(Request request) {
-    try {
-      if (!isClosed()) {
-        client.close();
-      }
-    } catch (IOException e) {
-      throw new RuntimeException(e);
     }
   }
 

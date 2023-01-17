@@ -1,12 +1,12 @@
 package it.unibs.pajc.DGNGserver;
 
 public class DGNG {
-  
-  //Porte
+
+  // Porte
   public static final int MIN_PORT = 49152;
   public static final int MAX_PORT = 65536;
-  
-  //Richieste
+
+  // Richieste
   public static final int ESCI = 0;
   public static final int COLLEGAMENTO = 1;
   public static final int PESCA = 2;
@@ -16,8 +16,9 @@ public class DGNG {
   public static final int DISCONNESSIONE = 6;
   public static final int CLIENT_QUIT = 7;
   public static final int DUGONGO_QUIT = 8;
-  
-  //Risposte
+
+  // Risposte
+  public static final int QUIT_NOW = 0;
   public static final int ATTESA = 1;
   public static final int INIZIA = 2;
   public static final int TOKEN = 3;
